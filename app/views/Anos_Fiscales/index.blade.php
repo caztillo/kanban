@@ -24,7 +24,7 @@
                             <th style="width:15%"><input type="text" name="descripcion" class="form-control filtrar" placeholder="Descripción" disabled></th>
                             <th style="width:5%"><input type="text" name="fecha_inicio" class="form-control" placeholder="Fecha de Inicio" disabled></th>
                             <th style="width:5%"><input type="text" name="fecha_termino" class="form-control" placeholder="Fecha Término" disabled></th>
-                            <th style="width:5%"><input type="text" name="estado" class="form-control" placeholder="Estado" disabled></th>
+                            <th style="width:5%"><input type="text" name="estado" class="form-control" placeholder="Estatus" disabled></th>
                             <th style="width:5%"><input type="text" name="creacion" class="form-control" placeholder="Creación" disabled></th>
                             <th style="width:1%"></th>
                             <th style="width:1%"></th>
@@ -34,13 +34,22 @@
                     @foreach($anos_fiscales as $ano_fiscal)
                         <tr>
                             <td>{{$ano_fiscal->id_ano}}</td>
-                            <td>Lorem ipsum dolor sit amet</td>
-                            <td>06/06/2015</td>
-                            <td>12/06/2015</td>
-                            <td>Activo</td>
-                            <td>01/05/2015</td>
-                            <td><button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                            <td><button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button></td>
+                            <td>{{$ano_fiscal->descripcion}}</td>
+                            <td>{{$ano_fiscal->fecha_inicio}}</td>
+                            <td>{{$ano_fiscal->fecha_termino}}</td>
+                            <td>{{$ano_fiscal->estado}}</td>
+                            <td>{{date("Y-m-d",strtotime($ano_fiscal->creacion))}}</td>
+
+                            <td> <a class="btn btn-success btn-xs" href="{{url('anos_fiscales/'.$ano_fiscal->id_ano . '/edit')}}" role="button"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                            <td>
+                                {{ Form::open(array('url' => 'anos_fiscales/' . $ano_fiscal->id_ano)) }}
+                                {{ Form::hidden('_method', 'DELETE') }}
+                                {{ Form::button('<span class="glyphicon glyphicon-remove"></span>', array('type' => 'submit', 'class' => 'btn btn-danger btn-xs'))}}
+
+                                {{ Form::close() }}
+
+                            </td>
+
                         </tr>
                     @endforeach
                     </tbody>

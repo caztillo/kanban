@@ -13,7 +13,7 @@
 
 Route::get('/', array('as' => 'inicio', 'uses' => 'AdminController@index'));
 Route::resource('dependencias', 'DependenciasController');
-Route::resource('anos_fiscales', 'AnosFiscalesController');
+Route::resource('anos_fiscales', 'AnosFiscalesController',array('except' => array('show')));
 Route::group(['before' => 'auth'], function()
 {
 

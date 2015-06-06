@@ -35,8 +35,8 @@ class AnosFiscalesController extends \BaseController {
 
         $rules = [
             'descripcion' => 'required|alpha_space|between:1,255',
-            'fecha_inicio' => 'required|date|date_format:"Y/m/d"',
-            'fecha_termino' => 'required|date|date_format:"Y/m/d"',
+            'fecha_inicio' => 'required|date|date_format:"Y-m-d"',
+            'fecha_termino' => 'required|date|date_format:"Y-m-d"',
             'estado' => 'required|in:Activo,Inactivo',
 
         ];
@@ -45,7 +45,7 @@ class AnosFiscalesController extends \BaseController {
             'required' => 'Este campo es obligatorio.',
             'estado.integer' => 'Este campo es obligatorio.',
             'date' => 'Este campo debe ser una fecha válida',
-            'date_format' => 'Utilice el formato Año/Mes/Día.',
+            'date_format' => 'Utilice el formato Año-Mes-Día.',
             'between' => 'Este campo es obligatorio.',
             'in' => 'Este campo es obligatorio.',
             'alpha_space' => 'Utilice sólo caracteres del alfabeto y espacios.',
@@ -59,25 +59,13 @@ class AnosFiscalesController extends \BaseController {
             return Redirect::back()->with('message-type', 'danger')->with('message', 'Algunos datos no han sido propiamente ingresados, favor de revisarlos.')->withErrors($validator)->withInput();
 		}
         $data = Input::all();
-
+        $data['creacion'] = date('Y-m-d H:i:s');
         AnoFiscal::create($data);
 
 		return Redirect::route('anos_fiscales.index')->with('message-type', 'success')
             ->with('message', 'La información se ha guardado correctamente');
 	}
 
-	/**
-	 * Display the specified anosfiscale.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		$anosfiscale = AnoFiscal::findOrFail($id);
-
-		return View::make('anos_fiscales.show', compact('anosfiscale'));
-	}
 
 	/**
 	 * Show the form for editing the specified anosfiscale.
@@ -87,9 +75,9 @@ class AnosFiscalesController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$anosfiscale = AnoFiscal::find($id);
+        $ano_fiscal = AnoFiscal::find($id);
 
-		return View::make('anos_fiscales.edit', compact('anosfiscale'));
+		return View::make('anos_fiscales.edit', compact('ano_fiscal'));
 	}
 
 	/**
@@ -100,18 +88,39 @@ class AnosFiscalesController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$anosfiscale = AnoFiscal::findOrFail($id);
+		$ano_fiscal = AnoFiscal::findOrFail($id);
 
-		$validator = Validator::make($data = Input::all(), AnoFiscal::$rules);
+        Input::merge(array_map('trim', Input::all()));
+
+        $rules = [
+            'descripcion' => 'required|alpha_space|between:1,255',
+            'fecha_inicio' => 'required|date|date_format:"Y-m-d"',
+            'fecha_termino' => 'required|date|date_format:"Y-m-d"',
+            'estado' => 'required|in:Activo,Inactivo',
+
+        ];
+
+        $messages = [
+            'required' => 'Este campo es obligatorio.',
+            'estado.integer' => 'Este campo es obligatorio.',
+            'date' => 'Este campo debe ser una fecha válida',
+            'date_format' => 'Utilice el formato Año-Mes-Día.',
+            'between' => 'Este campo es obligatorio.',
+            'in' => 'Este campo es obligatorio.',
+            'alpha_space' => 'Utilice sólo caracteres del alfabeto y espacios.',
+        ];
+
+        $validator = Validator::make($data = Input::all(), $rules, $messages);
 
 		if ($validator->fails())
 		{
-			return Redirect::back()->withErrors($validator)->withInput();
+			return Redirect::back()->with('message-type', 'danger')->with('message', 'Algunos datos no han sido propiamente ingresados, favor de revisarlos.')->withErrors($validator)->withInput();
 		}
 
-		$anosfiscale->update($data);
+        $ano_fiscal->update($data);
 
-		return Redirect::route('anos_fiscales.index');
+		return Redirect::route('anos_fiscales.index')->with('message-type', 'success')
+            ->with('message', 'La información se actualizó correctamente.');
 	}
 
 	/**
@@ -124,7 +133,60 @@ class AnosFiscalesController extends \BaseController {
 	{
 		AnoFiscal::destroy($id);
 
-		return Redirect::route('anos_fiscales.index');
+		return Redirect::route('anos_fiscales.index')->with('message-type', 'success')
+            ->with('message', 'El elemento se eliminó correctamente.');
 	}
+
+    /**
+     * Display a listing of the resource.
+     * GET /ano_fiscal/seach
+     *
+     * @return Response
+     */
+    public function search()
+    {
+
+        $id_ano = Input::get('id_ano');
+        $descripcion = Input::get('descripcion');
+        $fecha_inicio = Input::get('fecha_inicio');
+        $fecha_termino = Input::get('fecha_termino');
+        $estado = Input::get('estado');
+        $creacion = Input::get('creacion');
+
+        if(!empty($id_ano) )
+            $ano_fiscal = AnoFiscal::find($id_ano);
+        else
+        {
+            $query = AnoFiscal::select();
+            if(!empty($descripcion))
+            {
+                $query = $query->where('descripcion', 'LIKE', "%{$descripcion}%");
+            }
+            if(!empty($fecha_inicio) AND !empty($fecha_termino))
+            {
+                $query = $query->where('fecha_inicio', '>=', $fecha_inicio)
+                                ->where('fecha_termino', '<=', $fecha_termino);
+            }
+
+            if(!empty($estado))
+            {
+                $query = $query->where('estado', '=', $estado);
+            }
+
+            if(!empty($creacion))
+            {
+                $query = $query->where('creacion', '=', $creacion);
+            }
+
+            $ano_fiscal = $query->get();
+
+
+        }
+
+        if($ano_fiscal->isEmpty())
+            return Response::json(array('success' => false, 'message' => 'El criterio de búsqueda no regresó ningún resultado.'), 200);
+
+        return Response::json(array('success' => true, '$ano_fiscal' => $ano_fiscal), 200);
+    }
 
 }
