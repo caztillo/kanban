@@ -6,6 +6,9 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Años Fiscales</h1>
+            @if(Session::has('message'))
+                <div class="alert alert-{{ Session::get('message-type') }} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>{{ Session::get('message')}}</div>
+            @endif
             <div class="panel panel-default filterable">
                 <div class="panel-heading">
                     <h3 class="panel-title">&nbsp;</h3>
@@ -28,36 +31,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Lorem ipsum dolor sit amet</td>
-                        <td>06/06/2015</td>
-                        <td>12/06/2015</td>
-                        <td>Activo</td>
-                        <td>01/05/2015</td>
-                        <td><button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                        <td><button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>consectetur adipiscing elit. Donec massa velit</td>
-                        <td>06/06/2015</td>
-                        <td>12/06/2015</td>
-                        <td>Activo</td>
-                        <td>01/05/2015</td>
-                        <td><button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                        <td><button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Sed sagittis purus vel posuere consectetur.</td>
-                        <td>06/06/2015</td>
-                        <td>12/06/2015</td>
-                        <td>Activo</td>
-                        <td>01/05/2015</td>
-                        <td><button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                        <td><button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button></td>
-                    </tr>
+                    @foreach($anos_fiscales as $ano_fiscal)
+                        <tr>
+                            <td>{{$ano_fiscal->id_ano}}</td>
+                            <td>Lorem ipsum dolor sit amet</td>
+                            <td>06/06/2015</td>
+                            <td>12/06/2015</td>
+                            <td>Activo</td>
+                            <td>01/05/2015</td>
+                            <td><button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></td>
+                            <td><button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button></td>
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>

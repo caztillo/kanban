@@ -9,10 +9,9 @@ class AnosFiscalesController extends \BaseController {
 	 */
 	public function index()
 	{
-		//$anosfiscales = AnoFiscal::all();
-		//return View::make('anosfiscales.index', compact('anosfiscales'));
+		$anos_fiscales = AnoFiscal::all();
+		return View::make('anos_fiscales.index', compact('anos_fiscales'));
 
-        return View::make('anos_fiscales.index');
 	}
 
 	/**
@@ -36,30 +35,20 @@ class AnosFiscalesController extends \BaseController {
 
         $rules = [
             'descripcion' => 'required|alpha_space|between:1,255',
-            'fecha_inicio' => 'required|date|date_format:"Y-m-d"',
-            'fecha_termino' => 'required|date|date_format:"Y-m-d"',
-            'estado' => 'required|integer|between:1,2',
+            'fecha_inicio' => 'required|date|date_format:"Y/m/d"',
+            'fecha_termino' => 'required|date|date_format:"Y/m/d"',
+            'estado' => 'required|in:Activo,Inactivo',
+
         ];
 
         $messages = [
             'required' => 'Este campo es obligatorio.',
-            'Sexo.integer' => 'Este campo es obligatorio.',
+            'estado.integer' => 'Este campo es obligatorio.',
             'date' => 'Este campo debe ser una fecha válida',
             'date_format' => 'Utilice el formato Año/Mes/Día.',
-            'FechaNacimiento.before' => 'Su edad debe ser al menos 16 años.',
             'between' => 'Este campo es obligatorio.',
-            'EntidadFederativaNacimiento.integer' => 'Este campo es obligatorio.',
-            'alpha_num_space' => 'Utilice sólo caracteres alfanuméricos y espacios.',
-            'DomNum.alpha_num' => 'Utilice sólo caracteres alfanuméricos.',
+            'in' => 'Este campo es obligatorio.',
             'alpha_space' => 'Utilice sólo caracteres del alfabeto y espacios.',
-            'CodigoPostal.digits' => 'Utilice los 5 dígitos de su C.P.',
-            'DomEstado.integer' => 'Este campo es obligatorio.',
-            'Telefono.regex' => 'Utilice su clave LADA de 10 dígitos como mínimo, sólo números.',
-            'Celular.regex' => 'Utilice 10 dígitos como mínimo, sólo números.',
-            'email' => 'Utilice un email válido.',
-            'Email.unique' => 'El correo esta siendo usado por alguien más, utilice otro.',
-            'Email.max' => 'Utilice un email válido.',
-
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);
@@ -69,11 +58,9 @@ class AnosFiscalesController extends \BaseController {
 		{
             return Redirect::back()->with('message-type', 'danger')->with('message', 'Algunos datos no han sido propiamente ingresados, favor de revisarlos.')->withErrors($validator)->withInput();
 		}
+        $data = Input::all();
 
-        $ano_fiscal = new AnoFiscal();
-        //$nerd->name       = Input::get('name');
-
-        $ano_fiscal->save();
+        AnoFiscal::create($data);
 
 		return Redirect::route('anos_fiscales.index')->with('message-type', 'success')
             ->with('message', 'La información se ha guardado correctamente');

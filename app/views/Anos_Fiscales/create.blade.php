@@ -45,13 +45,13 @@
                         <div class="col-md-4">
                             <div class="radio-inline">
                                 <label for="estado-0">
-                                    {{ Form::radio("estado",1,$checked = true)}}
+                                    {{ Form::radio("estado","Activo",$checked = true)}}
                                     Activo
                                 </label>
                             </div>
                             <div class="radio-inline">
                                 <label for="estado-1">
-                                    {{ Form::radio("estado",2,$checked = false)}}
+                                    {{ Form::radio("estado","Inactivo",$checked = false)}}
                                     Inactivo
                                 </label>
                             </div>
