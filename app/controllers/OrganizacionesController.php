@@ -1,30 +1,30 @@
 <?php
 
-class DependenciasController extends \BaseController {
+class OrganizacionesController extends \BaseController {
 
 	/**
-	 * Display a listing of dependencias
+	 * Display a listing of organizaciones
 	 *
 	 * @return Response
 	 */
 	public function index()
 	{
-		$dependencias = Dependencia::all();
-		return View::make('dependencias.index', compact('dependencias'));
+		$organizaciones = Organizacion::all();
+		return View::make('organizaciones.index', compact('organizaciones'));
 	}
 
 	/**
-	 * Show the form for creating a new dependencia
+	 * Show the form for creating a new organizacion
 	 *
 	 * @return Response
 	 */
 	public function create()
 	{
-		return View::make('dependencias.create');
+		return View::make('organizaciones.create');
 	}
 
 	/**
-	 * Store a newly created dependencia in storage.
+	 * Store a newly created organizacion in storage.
 	 *
 	 * @return Response
 	 */
@@ -34,16 +34,24 @@ class DependenciasController extends \BaseController {
 
         $rules = [
             'nombre' => 'required|alpha_num_space|between:1,255',
-            'clave' => 'required|alpha_num_space|between:1,255',
-            'direccion' => 'required|alpha_num_space|between:1,255',
+            'razon_social' => 'required|alpha_space|between:1,255',
+            'direccion' => 'required|digits:5',
+            'codigo_postal' => 'required|alpha_num_space|between:1,255',
+            'contacto' => 'required|alpha_space|between:1,255',
+            'telefono' => 'required|required|regex:/^[0-9]{10,20}$/',
+            'correo' => 'required|email',
             'estado' => 'required|in:Activo,Inactivo',
         ];
 
         $messages = [
             'required' => 'Este campo es obligatorio.',
             'alpha_num_space' => 'Utilice sólo caracteres del alfabeto, números y espacios.',
+            'alpha_space' => 'Utilice sólo caracteres del alfabeto y espacios.',
+            'codigo_postal.digits' => 'El código postal debe estar formado por 5 caracteres numéricos sin espacios.',
             'estado.integer' => 'Este campo es obligatorio.',
             'between' => 'Este campo es obligatorio.',
+            'telefono.regex' => 'El formato ingresado no es válido',
+            'email' => 'El correo debe estar formado de la siguiente manera: direccion@dominio.com',
             'in' => 'Este campo es obligatorio.',
         ];
 

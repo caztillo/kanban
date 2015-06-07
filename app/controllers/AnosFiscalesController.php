@@ -9,7 +9,7 @@ class AnosFiscalesController extends \BaseController {
 	 */
 	public function index()
 	{
-		$anos_fiscales = AnoFiscal::all();
+		$anos_fiscales = AnoFiscal::orderBy('id_ano', 'desc')->get();
 		return View::make('anos_fiscales.index', compact('anos_fiscales'));
 
 	}
@@ -34,7 +34,7 @@ class AnosFiscalesController extends \BaseController {
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
-            'descripcion' => 'required|alpha_space|between:1,255',
+            'descripcion' => 'required|alpha_num_space|between:1,255',
             'fecha_inicio' => 'required|date|date_format:"Y-m-d"',
             'fecha_termino' => 'required|date|date_format:"Y-m-d"',
             'estado' => 'required|in:Activo,Inactivo',
@@ -48,7 +48,7 @@ class AnosFiscalesController extends \BaseController {
             'date_format' => 'Utilice el formato Año-Mes-Día.',
             'between' => 'Este campo es obligatorio.',
             'in' => 'Este campo es obligatorio.',
-            'alpha_space' => 'Utilice sólo caracteres del alfabeto y espacios.',
+            'alpha_num_space' => 'Utilice sólo caracteres del alfabeto, números y espacios.',
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);
@@ -93,7 +93,7 @@ class AnosFiscalesController extends \BaseController {
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
-            'descripcion' => 'required|alpha_space|between:1,255',
+            'descripcion' => 'required|alpha_num_space|between:1,255',
             'fecha_inicio' => 'required|date|date_format:"Y-m-d"',
             'fecha_termino' => 'required|date|date_format:"Y-m-d"',
             'estado' => 'required|in:Activo,Inactivo',
@@ -107,7 +107,7 @@ class AnosFiscalesController extends \BaseController {
             'date_format' => 'Utilice el formato Año-Mes-Día.',
             'between' => 'Este campo es obligatorio.',
             'in' => 'Este campo es obligatorio.',
-            'alpha_space' => 'Utilice sólo caracteres del alfabeto y espacios.',
+            'alpha_num_space' => 'Utilice sólo caracteres del alfabeto, números y espacios.',
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);
@@ -154,7 +154,7 @@ class AnosFiscalesController extends \BaseController {
         $creacion = Input::get('creacion');
 
         if(!empty($id_ano) )
-            $anos_fiscales = AnoFiscal::where('id_ano','=',$id_ano)->get();
+            $anos_fiscales = AnoFiscal::where('id_ano','=',$id_ano)->orderBy('id_ano', 'desc')->get();
         else
         {
             $query = AnoFiscal::select();
@@ -184,7 +184,8 @@ class AnosFiscalesController extends \BaseController {
                 $query = $query->where('creacion', '=', $creacion);
             }
 
-            $anos_fiscales = $query->get();
+            
+            $anos_fiscales = $query->orderBy('id_ano', 'desc')->get();
 
 
         }
@@ -198,6 +199,7 @@ class AnosFiscalesController extends \BaseController {
         else
         {
             return View::make('anos_fiscales.index', compact('anos_fiscales'));
+
         }
 
     }
