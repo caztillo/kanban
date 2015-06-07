@@ -1,30 +1,30 @@
 <?php
 
-class DependenciasController extends \BaseController {
+class OrganizacionesController extends \BaseController {
 
 	/**
-	 * Display a listing of dependencias
+	 * Display a listing of organizaciones
 	 *
 	 * @return Response
 	 */
 	public function index()
 	{
-		$dependencias = Dependencia::orderBy('id_dependencia','desc')->get();
-		return View::make('dependencias.index', compact('dependencias'));
+		$organizaciones = Organizacion::all();
+		return View::make('organizaciones.index', compact('organizaciones'));
 	}
 
 	/**
-	 * Show the form for creating a new dependencia
+	 * Show the form for creating a new organizacion
 	 *
 	 * @return Response
 	 */
 	public function create()
 	{
-		return View::make('dependencias.create');
+		return View::make('organizaciones.create');
 	}
 
 	/**
-	 * Store a newly created dependencia in storage.
+	 * Store a newly created organizacion in storage.
 	 *
 	 * @return Response
 	 */
@@ -34,16 +34,24 @@ class DependenciasController extends \BaseController {
 
         $rules = [
             'nombre' => 'required|alpha_num_space|between:1,255',
-            'clave' => 'required|alpha_num_space|between:1,255',
-            'direccion' => 'required|alpha_num_space|between:1,255',
+            'razon_social' => 'required|alpha_space|between:1,255',
+            'direccion' => 'required|digits:5',
+            'codigo_postal' => 'required|alpha_num_space|between:1,255',
+            'contacto' => 'required|alpha_space|between:1,255',
+            'telefono' => 'required|required|regex:/^[0-9]{10,20}$/',
+            'correo' => 'required|email',
             'estado' => 'required|in:Activo,Inactivo',
         ];
 
         $messages = [
             'required' => 'Este campo es obligatorio.',
             'alpha_num_space' => 'Utilice sólo caracteres del alfabeto, números y espacios.',
+            'alpha_space' => 'Utilice sólo caracteres del alfabeto y espacios.',
+            'codigo_postal.digits' => 'El código postal debe estar formado por 5 caracteres numéricos sin espacios.',
             'estado.integer' => 'Este campo es obligatorio.',
             'between' => 'Este campo es obligatorio.',
+            'telefono.regex' => 'El formato ingresado no es válido',
+            'email' => 'El correo debe estar formado de la siguiente manera: direccion@dominio.com',
             'in' => 'Este campo es obligatorio.',
         ];
 
@@ -62,6 +70,18 @@ class DependenciasController extends \BaseController {
             ->with('message', 'La información se ha guardado correctamente');
 	}
 
+	/**
+	 * Display the specified dependencia.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		$dependencia = Dependencia::findOrFail($id);
+
+		return View::make('dependencias.show', compact('dependencia'));
+	}
 
 	/**
 	 * Show the form for editing the specified dependencia.
@@ -128,72 +148,5 @@ class DependenciasController extends \BaseController {
 		return Redirect::route('dependencias.index')->with('message-type', 'success')
 		->with('message', 'El elemento se eliminó correctamente.');
 	}
-
-    /**
-     * Display a listing of the resource.
-     * GET /dependencias/search
-     *
-     * @return Response
-     */
-    public function search()
-    {
-
-        $id_dependencia = Input::get('id_dependencia');
-        $nombre = Input::get('nombre');
-        $clave = Input::get('clave');
-        $direccion = Input::get('direccion');
-        $estado = Input::get('estado');
-        $creacion = Input::get('creacion');
-
-        if(!empty($id_dependencia) )
-            $dependencias = Dependencia::where('id_dependencia','=',$id_dependencia)->get();
-        else
-        {
-            $query = Dependencia::select();
-            if(!empty($nombre))
-            {
-                $query = $query->where('nombre', 'LIKE', "%{$nombre}%");
-            }
-
-
-            if(!empty($clave))
-            {
-                $query = $query->where('clave', '=', $clave);
-            }
-
-            if(!empty($direccion))
-            {
-                $query = $query->where('direccion', 'LIKE', "%{$direccion}%");
-            }
-
-            if(!empty($estado))
-            {
-                $query = $query->where('estado', '=', $estado);
-            }
-
-            if(!empty($creacion))
-            {
-                $query = $query->whereRaw("DATE(creacion) = '".$creacion."'");
-            }
-
-
-            $dependencias = $query->orderBy('id_dependencia','desc')->get();
-
-
-        }
-
-        if($dependencias->isEmpty())
-        {
-            return Redirect::route('dependencias.index')
-                ->with('message-type', 'warning')
-                ->with('message', 'El criterio de búsqueda no regresó ningún resultado.');
-        }
-        else
-        {
-            return View::make('dependencias.index', compact('dependencias'));
-        }
-
-    }
-
 
 }
