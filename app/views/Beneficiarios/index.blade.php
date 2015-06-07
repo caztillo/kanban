@@ -1,8 +1,10 @@
-@extends('admin.master')
+@extends('admin.menu')
 @section("css")
+@parent
     {{ HTML::style("css/custom.css") }}
 @stop
 @section("contenido")
+@parent
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Beneficiarios</h1>
@@ -23,14 +25,11 @@
                             <th style="width:1%"><input type="text" name="id_beneficiario" class="form-control filtrar" placeholder="#" disabled></th>
                             <th style="width:10%"><input type="text" name="nombre" class="form-control filtrar" placeholder="Nombre" disabled></th>
                             <th style="width:10%"><input type="text" name="direccion" class="form-control filtrar" placeholder="Dirección" disabled></th>
-                            <th style="width:10%"><input type="text" name="codigo_postal" class="form-control filtrar" placeholder="Código Postal" disabled></th>
                             <th style="width:10%"><input type="text" name="telefono" class="form-control filtrar" placeholder="Teléfono" disabled></th>
                             <th style="width:10%"><input type="text" name="correo" class="form-control filtrar" placeholder="Correo" disabled></th>
-                            <th style="width:10%"><input type="text" name="fecha_nacimiento" class="form-control filtrar" placeholder="Fecha de Nacimiento" disabled></th>
-                            <th style="width:10%"><input type="text" name="pais_nacionalidad" class="form-control filtrar" placeholder="País de Nacionalidad" disabled></th>
                             <th style="width:10%"><input type="text" name="RFC" class="form-control filtrar" placeholder="RFC" disabled></th>
                             <th style="width:10%"><input type="text" name="CURP" class="form-control filtrar" placeholder="CURP" disabled></th>
-                            <th style="width:10%"><input type="text" name="estado" class="form-control filtrar" placeholder="Activo/Inactivo" disabled></th>
+                            <th style="width:10%"><input type="text" name="estado" class="form-control filtrar" placeholder="Estatus" disabled></th>
                             <th style="width:5%"><input type="text" name="creacion" class="form-control" placeholder="Creación" disabled></th>
                             <th style="width:1%"></th>
                             <th style="width:1%"></th>
@@ -41,14 +40,17 @@
                         <tr>
                             <td>{{$beneficiario->id_beneficiario}}</td>
                             <td>{{$beneficiario->nombre}}</td>
-                            <td>{{$beneficiario->clave}}</td>
                             <td>{{$beneficiario->direccion}}</td>
+                            <td>{{$beneficiario->telefono}}</td>
+                            <td>{{$beneficiario->correo}}</td>
+                            <td>{{$beneficiario->RFC}}</td>
+                            <td>{{$beneficiario->CURP}}</td>                    
                             <td>{{$beneficiario->estado}}</td>
                             <td>{{$beneficiario->creacion}}</td>
                            
-                            <td> <a class="btn btn-success btn-xs" href="{{url('dependencias/'.$dependencia->id_dependencia . '/edit')}}" role="button"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                            <td> <a class="btn btn-success btn-xs" href="{{url('beneficiarios/'.$beneficiario->id_beneficiario . '/edit')}}" role="button"><span class="glyphicon glyphicon-pencil"></span></a></td>
                             <td>
-                                {{ Form::open(array('url' => 'dependencias/' . $dependencia->id_dependencia)) }}
+                                {{ Form::open(array('url' => 'beneficiarios/' . $beneficiario->id_beneficiario)) }}
                                 {{ Form::hidden('_method', 'DELETE') }}
                                 {{ Form::button('<span class="glyphicon glyphicon-remove"></span>', array('type' => 'submit', 'class' => 'btn btn-danger btn-xs'))}}
                                 {{ Form::close() }}
@@ -64,6 +66,7 @@
 
 @stop
 @section("js")
+@parent
     <script>
         @include('admin.script')
     </script>

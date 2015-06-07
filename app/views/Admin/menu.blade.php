@@ -1,10 +1,8 @@
 @extends('admin.master')
 @section('css')
-    @parent
     @yield('css')
 @stop
 @section("contenido")
-    @parent
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -43,34 +41,34 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="#"><i class="fa fa-dashboard fa-fw"></i> Inscripciones</a>
+                            <a href="#"><i class="fa fa-pencil"></i> Inscripciones</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Beneficiarios</a>
+                            <a href="{{url('beneficiarios')}}"><i class="fa fa-group"></i> Beneficiarios</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-table fa-fw"></i> Organizaciones</a>
+                            <a href="{{url('organizaciones')}}"><i class="fa fa-suitcase"></i> Organizaciones</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-edit fa-fw"></i> Programas</a>
+                            <a href="#"><i class="fa fa-list"></i> Programas</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Catalogos<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-cogs"></i> Catálogos<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="#">Roles</a>
-                                </li>
-                                <li>
-                                    <a href="#">Usuarios</a>
+                                    <a href="{{url('anos_fiscales')}}">Años Fiscales</a>
                                 </li>
                                 <li>
                                     <a href="{{url('dependencias')}}">Dependencias</a>
                                 </li>
                                 <li>
-                                    <a href="#">Direcciones</a>
+                                    <a href="{{url('direcciones')}}">Direcciones</a>
                                 </li>
                                 <li>
-                                    <a href="{{url('anos_fiscales')}}">Años Fiscales</a>
+                                    <a href="#">Roles</a>
+                                </li>
+                                <li>
+                                    <a href="#">Usuarios</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -84,7 +82,7 @@
 
         <div id="page-wrapper">
             <div class="container-fluid">
-                @yield("contenido")
+                @yield("contenido_derecho")
             </div>
             <!-- /.container-fluid -->
         </div>
@@ -95,6 +93,5 @@
 @stop
 
 @section('js')
-    @parent
     @yield('js')
 @stop

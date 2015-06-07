@@ -1,10 +1,8 @@
 @extends('admin.menu')
 @section("css")
-    @parent
     {{ HTML::style("css/custom.css") }}
 @stop
-@section("contenido")
-    @parent
+@section("contenido_derecho")
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Dependencias</h1>
@@ -24,11 +22,11 @@
                 <table class="table">
                     <thead>
                         <tr class="filters">
-                            <th style="width:1%"><input type="text" name="id_dependencia" class="form-control filtrar" placeholder="#" disabled></th>
-                            <th style="width:10%"><input type="text" name="nombre" class="form-control filtrar" placeholder="Nombre" disabled></th>
-                            <th style="width:10%"><input type="text" name="clave" class="form-control filtrar" placeholder="Clave" disabled></th>
-                            <th style="width:10%"><input type="text" name="direccion" class="form-control filtrar" placeholder="Dirección" disabled></th>
-                            <th style="width:10%"><input type="text" name="estado" class="form-control filtrar" placeholder="Estatus" disabled></th>
+                            <th style="width:1%"><input type="text" name="id_dependencia" class="form-control" placeholder="#" disabled></th>
+                            <th style="width:10%"><input type="text" name="nombre" class="form-control" placeholder="Nombre" disabled></th>
+                            <th style="width:10%"><input type="text" name="clave" class="form-control" placeholder="Clave" disabled></th>
+                            <th style="width:10%"><input type="text" name="direccion" class="form-control" placeholder="Dirección" disabled></th>
+                            <th style="width:10%"><input type="text" name="estado" class="form-control" placeholder="Estatus" disabled></th>
                             <th style="width:5%"><input type="text" name="creacion" class="form-control" placeholder="Creación" disabled></th>
                             <th style="width:1%"></th>
                             <th style="width:1%"></th>
@@ -63,7 +61,6 @@
 
 @stop
 @section("js")
-    @parent
     <script>
         @include('admin.script')
         @include('dependencias.script')

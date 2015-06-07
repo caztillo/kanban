@@ -97,7 +97,7 @@ class OrganizacionesController extends \BaseController {
 	}
 
 	/**
-	 * Update the specified depdencia in storage.
+	 * Update the specified organizaciones in storage.
 	 *
 	 * @param  int  $id
 	 * @return Response
