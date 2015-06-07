@@ -9,7 +9,7 @@ class DependenciasController extends \BaseController {
 	 */
 	public function index()
 	{
-		$dependencias = Dependencia::all();
+		$dependencias = Dependencia::orderBy('id_dependencia','desc')->get();
 		return View::make('dependencias.index', compact('dependencias'));
 	}
 
@@ -62,18 +62,6 @@ class DependenciasController extends \BaseController {
             ->with('message', 'La información se ha guardado correctamente');
 	}
 
-	/**
-	 * Display the specified dependencia.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		$dependencia = Dependencia::findOrFail($id);
-
-		return View::make('dependencias.show', compact('dependencia'));
-	}
 
 	/**
 	 * Show the form for editing the specified dependencia.
@@ -140,5 +128,72 @@ class DependenciasController extends \BaseController {
 		return Redirect::route('dependencias.index')->with('message-type', 'success')
 		->with('message', 'El elemento se eliminó correctamente.');
 	}
+
+    /**
+     * Display a listing of the resource.
+     * GET /dependencias/search
+     *
+     * @return Response
+     */
+    public function search()
+    {
+
+        $id_dependencia = Input::get('id_dependencia');
+        $nombre = Input::get('nombre');
+        $clave = Input::get('clave');
+        $direccion = Input::get('direccion');
+        $estado = Input::get('estado');
+        $creacion = Input::get('creacion');
+
+        if(!empty($id_dependencia) )
+            $dependencias = Dependencia::where('id_dependencia','=',$id_dependencia)->get();
+        else
+        {
+            $query = Dependencia::select();
+            if(!empty($nombre))
+            {
+                $query = $query->where('nombre', 'LIKE', "%{$nombre}%");
+            }
+
+
+            if(!empty($clave))
+            {
+                $query = $query->where('clave', '=', $clave);
+            }
+
+            if(!empty($direccion))
+            {
+                $query = $query->where('direccion', 'LIKE', "%{$direccion}%");
+            }
+
+            if(!empty($estado))
+            {
+                $query = $query->where('estado', '=', $estado);
+            }
+
+            if(!empty($creacion))
+            {
+                $query = $query->whereRaw("DATE(creacion) = '".$creacion."'");
+            }
+
+
+            $dependencias = $query->orderBy('id_dependencia','desc')->get();
+
+
+        }
+
+        if($dependencias->isEmpty())
+        {
+            return Redirect::route('dependencias.index')
+                ->with('message-type', 'warning')
+                ->with('message', 'El criterio de búsqueda no regresó ningún resultado.');
+        }
+        else
+        {
+            return View::make('dependencias.index', compact('dependencias'));
+        }
+
+    }
+
 
 }
