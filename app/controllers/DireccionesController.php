@@ -1,36 +1,36 @@
 <?php
 
-class AnosFiscalesController extends \BaseController {
+class DireccionesController extends \BaseController {
 
-	/**
-	 * Display a listing of anosfiscales
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		$anos_fiscales = Direccion::orderBy('id_ano', 'desc')->get();
-		return View::make('anos_fiscales.index', compact('anos_fiscales'));
+    /**
+     * Display a listing of direcciones
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        $anos_fiscales = Direccion::orderBy('id_ano', 'desc')->get();
+        return View::make('anos_fiscales.index', compact('anos_fiscales'));
 
-	}
+    }
 
-	/**
-	 * Show the form for creating a new anosfiscale
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		return View::make('anos_fiscales.create');
-	}
+    /**
+     * Show the form for creating a new direcciones
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        return View::make('anos_fiscales.create');
+    }
 
-	/**
-	 * Store a newly created anosfiscale in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
+    /**
+     * Store a newly created direcciones in storage.
+     *
+     * @return Response
+     */
+    public function store()
+    {
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
@@ -54,41 +54,41 @@ class AnosFiscalesController extends \BaseController {
         $validator = Validator::make($data = Input::all(), $rules, $messages);
 
 
-		if ($validator->fails())
-		{
+        if ($validator->fails())
+        {
             return Redirect::back()->with('message-type', 'danger')->with('message', 'Algunos datos no han sido propiamente ingresados, favor de revisarlos.')->withErrors($validator)->withInput();
-		}
+        }
         $data = Input::all();
         $data['creacion'] = date('Y-m-d H:i:s');
         Direccion::create($data);
 
-		return Redirect::route('anos_fiscales.index')->with('message-type', 'success')
+        return Redirect::route('anos_fiscales.index')->with('message-type', 'success')
             ->with('message', 'La información se ha guardado correctamente');
-	}
+    }
 
 
-	/**
-	 * Show the form for editing the specified anosfiscale.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
+    /**
+     * Show the form for editing the specified direcciones.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function edit($id)
+    {
         $ano_fiscal = Direccion::find($id);
 
-		return View::make('anos_fiscales.edit', compact('ano_fiscal'));
-	}
+        return View::make('anos_fiscales.edit', compact('ano_fiscal'));
+    }
 
-	/**
-	 * Update the specified anosfiscale in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		$ano_fiscal = Direccion::findOrFail($id);
+    /**
+     * Update the specified direcciones in storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function update($id)
+    {
+        $ano_fiscal = Direccion::findOrFail($id);
 
         Input::merge(array_map('trim', Input::all()));
 
@@ -112,34 +112,34 @@ class AnosFiscalesController extends \BaseController {
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);
 
-		if ($validator->fails())
-		{
-			return Redirect::back()->with('message-type', 'danger')->with('message', 'Algunos datos no han sido propiamente ingresados, favor de revisarlos.')->withErrors($validator)->withInput();
-		}
+        if ($validator->fails())
+        {
+            return Redirect::back()->with('message-type', 'danger')->with('message', 'Algunos datos no han sido propiamente ingresados, favor de revisarlos.')->withErrors($validator)->withInput();
+        }
 
         $ano_fiscal->update($data);
 
-		return Redirect::route('anos_fiscales.index')->with('message-type', 'success')
+        return Redirect::route('anos_fiscales.index')->with('message-type', 'success')
             ->with('message', 'La información se actualizó correctamente.');
-	}
+    }
 
-	/**
-	 * Remove the specified anosfiscale from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		Direccion::destroy($id);
+    /**
+     * Remove the specified direcciones from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        Direccion::destroy($id);
 
-		return Redirect::route('anos_fiscales.index')->with('message-type', 'success')
+        return Redirect::route('anos_fiscales.index')->with('message-type', 'success')
             ->with('message', 'El elemento se eliminó correctamente.');
-	}
+    }
 
     /**
      * Display a listing of the resource.
-     * GET /anos_fiscales/search
+     * GET /direcciones/search
      *
      * @return Response
      */
@@ -184,7 +184,7 @@ class AnosFiscalesController extends \BaseController {
                 $query = $query->whereRaw("DATE(creacion) = '".$creacion."'");
             }
 
-            
+
             $anos_fiscales = $query->orderBy('id_ano', 'desc')->get();
 
 
