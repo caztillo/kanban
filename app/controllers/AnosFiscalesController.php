@@ -139,7 +139,7 @@ class AnosFiscalesController extends \BaseController {
 
     /**
      * Display a listing of the resource.
-     * GET /ano_fiscal/seach
+     * GET /anos_fiscales/search
      *
      * @return Response
      */
@@ -154,7 +154,7 @@ class AnosFiscalesController extends \BaseController {
         $creacion = Input::get('creacion');
 
         if(!empty($id_ano) )
-            $ano_fiscal = AnoFiscal::find($id_ano);
+            $anos_fiscales = AnoFiscal::where('id_ano','=',$id_ano)->get();
         else
         {
             $query = AnoFiscal::select();
@@ -162,10 +162,16 @@ class AnosFiscalesController extends \BaseController {
             {
                 $query = $query->where('descripcion', 'LIKE', "%{$descripcion}%");
             }
-            if(!empty($fecha_inicio) AND !empty($fecha_termino))
+
+
+            if(!empty($fecha_inicio))
             {
-                $query = $query->where('fecha_inicio', '>=', $fecha_inicio)
-                                ->where('fecha_termino', '<=', $fecha_termino);
+                $query = $query->where('fecha_inicio', '=', $fecha_inicio);
+            }
+
+            if(!empty($fecha_termino))
+            {
+                $query = $query->where('fecha_termino', '>=', $fecha_termino);
             }
 
             if(!empty($estado))
@@ -178,15 +184,22 @@ class AnosFiscalesController extends \BaseController {
                 $query = $query->where('creacion', '=', $creacion);
             }
 
-            $ano_fiscal = $query->get();
+            $anos_fiscales = $query->get();
 
 
         }
 
-        if($ano_fiscal->isEmpty())
-            return Response::json(array('success' => false, 'message' => 'El criterio de búsqueda no regresó ningún resultado.'), 200);
+        if($anos_fiscales->isEmpty())
+        {
+            return Redirect::route('anos_fiscales.index')
+                ->with('message-type', 'warning')
+                ->with('message', 'El criterio de búsqueda no regresó ningún resultado.');
+        }
+        else
+        {
+            return View::make('anos_fiscales.index', compact('anos_fiscales'));
+        }
 
-        return Response::json(array('success' => true, '$ano_fiscal' => $ano_fiscal), 200);
     }
 
 }
