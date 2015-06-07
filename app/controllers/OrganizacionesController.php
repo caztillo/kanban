@@ -35,12 +35,12 @@ class OrganizacionesController extends \BaseController {
         $rules = [
             'nombre' => 'required|alpha_num_space|between:1,255',
             'razon_social' => 'required|alpha_space|between:1,255',
-            'direccion' => 'required|digits:5',
-            'codigo_postal' => 'required|alpha_num_space|between:1,255',
+            'codigo_postal' => 'required|digits:5',
+            'direccion' => 'required|alpha_num_space|between:1,255',
             'contacto' => 'required|alpha_space|between:1,255',
             'telefono' => 'required|required|regex:/^[0-9]{10,20}$/',
             'correo' => 'required|email',
-            'estado' => 'required|in:Activo,Inactivo'
+            'estado' => 'required|in:Activo,Vetado'
         ];
 
         $messages = [
@@ -64,7 +64,7 @@ class OrganizacionesController extends \BaseController {
 
         $data = Input::all();
         $data['creacion'] = date('Y-m-d H:i:s');
-        Dependencia::create($data);
+        Organizacion::create($data);
 
 		return Redirect::route('organizaciones.index')->with('message-type', 'success')
             ->with('message', 'La información se ha guardado correctamente');
@@ -78,7 +78,7 @@ class OrganizacionesController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$organizacion = Dependencia::findOrFail($id);
+		$organizacion = Organizacion::findOrFail($id);
 
 		return View::make('organizaciones.show', compact('organizacion'));
 	}
@@ -91,7 +91,7 @@ class OrganizacionesController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$organizacion = Dependencia::find($id);
+		$organizacion = Organizacion::find($id);
 
 		return View::make('organizaciones.edit', compact('organizacion'));
 	}
@@ -104,19 +104,19 @@ class OrganizacionesController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$organizacion = Dependencia::findOrFail($id);
+		$organizacion = Organizacion::findOrFail($id);
 
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
             'nombre' => 'required|alpha_num_space|between:1,255',
             'razon_social' => 'required|alpha_space|between:1,255',
-            'direccion' => 'required|digits:5',
-            'codigo_postal' => 'required|alpha_num_space|between:1,255',
+            'codigo_postal' => 'required|digits:5',
+            'direccion' => 'required|alpha_num_space|between:1,255',
             'contacto' => 'required|alpha_space|between:1,255',
             'telefono' => 'required|required|regex:/^[0-9]{10,20}$/',
             'correo' => 'required|email',
-            'estado' => 'required|in:Activo,Inactivo'
+            'estado' => 'required|in:Activo,Vetado'
         ];
 
         $messages = [
@@ -153,7 +153,7 @@ class OrganizacionesController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		Dependencia::destroy($id);
+		Organizacion::destroy($id);
 		return Redirect::route('organizaciones.index')->with('message-type', 'success')
 		->with('message', 'El elemento se eliminó correctamente.');
 	}
