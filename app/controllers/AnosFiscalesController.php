@@ -181,7 +181,7 @@ class AnosFiscalesController extends \BaseController {
 
             if(!empty($creacion))
             {
-                $query = $query->where('creacion', '=', $creacion);
+                $query = $query->whereRaw("DATE(creacion) = '".$creacion."'");
             }
 
             

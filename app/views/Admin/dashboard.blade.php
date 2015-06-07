@@ -1,4 +1,4 @@
-@extends('admin.master')
+@extends('admin.menu')
 @section("css")
     <!-- Timeline CSS -->
     {{ HTML::style("dist/css/timeline.css") }}
