@@ -1,6 +1,5 @@
 @extends('admin.menu')
 @section("css")
-    @parent
     <!-- Timeline CSS -->
     {{ HTML::style("dist/css/timeline.css") }}
     <!-- Morris Charts CSS -->
@@ -23,7 +22,6 @@
 @stop
 
 @section("js")
-    @parent
     <!-- Morris Charts JavaScript -->
     {{ HTML::script("bower_components/raphael/raphael-min.js") }}
     {{ HTML::script("bower_components/morrisjs/morris.min.js") }}
