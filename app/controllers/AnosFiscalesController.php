@@ -9,7 +9,7 @@ class AnosFiscalesController extends \BaseController {
 	 */
 	public function index()
 	{
-		$anos_fiscales = AnoFiscal::all();
+		$anos_fiscales = AnoFiscal::orderBy('id_ano', 'desc')->get();
 		return View::make('anos_fiscales.index', compact('anos_fiscales'));
 
 	}
@@ -34,7 +34,7 @@ class AnosFiscalesController extends \BaseController {
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
-            'descripcion' => 'required|alpha_space|between:1,255',
+            'descripcion' => 'required|alpha_num_space|between:1,255',
             'fecha_inicio' => 'required|date|date_format:"Y-m-d"',
             'fecha_termino' => 'required|date|date_format:"Y-m-d"',
             'estado' => 'required|in:Activo,Inactivo',
@@ -48,7 +48,7 @@ class AnosFiscalesController extends \BaseController {
             'date_format' => 'Utilice el formato Año-Mes-Día.',
             'between' => 'Este campo es obligatorio.',
             'in' => 'Este campo es obligatorio.',
-            'alpha_space' => 'Utilice sólo caracteres del alfabeto y espacios.',
+            'alpha_num_space' => 'Utilice sólo caracteres del alfabeto, números y espacios.',
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);
@@ -93,7 +93,7 @@ class AnosFiscalesController extends \BaseController {
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
-            'descripcion' => 'required|alpha_space|between:1,255',
+            'descripcion' => 'required|alpha_num_space|between:1,255',
             'fecha_inicio' => 'required|date|date_format:"Y-m-d"',
             'fecha_termino' => 'required|date|date_format:"Y-m-d"',
             'estado' => 'required|in:Activo,Inactivo',
@@ -107,7 +107,7 @@ class AnosFiscalesController extends \BaseController {
             'date_format' => 'Utilice el formato Año-Mes-Día.',
             'between' => 'Este campo es obligatorio.',
             'in' => 'Este campo es obligatorio.',
-            'alpha_space' => 'Utilice sólo caracteres del alfabeto y espacios.',
+            'alpha_num_space' => 'Utilice sólo caracteres del alfabeto, números y espacios.',
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);
@@ -139,7 +139,7 @@ class AnosFiscalesController extends \BaseController {
 
     /**
      * Display a listing of the resource.
-     * GET /ano_fiscal/seach
+     * GET /anos_fiscales/search
      *
      * @return Response
      */
@@ -154,7 +154,7 @@ class AnosFiscalesController extends \BaseController {
         $creacion = Input::get('creacion');
 
         if(!empty($id_ano) )
-            $ano_fiscal = AnoFiscal::find($id_ano);
+            $anos_fiscales = AnoFiscal::where('id_ano','=',$id_ano)->orderBy('id_ano', 'desc')->get();
         else
         {
             $query = AnoFiscal::select();
@@ -162,10 +162,16 @@ class AnosFiscalesController extends \BaseController {
             {
                 $query = $query->where('descripcion', 'LIKE', "%{$descripcion}%");
             }
-            if(!empty($fecha_inicio) AND !empty($fecha_termino))
+
+
+            if(!empty($fecha_inicio))
             {
-                $query = $query->where('fecha_inicio', '>=', $fecha_inicio)
-                                ->where('fecha_termino', '<=', $fecha_termino);
+                $query = $query->where('fecha_inicio', '=', $fecha_inicio);
+            }
+
+            if(!empty($fecha_termino))
+            {
+                $query = $query->where('fecha_termino', '>=', $fecha_termino);
             }
 
             if(!empty($estado))
@@ -175,18 +181,27 @@ class AnosFiscalesController extends \BaseController {
 
             if(!empty($creacion))
             {
-                $query = $query->where('creacion', '=', $creacion);
+                $query = $query->whereRaw("DATE(creacion) = '".$creacion."'");
             }
 
-            $ano_fiscal = $query->get();
+            
+            $anos_fiscales = $query->orderBy('id_ano', 'desc')->get();
 
 
         }
 
-        if($ano_fiscal->isEmpty())
-            return Response::json(array('success' => false, 'message' => 'El criterio de búsqueda no regresó ningún resultado.'), 200);
+        if($anos_fiscales->isEmpty())
+        {
+            return Redirect::route('anos_fiscales.index')
+                ->with('message-type', 'warning')
+                ->with('message', 'El criterio de búsqueda no regresó ningún resultado.');
+        }
+        else
+        {
+            return View::make('anos_fiscales.index', compact('anos_fiscales'));
 
-        return Response::json(array('success' => true, '$ano_fiscal' => $ano_fiscal), 200);
+        }
+
     }
 
 }

@@ -12,8 +12,10 @@
 */
 
 Route::get('/', array('as' => 'inicio', 'uses' => 'AdminController@index'));
-Route::resource('dependencias', 'DependenciasController');
+Route::resource('dependencias', 'DependenciasController',array('except' => array('show')));
 Route::resource('anos_fiscales', 'AnosFiscalesController',array('except' => array('show')));
+Route::get('/anos_fiscales/search', array('uses' => 'AnosFiscalesController@search'));
+Route::get('/dependencias/search', array('uses' => 'DependenciasController@search'));
 Route::group(['before' => 'auth'], function()
 {
 
