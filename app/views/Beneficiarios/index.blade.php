@@ -1,8 +1,10 @@
-@extends('admin.master')
+@extends('admin.menu')
 @section("css")
+@parent
     {{ HTML::style("css/custom.css") }}
 @stop
 @section("contenido")
+@parent
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Beneficiarios</h1>
@@ -23,11 +25,8 @@
                             <th style="width:1%"><input type="text" name="id_beneficiario" class="form-control filtrar" placeholder="#" disabled></th>
                             <th style="width:10%"><input type="text" name="nombre" class="form-control filtrar" placeholder="Nombre" disabled></th>
                             <th style="width:10%"><input type="text" name="direccion" class="form-control filtrar" placeholder="Dirección" disabled></th>
-                            <th style="width:10%"><input type="text" name="codigo_postal" class="form-control filtrar" placeholder="Código Postal" disabled></th>
                             <th style="width:10%"><input type="text" name="telefono" class="form-control filtrar" placeholder="Teléfono" disabled></th>
                             <th style="width:10%"><input type="text" name="correo" class="form-control filtrar" placeholder="Correo" disabled></th>
-                            <th style="width:10%"><input type="text" name="fecha_nacimiento" class="form-control filtrar" placeholder="Fecha de Nacimiento" disabled></th>
-                            <th style="width:10%"><input type="text" name="pais_nacionalidad" class="form-control filtrar" placeholder="País de Nacionalidad" disabled></th>
                             <th style="width:10%"><input type="text" name="RFC" class="form-control filtrar" placeholder="RFC" disabled></th>
                             <th style="width:10%"><input type="text" name="CURP" class="form-control filtrar" placeholder="CURP" disabled></th>
                             <th style="width:10%"><input type="text" name="estado" class="form-control filtrar" placeholder="Estatus" disabled></th>
@@ -42,11 +41,8 @@
                             <td>{{$beneficiario->id_beneficiario}}</td>
                             <td>{{$beneficiario->nombre}}</td>
                             <td>{{$beneficiario->direccion}}</td>
-                            <td>{{$beneficiario->codigo_postal}}</td>
                             <td>{{$beneficiario->telefono}}</td>
                             <td>{{$beneficiario->correo}}</td>
-                            <td>{{$beneficiario->fecha_nacimiento}}</td>
-                            <td>{{$beneficiario->pais_nacionalidad}}</td>
                             <td>{{$beneficiario->RFC}}</td>
                             <td>{{$beneficiario->CURP}}</td>                    
                             <td>{{$beneficiario->estado}}</td>
@@ -70,6 +66,7 @@
 
 @stop
 @section("js")
+@parent
     <script>
         @include('admin.script')
     </script>
