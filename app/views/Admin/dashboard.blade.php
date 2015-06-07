@@ -1,11 +1,13 @@
 @extends('admin.menu')
 @section("css")
+    @parent
     <!-- Timeline CSS -->
     {{ HTML::style("dist/css/timeline.css") }}
     <!-- Morris Charts CSS -->
     {{ HTML::style("bower_components/morrisjs/morris.css") }}
 @stop
 @section("contenido")
+    @parent
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Dashboard</h1>
@@ -21,6 +23,7 @@
 @stop
 
 @section("js")
+    @parent
     <!-- Morris Charts JavaScript -->
     {{ HTML::script("bower_components/raphael/raphael-min.js") }}
     {{ HTML::script("bower_components/morrisjs/morris.min.js") }}
