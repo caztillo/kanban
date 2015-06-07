@@ -37,12 +37,12 @@ class BeneficiariosController extends \BaseController {
             'nombre' => 'required|alpha_space|between:2,255',
             'direccion' => 'required|alpha_num_space|between:1,255',
             'codigo_postal' => 'required|digits:5',
-            'telefono' => 'required|regex:/^[0-9]{10,20}$/',
+            'telefono' => array('required','regex:/^[0-9]{10,20}$/'),
             'correo' => 'required|email',
             'fecha_nacimiento' => 'required|date|date_format:"Y-m-d"|after:1900-01-01',
             'pais_nacionalidad' => array('required','in_array:'.$paises),
-            'RFC' => 'required|regex:/^[a-zA-Z]{3,4}(\d{6})((\D|\d){3})?$/',
-            'CURP' => 'required|regex:/^[a-zA-Z]{4}\d{6}[a-zA-Z]{6}\d{2}$/',
+            'RFC' => array('required','regex:/^[a-zA-Z]{3,4}(\d{6})((\D|\d){3})?$/'),
+            'CURP' => array('required','regex:/^[a-zA-Z]{4}\d{6}[a-zA-Z]{6}\d{2}$/'),
             'estado' => 'required|in:Activo,Inactivo'
         ];
 
@@ -57,7 +57,7 @@ class BeneficiariosController extends \BaseController {
             'date_format' => 'La fecha de nacimiento debe ser a partir de 1900-01-01',
             'pais_nacionalidad.in_array' => 'Selecciona un país de la lista',
             'RFC.regex' => 'Ingresa un RFC válido.',
-            'CURP' => 'Ingresa un CURP válido.',
+            'CURP.regex' => 'Ingresa un CURP válido.',
             'between' => 'Este campo es obligatorio.',
             'in' => 'Este campo es obligatorio.'
         ];
