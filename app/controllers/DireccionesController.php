@@ -9,8 +9,8 @@ class DireccionesController extends \BaseController {
      */
     public function index()
     {
-        $anos_fiscales = Direccion::orderBy('id_ano', 'desc')->get();
-        return View::make('anos_fiscales.index', compact('anos_fiscales'));
+        $direcciones = Direccion::orderBy('id_direccion', 'desc')->get();
+        return View::make('direcciones.index', compact('direcciones'));
 
     }
 
@@ -21,7 +21,9 @@ class DireccionesController extends \BaseController {
      */
     public function create()
     {
-        return View::make('anos_fiscales.create');
+        $dependencias = Dependencia::orderBy('nombre', 'asc')->lists('nombre','id_dependencia');
+
+        return View::make('direcciones.create', compact('dependencias'));
     }
 
     /**
@@ -62,7 +64,7 @@ class DireccionesController extends \BaseController {
         $data['creacion'] = date('Y-m-d H:i:s');
         Direccion::create($data);
 
-        return Redirect::route('anos_fiscales.index')->with('message-type', 'success')
+        return Redirect::route('direcciones.index')->with('message-type', 'success')
             ->with('message', 'La información se ha guardado correctamente');
     }
 
@@ -77,7 +79,7 @@ class DireccionesController extends \BaseController {
     {
         $ano_fiscal = Direccion::find($id);
 
-        return View::make('anos_fiscales.edit', compact('ano_fiscal'));
+        return View::make('direcciones.edit', compact('ano_fiscal'));
     }
 
     /**
@@ -119,7 +121,7 @@ class DireccionesController extends \BaseController {
 
         $ano_fiscal->update($data);
 
-        return Redirect::route('anos_fiscales.index')->with('message-type', 'success')
+        return Redirect::route('direcciones.index')->with('message-type', 'success')
             ->with('message', 'La información se actualizó correctamente.');
     }
 
@@ -133,7 +135,7 @@ class DireccionesController extends \BaseController {
     {
         Direccion::destroy($id);
 
-        return Redirect::route('anos_fiscales.index')->with('message-type', 'success')
+        return Redirect::route('direcciones.index')->with('message-type', 'success')
             ->with('message', 'El elemento se eliminó correctamente.');
     }
 
@@ -154,7 +156,7 @@ class DireccionesController extends \BaseController {
         $creacion = Input::get('creacion');
 
         if(!empty($id_ano) )
-            $anos_fiscales = Direccion::where('id_ano','=',$id_ano)->orderBy('id_ano', 'desc')->get();
+            $direcciones = Direccion::where('id_ano','=',$id_ano)->orderBy('id_ano', 'desc')->get();
         else
         {
             $query = Direccion::select();
@@ -185,20 +187,20 @@ class DireccionesController extends \BaseController {
             }
 
 
-            $anos_fiscales = $query->orderBy('id_ano', 'desc')->get();
+            $direcciones = $query->orderBy('id_ano', 'desc')->get();
 
 
         }
 
-        if($anos_fiscales->isEmpty())
+        if($direcciones->isEmpty())
         {
-            return Redirect::route('anos_fiscales.index')
+            return Redirect::route('direcciones.index')
                 ->with('message-type', 'warning')
                 ->with('message', 'El criterio de búsqueda no regresó ningún resultado.');
         }
         else
         {
-            return View::make('anos_fiscales.index', compact('anos_fiscales'));
+            return View::make('direcciones.index', compact('direcciones'));
 
         }
 

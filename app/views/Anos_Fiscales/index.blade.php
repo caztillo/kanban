@@ -1,10 +1,8 @@
 @extends('admin.menu')
 @section("css")
-    @parent
     {{ HTML::style("css/custom.css") }}
 @stop
-@section("contenido")
-    @parent
+@section("contenido_derecho")
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Años Fiscales</h1>
@@ -25,8 +23,8 @@
                     <thead>
                         <tr class="filters">
 
-                            <th style="width:1%"><input type="text" name="id_ano" class="form-control filtrar" placeholder="#" disabled></th>
-                            <th style="width:15%"><input type="text" name="descripcion" class="form-control filtrar" placeholder="Descripción" disabled></th>
+                            <th style="width:1%"><input type="text" name="id_ano" class="form-control" placeholder="#" disabled></th>
+                            <th style="width:15%"><input type="text" name="descripcion" class="form-control" placeholder="Descripción" disabled></th>
                             <th style="width:5%"><input type="text" name="fecha_inicio" class="form-control" placeholder="Fecha de Inicio" disabled></th>
                             <th style="width:5%"><input type="text" name="fecha_termino" class="form-control" placeholder="Fecha Término" disabled></th>
                             <th style="width:5%"><input type="text" name="estado" class="form-control" placeholder="Estatus" disabled></th>
@@ -67,7 +65,6 @@
 
 @stop
 @section("js")
-    @parent
     <script>
         @include('admin.script')
         @include('anos_fiscales.script')

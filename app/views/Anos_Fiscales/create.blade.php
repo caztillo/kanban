@@ -1,6 +1,5 @@
 @extends('admin.menu')
-@section("contenido")
-    @parent
+@section("contenido_derecho")
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Años Fiscales</h1>
@@ -76,7 +75,6 @@
 
 @stop
 @section("js")
-    @parent
     <script>
         @include('anos_fiscales.script')
     </script>

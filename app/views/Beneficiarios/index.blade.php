@@ -30,7 +30,7 @@
                             <th style="width:10%"><input type="text" name="pais_nacionalidad" class="form-control filtrar" placeholder="País de Nacionalidad" disabled></th>
                             <th style="width:10%"><input type="text" name="RFC" class="form-control filtrar" placeholder="RFC" disabled></th>
                             <th style="width:10%"><input type="text" name="CURP" class="form-control filtrar" placeholder="CURP" disabled></th>
-                            <th style="width:10%"><input type="text" name="estado" class="form-control filtrar" placeholder="Activo/Inactivo" disabled></th>
+                            <th style="width:10%"><input type="text" name="estado" class="form-control filtrar" placeholder="Estatus" disabled></th>
                             <th style="width:5%"><input type="text" name="creacion" class="form-control" placeholder="Creación" disabled></th>
                             <th style="width:1%"></th>
                             <th style="width:1%"></th>
@@ -41,14 +41,20 @@
                         <tr>
                             <td>{{$beneficiario->id_beneficiario}}</td>
                             <td>{{$beneficiario->nombre}}</td>
-                            <td>{{$beneficiario->clave}}</td>
                             <td>{{$beneficiario->direccion}}</td>
+                            <td>{{$beneficiario->codigo_postal}}</td>
+                            <td>{{$beneficiario->telefono}}</td>
+                            <td>{{$beneficiario->correo}}</td>
+                            <td>{{$beneficiario->fecha_nacimiento}}</td>
+                            <td>{{$beneficiario->pais_nacionalidad}}</td>
+                            <td>{{$beneficiario->RFC}}</td>
+                            <td>{{$beneficiario->CURP}}</td>                    
                             <td>{{$beneficiario->estado}}</td>
                             <td>{{$beneficiario->creacion}}</td>
                            
-                            <td> <a class="btn btn-success btn-xs" href="{{url('dependencias/'.$dependencia->id_dependencia . '/edit')}}" role="button"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                            <td> <a class="btn btn-success btn-xs" href="{{url('beneficiarios/'.$beneficiario->id_beneficiario . '/edit')}}" role="button"><span class="glyphicon glyphicon-pencil"></span></a></td>
                             <td>
-                                {{ Form::open(array('url' => 'dependencias/' . $dependencia->id_dependencia)) }}
+                                {{ Form::open(array('url' => 'beneficiarios/' . $beneficiario->id_beneficiario)) }}
                                 {{ Form::hidden('_method', 'DELETE') }}
                                 {{ Form::button('<span class="glyphicon glyphicon-remove"></span>', array('type' => 'submit', 'class' => 'btn btn-danger btn-xs'))}}
                                 {{ Form::close() }}
