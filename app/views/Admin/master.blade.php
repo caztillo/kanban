@@ -27,7 +27,11 @@
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     {{ HTML::script("js/html5shiv.js") }}
+<<<<<<< HEAD
     {{ HTML::script("js/respond.min.js") }} 
+=======
+    {{ HTML::script("js/respond.min.js") }}
+>>>>>>> 06bc3903ef5fce653a3419582ddca6313044696c
     <![endif]-->
 
 </head>
