@@ -1,6 +1,6 @@
 <?php
 
-class Organizaciones extends \Eloquent {
+class Organizacion extends \Eloquent {
     protected $table = 'organizacion';
     public $timestamps = false;
     public $primaryKey = 'id_organizacion';
