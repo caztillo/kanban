@@ -1,10 +1,8 @@
 @extends('admin.master')
 @section('css')
-    @parent
     @yield('css')
 @stop
 @section("contenido")
-    @parent
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -67,7 +65,7 @@
                                     <a href="{{url('dependencias')}}">Dependencias</a>
                                 </li>
                                 <li>
-                                    <a href="#">Direcciones</a>
+                                    <a href="{{url('direcciones')}}">Direcciones</a>
                                 </li>
                                 <li>
                                     <a href="{{url('anos_fiscales')}}">Años Fiscales</a>
@@ -84,7 +82,7 @@
 
         <div id="page-wrapper">
             <div class="container-fluid">
-                @yield("contenido")
+                @yield("contenido_derecho")
             </div>
             <!-- /.container-fluid -->
         </div>
@@ -95,6 +93,5 @@
 @stop
 
 @section('js')
-    @parent
     @yield('js')
 @stop

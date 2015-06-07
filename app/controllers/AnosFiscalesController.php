@@ -9,7 +9,7 @@ class AnosFiscalesController extends \BaseController {
 	 */
 	public function index()
 	{
-		$anos_fiscales = Direccion::orderBy('id_ano', 'desc')->get();
+		$anos_fiscales = AnoFiscal::orderBy('id_ano', 'desc')->get();
 		return View::make('anos_fiscales.index', compact('anos_fiscales'));
 
 	}
@@ -60,7 +60,7 @@ class AnosFiscalesController extends \BaseController {
 		}
         $data = Input::all();
         $data['creacion'] = date('Y-m-d H:i:s');
-        Direccion::create($data);
+        AnoFiscal::create($data);
 
 		return Redirect::route('anos_fiscales.index')->with('message-type', 'success')
             ->with('message', 'La información se ha guardado correctamente');
@@ -75,7 +75,7 @@ class AnosFiscalesController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-        $ano_fiscal = Direccion::find($id);
+        $ano_fiscal = AnoFiscal::find($id);
 
 		return View::make('anos_fiscales.edit', compact('ano_fiscal'));
 	}
@@ -88,7 +88,7 @@ class AnosFiscalesController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$ano_fiscal = Direccion::findOrFail($id);
+		$ano_fiscal = AnoFiscal::findOrFail($id);
 
         Input::merge(array_map('trim', Input::all()));
 
@@ -131,7 +131,7 @@ class AnosFiscalesController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		Direccion::destroy($id);
+		AnoFiscal::destroy($id);
 
 		return Redirect::route('anos_fiscales.index')->with('message-type', 'success')
             ->with('message', 'El elemento se eliminó correctamente.');
@@ -154,10 +154,10 @@ class AnosFiscalesController extends \BaseController {
         $creacion = Input::get('creacion');
 
         if(!empty($id_ano) )
-            $anos_fiscales = Direccion::where('id_ano','=',$id_ano)->orderBy('id_ano', 'desc')->get();
+            $anos_fiscales = AnoFiscal::where('id_ano','=',$id_ano)->orderBy('id_ano', 'desc')->get();
         else
         {
-            $query = Direccion::select();
+            $query = AnoFiscal::select();
             if(!empty($descripcion))
             {
                 $query = $query->where('descripcion', 'LIKE', "%{$descripcion}%");
