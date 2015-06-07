@@ -16,13 +16,14 @@ class AdminController extends \BaseController {
 
 	/**
 	 * Show the form for creating a new resource.
-	 * GET /admin/create
+	 * GET /admin/login
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function login()
 	{
 		//
+        return View::make("admin.login");
 	}
 
 	/**
