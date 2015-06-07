@@ -98,7 +98,7 @@ class BeneficiariosController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$beneficiarios = Beneficiario::find($id);
+		$beneficiario = Beneficiario::find($id);
 
 		return View::make('beneficiarios.edit', compact('beneficiario'));
 	}

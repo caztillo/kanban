@@ -20,6 +20,10 @@ Route::get('/dependencias/search', array('uses' => 'DependenciasController@searc
 
 Route::resource('organizaciones', 'OrganizacionesController');
 Route::get('/organizaciones/search', array('uses' => 'OrganizacionesController@search'));
+
+Route::resource('beneficiarios', 'BeneficiariosController');
+Route::get('/beneficiarios/search', array('uses' => 'BeneficiariosController@search'));
+
 Route::group(['before' => 'auth'], function()
 {
 
