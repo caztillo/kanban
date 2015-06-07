@@ -9,8 +9,8 @@ class DependenciasController extends \BaseController {
 	 */
 	public function index()
 	{
-
-		return View::make('dependencias.index');
+		$dependencias = Dependencia::all();
+		return View::make('dependencias.index', compact('dependencias'));
 	}
 
 	/**
@@ -30,16 +30,36 @@ class DependenciasController extends \BaseController {
 	 */
 	public function store()
 	{
-		$validator = Validator::make($data = Input::all(), Dependencia::$rules);
+        Input::merge(array_map('trim', Input::all()));
+
+        $rules = [
+            'nombre' => 'required|alpha_num_space|between:1,255',
+            'clave' => 'required|alpha_num_space|between:1,255',
+            'direccion' => 'required|alpha_num_space|between:1,255',
+            'estado' => 'required|in:Activo,Inactivo',
+        ];
+
+        $messages = [
+            'required' => 'Este campo es obligatorio.',
+            'alpha_num_space' => 'Utilice sólo caracteres del alfabeto y espacios.',
+            'estado.integer' => 'Este campo es obligatorio.',
+            'between' => 'Este campo es obligatorio.',
+            'in' => 'Este campo es obligatorio.',
+        ];
+
+        $validator = Validator::make($data = Input::all(), $rules, $messages);
 
 		if ($validator->fails())
 		{
-			return Redirect::back()->withErrors($validator)->withInput();
+            return Redirect::back()->with('message-type', 'danger')->with('message', 'Algunos datos no han sido propiamente ingresados, favor de revisarlos.')->withErrors($validator)->withInput();
 		}
 
-		Dependencia::create($data);
+        $data = Input::all();
+        $data['creacion'] = date('Y-m-d H:i:s');
+        Dependencia::create($data);
 
-		return Redirect::route('dependencias.index');
+		return Redirect::route('dependencias.index')->with('message-type', 'success')
+            ->with('message', 'La información se ha guardado correctamente');
 	}
 
 	/**
@@ -69,7 +89,7 @@ class DependenciasController extends \BaseController {
 	}
 
 	/**
-	 * Update the specified dependencia in storage.
+	 * Update the specified depdencia in storage.
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -78,16 +98,34 @@ class DependenciasController extends \BaseController {
 	{
 		$dependencia = Dependencia::findOrFail($id);
 
-		$validator = Validator::make($data = Input::all(), Dependencia::$rules);
+        Input::merge(array_map('trim', Input::all()));
+
+        $rules = [
+            'nombre' => 'required|alpha_num_space|between:1,255',
+            'clave' => 'required|alpha_num_space|between:1,255',
+            'direccion' => 'required|alpha_num_space|between:1,255',
+            'estado' => 'required|in:Activo,Inactivo',
+        ];
+
+        $messages = [
+            'required' => 'Este campo es obligatorio.',
+            'alpha_num_space' => 'Utilice sólo caracteres del alfabeto y espacios.',
+            'estado.integer' => 'Este campo es obligatorio.',
+            'between' => 'Este campo es obligatorio.',
+            'in' => 'Este campo es obligatorio.',
+        ];
+
+        $validator = Validator::make($data = Input::all(), $rules, $messages);
 
 		if ($validator->fails())
 		{
-			return Redirect::back()->withErrors($validator)->withInput();
+			return Redirect::back()->with('message-type', 'danger')->with('message', 'Algunos datos no han sido propiamente ingresados, favor de revisarlos.')->withErrors($validator)->withInput();
 		}
 
-		$dependencia->update($data);
+        $dependencia->update($data);
 
-		return Redirect::route('dependencias.index');
+		return Redirect::route('dependencias.index')->with('message-type', 'success')
+            ->with('message', 'La información se actualizó correctamente.');
 	}
 
 	/**
@@ -99,8 +137,8 @@ class DependenciasController extends \BaseController {
 	public function destroy($id)
 	{
 		Dependencia::destroy($id);
-
-		return Redirect::route('dependencias.index');
+		return Redirect::route('dependencias.index')->with('message-type', 'success')
+		->with('message', 'El elemento se eliminó correctamente.');
 	}
 
 }
