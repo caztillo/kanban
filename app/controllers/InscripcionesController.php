@@ -7,9 +7,13 @@ class InscripcionesController extends \BaseController {
      *
      * @return Response
      */
-    public function index()
+    public function getIndex()
     {
+        return View::make('inscripciones.index');
+    }
 
+    public function postSearch()
+    {
 
     }
 
