@@ -32,7 +32,7 @@
 
                 <!-- Text input-->
                 <div class="form-group  has-feedback {{ ($error = $errors->first('id_dependencia')) ? 'has-error' : '' }}">
-                    <label class="col-md-4 control-label" for="descripcion">Dirección</label>
+                    <label class="col-md-4 control-label" for="descripcion">Dependencia</label>
                     <div class="col-md-6">
                         {{ Form::select('id_dependencia', ['' => 'Seleccionar Dependencia'] + $dependencias, '', ['class' => 'form-control']) }}
                         <span class="help-block">{{ ($error = $errors->first('id_dependencia')) ? $error : '' }}</span>

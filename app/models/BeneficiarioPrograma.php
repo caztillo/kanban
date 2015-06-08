@@ -5,7 +5,7 @@ class BeneficiarioPrograma extends \Eloquent {
     public $timestamps = false;
     public $primaryKey = 'id_beneficiario_programa';
     protected $guarded = ['id_beneficiario_programa'];
-    protected $fillable = ['id_beneficiario', 'id_programa', 'id_direccion','finalidad_cumplida','comentarios'];
+    protected $fillable = ['id_beneficiario', 'id_programa', 'id_direccion','finalidad_cumplida','comentarios','inscripcion'];
 
     public function beneficiario()
     {
