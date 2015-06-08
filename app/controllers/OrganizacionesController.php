@@ -34,7 +34,7 @@ class OrganizacionesController extends \BaseController {
 
         $rules = [
             'nombre' => 'required|alpha_num_space|between:1,255',
-            'razon_social' => 'required|alpha_space|between:1,255',
+            'razon_social' => 'required|between:1,255',
             'codigo_postal' => 'required|digits:5',
             'direccion' => 'required|alpha_num_space|between:1,255',
             'contacto' => 'required|alpha_space|between:1,255',
@@ -110,7 +110,7 @@ class OrganizacionesController extends \BaseController {
 
         $rules = [
             'nombre' => 'required|alpha_num_space|between:1,255',
-            'razon_social' => 'required|alpha_space|between:1,255',
+            'razon_social' => 'required|between:1,255',
             'codigo_postal' => 'required|digits:5',
             'direccion' => 'required|alpha_num_space|between:1,255',
             'contacto' => 'required|alpha_space|between:1,255',
@@ -225,7 +225,7 @@ class OrganizacionesController extends \BaseController {
 
             if(!empty($creacion))
             {
-                $query = $query->where('creacion', '=', $creacion);
+                 $query = $query->whereRaw("DATE(creacion) = '".$creacion."'");
             }
 
             $organizaciones = $query->orderBy('id_organizacion', 'desc')->get();
