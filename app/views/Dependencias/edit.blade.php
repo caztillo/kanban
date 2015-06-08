@@ -50,7 +50,7 @@
                         </div>
                         <div class="radio-inline">
                             <label>
-                                {{ Form::radio("estado","Inactivo",(($dependencia->estado == "Inactivo") ? true: false))}}
+                               {{ Form::radio("estado","Inactivo",(($dependencia->estado == "Inactivo") ? true: false))}}
                                 Inactivo
                             </label>
                         </div>
@@ -62,7 +62,7 @@
                     <label class="col-md-4 control-label" for="guardar"></label>
                     <div class="col-md-8">
                         {{ Form::submit('Guardar', array('class' => 'btn btn-primary')) }}
-                        <a href="{{url('dependencias')}}" class="btn btn-danger"> Salir</a>
+                        <a href="{{url('organizaciones')}}" class="btn btn-danger"> Salir</a>
                     </div>
                 </div>
 
