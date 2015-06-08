@@ -1,4 +1,4 @@
-@extends('admin.master')
+@extends('admin.menu')
 @section("css")
     {{ HTML::style("css/custom.css") }}
 @stop
