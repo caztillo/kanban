@@ -1,10 +1,8 @@
 @extends('admin.menu')
 @section("css")
-@parent
     {{ HTML::style("css/custom.css") }}
 @stop
-@section("contenido")
-@parent
+@section("contenido_derecho")
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Beneficiarios</h1>
@@ -46,7 +44,7 @@
                             <td>{{$beneficiario->RFC}}</td>
                             <td>{{$beneficiario->CURP}}</td>                    
                             <td>{{$beneficiario->estado}}</td>
-                            <td>{{$beneficiario->creacion}}</td>
+                            <td>{{date("Y-m-d",strtotime($beneficiario->creacion))}}</td>
                            
                             <td> <a class="btn btn-success btn-xs" href="{{url('beneficiarios/'.$beneficiario->id_beneficiario . '/edit')}}" role="button"><span class="glyphicon glyphicon-pencil"></span></a></td>
                             <td>
@@ -66,7 +64,6 @@
 
 @stop
 @section("js")
-@parent
     <script>
         @include('admin.script')
     </script>

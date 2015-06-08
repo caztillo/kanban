@@ -24,6 +24,7 @@
                     <tr class="filters">
                         <th style="width:1%"><input type="text" name="id_direccion" class="form-control filtrar" placeholder="#" disabled></th>
                         <th style="width:10%"><input type="text" name="nombre" class="form-control filtrar" placeholder="Nombre" disabled></th>
+                        <th style="width:10%"><input type="text" name="dependencia" class="form-control filtrar" placeholder="Dependencia" disabled></th>
                         <th style="width:10%"><input type="text" name="clave" class="form-control filtrar" placeholder="Clave" disabled></th>
                         <th style="width:10%"><input type="text" name="estado" class="form-control filtrar" placeholder="Estatus" disabled></th>
                         <th style="width:5%"><input type="text" name="creacion" class="form-control" placeholder="Creación" disabled></th>
@@ -37,6 +38,7 @@
                         <tr>
                             <td>{{$direccion->id_direccion}}</td>
                             <td>{{$direccion->nombre}}</td>
+                            <td>{{$direccion->dependencia->nombre}}</td>
                             <td>{{$direccion->clave}}</td>
                             <td>{{$direccion->estado}}</td>
                             <td>{{date("Y-m-d",strtotime($direccion->creacion))}}</td>

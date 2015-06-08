@@ -1,6 +1,5 @@
 @extends('admin.menu')
-@section("contenido")
-    @parent
+@section("contenido_derecho")
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Beneficiarios</h1>
@@ -71,7 +70,7 @@
                     <div class="form-group  has-feedback {{ ($error = $errors->first('pais_nacionalidad')) ? 'has-error' : '' }}">
                         <label class="col-md-4 control-label" for="pais_nacionalidad">País de Nacionalidad</label>
                         <div class="col-md-6">
-                            {{ Form::text('pais_nacionalidad', null, ['class' => 'form-control', 'placeholder' => 'Ingresar país de nacionalidad', 'maxlength' =>100] )}}
+                           {{Form::select('pais_nacionalidad',array(''=>'Seleccionar país de nacionalidad')+$paises,'',array('class'=>'form-control'))}}
                             <span class="help-block">{{ ($error = $errors->first('pais_nacionalidad')) ? $error : '' }}</span>
                         </div>
                     </div>
@@ -105,8 +104,8 @@
                             </div>
                             <div class="radio-inline">
                                 <label>
-                                    {{ Form::radio("estado","Inactivo",$checked = false)}}
-                                    Inactivo
+                                    {{ Form::radio("estado","Vetado",$checked = false)}}
+                                    Vetado
                                 </label>
                             </div>
                         </div>
@@ -129,7 +128,6 @@
 
 @stop
 @section("js")
-    @parent
     <script>
         @include('anos_fiscales.script')
     </script>
