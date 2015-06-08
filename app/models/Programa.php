@@ -5,11 +5,20 @@ class Programa extends \Eloquent {
     public $timestamps = false;
     public $primaryKey = 'id_programa';
     protected $guarded = ['id_programa'];
-    protected $fillable = ['nombre', 'clave', 'direccion','estado','creacion'];
+    protected $fillable = ['id_ano','id_dependencia','clave', 'descripcion','convocatoria','estado','creacion'];
 
-    public function direcciones()
+
+
+    public function ano_fiscal()
     {
-        //return $this->hasMany('Class', 'foreign_key', 'local_key');
-        return $this->hasMany('Direccion', 'id_dependencia', 'id_dependencia');
+        return $this->belongsTo('AnoFiscal', 'id_ano', 'id_ano');
     }
+
+    public function dependencia()
+    {
+        return $this->belongsTo('Dependencia', 'id_dependencia', 'id_dependencia');
+    }
+
+
+
 }
