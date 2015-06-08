@@ -36,21 +36,19 @@ class DireccionesController extends \BaseController {
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
-            'descripcion' => 'required|alpha_num_space|between:1,255',
-            'fecha_inicio' => 'required|date|date_format:"Y-m-d"',
-            'fecha_termino' => 'required|date|date_format:"Y-m-d"',
+            'nombre' => 'required|alpha_num_space|between:1,255',
+            'clave' => 'required|alpha_num_space|between:1,255',
             'estado' => 'required|in:Activo,Inactivo',
+            'id_dependencia' => 'required|exists:dependencia,id_dependencia'
 
         ];
 
         $messages = [
             'required' => 'Este campo es obligatorio.',
-            'estado.integer' => 'Este campo es obligatorio.',
-            'date' => 'Este campo debe ser una fecha válida',
-            'date_format' => 'Utilice el formato Año-Mes-Día.',
             'between' => 'Este campo es obligatorio.',
-            'in' => 'Este campo es obligatorio.',
             'alpha_num_space' => 'Utilice sólo caracteres del alfabeto, números y espacios.',
+            'estado.in' => 'Seleccione una opción',
+            'id_dependencia.exists' => 'Seleccione una dependencia'
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);
@@ -77,9 +75,9 @@ class DireccionesController extends \BaseController {
      */
     public function edit($id)
     {
-        $ano_fiscal = Direccion::find($id);
-
-        return View::make('direcciones.edit', compact('ano_fiscal'));
+        $direccion = Direccion::find($id);
+        $dependencias = Dependencia::orderBy('nombre', 'asc')->lists('nombre','id_dependencia');
+        return View::make('direcciones.edit', compact('direccion', 'dependencias'));
     }
 
     /**
@@ -90,26 +88,24 @@ class DireccionesController extends \BaseController {
      */
     public function update($id)
     {
-        $ano_fiscal = Direccion::findOrFail($id);
+        $direccion = Direccion::findOrFail($id);
 
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
-            'descripcion' => 'required|alpha_num_space|between:1,255',
-            'fecha_inicio' => 'required|date|date_format:"Y-m-d"',
-            'fecha_termino' => 'required|date|date_format:"Y-m-d"',
+            'nombre' => 'required|alpha_num_space|between:1,255',
+            'clave' => 'required|alpha_num_space|between:1,255',
             'estado' => 'required|in:Activo,Inactivo',
+            'id_dependencia' => 'required|exists:dependencia,id_dependencia'
 
         ];
 
         $messages = [
             'required' => 'Este campo es obligatorio.',
-            'estado.integer' => 'Este campo es obligatorio.',
-            'date' => 'Este campo debe ser una fecha válida',
-            'date_format' => 'Utilice el formato Año-Mes-Día.',
             'between' => 'Este campo es obligatorio.',
-            'in' => 'Este campo es obligatorio.',
             'alpha_num_space' => 'Utilice sólo caracteres del alfabeto, números y espacios.',
+            'estado.in' => 'Seleccione una opción',
+            'id_dependencia.exists' => 'Seleccione una dependencia'
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);
@@ -119,7 +115,7 @@ class DireccionesController extends \BaseController {
             return Redirect::back()->with('message-type', 'danger')->with('message', 'Algunos datos no han sido propiamente ingresados, favor de revisarlos.')->withErrors($validator)->withInput();
         }
 
-        $ano_fiscal->update($data);
+        $direccion->update($data);
 
         return Redirect::route('direcciones.index')->with('message-type', 'success')
             ->with('message', 'La información se actualizó correctamente.');
@@ -148,32 +144,32 @@ class DireccionesController extends \BaseController {
     public function search()
     {
 
-        $id_ano = Input::get('id_ano');
-        $descripcion = Input::get('descripcion');
-        $fecha_inicio = Input::get('fecha_inicio');
-        $fecha_termino = Input::get('fecha_termino');
+        $id_direccion = Input::get('id_direccion');
+        $nombre = Input::get('nombre');
+        $dependencia = Input::get('dependencia');
+        $clave = Input::get('clave');
         $estado = Input::get('estado');
         $creacion = Input::get('creacion');
 
-        if(!empty($id_ano) )
-            $direcciones = Direccion::where('id_ano','=',$id_ano)->orderBy('id_ano', 'desc')->get();
+        if(!empty($id_direccion) )
+            $direcciones = Direccion::where('id_direccion','=',$id_direccion)->orderBy('id_direccion', 'desc')->get();
         else
         {
             $query = Direccion::select();
-            if(!empty($descripcion))
+            if(!empty($nombre))
             {
-                $query = $query->where('descripcion', 'LIKE', "%{$descripcion}%");
+                $query = $query->where('nombre', 'LIKE', "%{$nombre}%");
             }
 
 
-            if(!empty($fecha_inicio))
+            if(!empty($dependencia))
             {
-                $query = $query->where('fecha_inicio', '=', $fecha_inicio);
+                $query = $query->where('dependencia', 'LIKE', "%{$dependencia}%");
             }
 
-            if(!empty($fecha_termino))
+            if(!empty($clave))
             {
-                $query = $query->where('fecha_termino', '>=', $fecha_termino);
+                $query = $query->where('clave', 'LIKE', "%{$clave}%");
             }
 
             if(!empty($estado))
@@ -183,11 +179,11 @@ class DireccionesController extends \BaseController {
 
             if(!empty($creacion))
             {
-                $query = $query->whereRaw("DATE(creacion) = '".$creacion."'");
+               $query = $query->whereRaw("DATE(creacion) = '".$creacion."'");
             }
 
 
-            $direcciones = $query->orderBy('id_ano', 'desc')->get();
+            $direcciones = $query->orderBy('id_direccion', 'desc')->get();
 
 
         }

@@ -6,17 +6,17 @@
             @if(Session::has('message'))
                 <div class="alert alert-{{ Session::get('message-type') }} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>{{ Session::get('message')}}</div>
             @endif
-            {{  Form::open(array('url' => 'direcciones', 'class' => 'form-horizontal'))  }}
+            {{ Form::model($direccion, array('route' => array('direcciones.update', $direccion->id_direccion), 'method' => 'PUT', 'class' => 'form-horizontal')) }}
             <fieldset>
 
                 <!-- Form Name -->
-                <legend>Nuevo</legend>
+                <legend>Editar</legend>
 
                 <!-- Text input-->
                 <div class="form-group  has-feedback {{ ($error = $errors->first('nombre')) ? 'has-error' : '' }}">
                     <label class="col-md-4 control-label" for="nombre">Nombre</label>
                     <div class="col-md-6">
-                        {{ Form::text('nombre', null, ['class' => 'form-control', 'placeholder' => 'Ingresar nombre', 'maxlength' => 255] )}}
+                        {{ Form::text('nombre', $direccion->nombre, ['class' => 'form-control', 'placeholder' => 'Ingresar nombre', 'maxlength' => 255] )}}
                         <span class="help-block">{{ ($error = $errors->first('nombre')) ? $error : '' }}</span>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                 <div class="form-group  has-feedback {{ ($error = $errors->first('clave')) ? 'has-error' : '' }}">
                     <label class="col-md-4 control-label" for="clave">Clave</label>
                     <div class="col-md-6">
-                        {{ Form::text('clave', null, ['class' => 'form-control', 'placeholder' => 'Ingresar clave', 'maxlength' => 255] )}}
+                        {{ Form::text('clave', $direccion->clave, ['class' => 'form-control', 'placeholder' => 'Ingresar clave', 'maxlength' => 255] )}}
                         <span class="help-block">{{ ($error = $errors->first('clave')) ? $error : '' }}</span>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                 <div class="form-group  has-feedback {{ ($error = $errors->first('id_dependencia')) ? 'has-error' : '' }}">
                     <label class="col-md-4 control-label" for="descripcion">Dirección</label>
                     <div class="col-md-6">
-                        {{ Form::select('id_dependencia', ['' => 'Seleccionar Dependencia'] + $dependencias, '', ['class' => 'form-control']) }}
+                        {{ Form::select('id_dependencia', ['' => 'Seleccionar Dependencia'] + $dependencias, $direccion->id_dependencia, ['class' => 'form-control']) }}
                         <span class="help-block">{{ ($error = $errors->first('id_dependencia')) ? $error : '' }}</span>
                     </div>
                 </div>
@@ -44,13 +44,13 @@
                     <div class="col-md-4">
                         <div class="radio-inline">
                             <label for="estado">
-                                {{ Form::radio("estado","Activo",$checked = true)}}
+                                {{ Form::radio("estado","Activo", (($direccion->estado == "Activo") ? true: false) )}}
                                 Activo
                             </label>
                         </div>
                         <div class="radio-inline">
                             <label>
-                                {{ Form::radio("estado","Inactivo",$checked = false)}}
+                                {{ Form::radio("estado","Inactivo",(($direccion->estado == "Inactivo") ? true: false))}}
                                 Inactivo
                             </label>
                         </div>
