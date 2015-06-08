@@ -11,7 +11,6 @@ class DireccionesController extends \BaseController {
     {
         $direcciones = Direccion::orderBy('id_direccion', 'desc')->get();
         return View::make('direcciones.index', compact('direcciones'));
-
     }
 
     /**
@@ -21,7 +20,7 @@ class DireccionesController extends \BaseController {
      */
     public function create()
     {
-        $dependencias = Dependencia::orderBy('nombre', 'asc')->lists('nombre','id_dependencia');
+        $dependencias = Dependencia::orderBy('nombre', 'asc')->where('estado', '=', 'Activo')->lists('nombre','id_dependencia');
 
         return View::make('direcciones.create', compact('dependencias'));
     }
@@ -161,10 +160,14 @@ class DireccionesController extends \BaseController {
                 $query = $query->where('nombre', 'LIKE', "%{$nombre}%");
             }
 
-
             if(!empty($dependencia))
             {
-                $query = $query->where('dependencia', 'LIKE', "%{$dependencia}%");
+                $query = $query->join('dependencia', function($join) use ($dependencia)
+                {
+                   
+                    $join->on('direccion.id_dependencia', '=', 'dependencia.id_dependencia')
+                        ->where('dependencia.nombre', 'LIKE', "%{$dependencia}%");
+                });
             }
 
             if(!empty($clave))

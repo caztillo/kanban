@@ -1,0 +1,18 @@
+<?php
+
+class InscripcionesController extends \BaseController {
+
+    /**
+     * Display a listing of inscripciones
+     *
+     * @return Response
+     */
+    public function index()
+    {
+
+
+    }
+
+
+
+}
