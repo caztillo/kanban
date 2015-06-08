@@ -129,6 +129,6 @@
 @stop
 @section("js")
     <script>
-        @include('anos_fiscales.script')
+        @include('beneficiarios.script')
     </script>
 @stop
