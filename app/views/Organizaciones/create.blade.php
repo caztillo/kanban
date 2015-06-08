@@ -1,4 +1,4 @@
-@extends('admin.master')
+@extends('admin.menu')
 @section("contenido_derecho")
     <div class="row">
         <div class="col-lg-12">

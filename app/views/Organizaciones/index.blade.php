@@ -66,5 +66,6 @@
 @section("js")
     <script>
         @include('admin.script')
+        @include('organizaciones.script')
     </script>
 @stop
