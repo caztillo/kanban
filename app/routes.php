@@ -64,6 +64,16 @@ Route::get('/test', function()
 
     $query = $query->join('dependencia', function($join) use ($dependencia)
 {
+    $dependencia = 'Depd';
+    $join->on('direccion.id_dependencia', '=', 'dependencia.id_dependencia')
+        ->where('dependencia.nombre', 'LIKE', "%{$dependencia}%");
+});
+    {
+        $dependencia = 'Depd';
+        $join->on('direccion.id_dependencia', '=', 'dependencia.id_dependencia')
+            ->where('dependencia.nombre', 'LIKE', "%{$dependencia}%");
+    });
+{
 
     $join->on('direccion.id_dependencia', '=', 'dependencia.id_dependencia')
         ->where('dependencia.nombre', 'LIKE', "%{$dependencia}%");
