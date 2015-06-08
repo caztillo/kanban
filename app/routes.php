@@ -55,4 +55,21 @@ Route::group(['before' => 'auth'], function()
     Route::resource('comentarios','ComentariosController', ['only' => ['create','store','destroy'] ]);*/
 });
 
+Route::get('/test', function()
+{
+
+     $query = Direccion::select();
+
+    $query = $query->join('dependencia', function($join)
+{
+    $dependencia = 'Depd';
+    $join->on('direccion.id_dependencia', '=', 'dependencia.id_dependencia')
+        ->where('dependencia.nombre', 'LIKE', "%{$dependencia}%");
+});
+
+
+
+    return $query->get();
+});
+
 
