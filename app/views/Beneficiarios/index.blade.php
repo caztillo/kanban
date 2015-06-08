@@ -9,11 +9,15 @@
             @if(Session::has('message'))
                 <div class="alert alert-{{ Session::get('message-type') }} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>{{ Session::get('message')}}</div>
             @endif
+            {{ Form::open(array('url' => 'beneficiarios/search/', 'method' => "GET")) }}
             <div class="panel panel-default filterable">
                 <div class="panel-heading">
                     <h3 class="panel-title">&nbsp;</h3>
                     <div class="pull-right">
                         <button class="btn btn-default btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filtrar</button>
+
+                        {{ Form::button('<span class="glyphicon glyphicon-search"></span> Buscar', array('type' => 'submit', 'class' => 'btn btn-info btn-sm', "style" => "display:none;"))}}
+
                         <a class="btn btn-primary btn-sm" href="{{url('beneficiarios/create')}}" role="button"><span class="glyphicon glyphicon-plus"></span>Nuevo</a>
                     </div>
                 </div>
@@ -22,8 +26,6 @@
                         <tr class="filters">
                             <th style="width:1%"><input type="text" name="id_beneficiario" class="form-control filtrar" placeholder="#" disabled></th>
                             <th style="width:10%"><input type="text" name="nombre" class="form-control filtrar" placeholder="Nombre" disabled></th>
-                            <th style="width:10%"><input type="text" name="direccion" class="form-control filtrar" placeholder="Dirección" disabled></th>
-                            <th style="width:10%"><input type="text" name="telefono" class="form-control filtrar" placeholder="Teléfono" disabled></th>
                             <th style="width:10%"><input type="text" name="correo" class="form-control filtrar" placeholder="Correo" disabled></th>
                             <th style="width:10%"><input type="text" name="RFC" class="form-control filtrar" placeholder="RFC" disabled></th>
                             <th style="width:10%"><input type="text" name="CURP" class="form-control filtrar" placeholder="CURP" disabled></th>
@@ -31,6 +33,7 @@
                             <th style="width:5%"><input type="text" name="creacion" class="form-control" placeholder="Creación" disabled></th>
                             <th style="width:1%"></th>
                             <th style="width:1%"></th>
+                            {{Form::close()}}
                         </tr>
                     </thead>
                     <tbody>
@@ -38,14 +41,12 @@
                         <tr>
                             <td>{{$beneficiario->id_beneficiario}}</td>
                             <td>{{$beneficiario->nombre}}</td>
-                            <td>{{$beneficiario->direccion}}</td>
-                            <td>{{$beneficiario->telefono}}</td>
                             <td>{{$beneficiario->correo}}</td>
                             <td>{{$beneficiario->RFC}}</td>
-                            <td>{{$beneficiario->CURP}}</td>                    
+                            <td>{{$beneficiario->CURP}}</td>
                             <td>{{$beneficiario->estado}}</td>
                             <td>{{date("Y-m-d",strtotime($beneficiario->creacion))}}</td>
-                           
+                            
                             <td> <a class="btn btn-success btn-xs" href="{{url('beneficiarios/'.$beneficiario->id_beneficiario . '/edit')}}" role="button"><span class="glyphicon glyphicon-pencil"></span></a></td>
                             <td>
                                 {{ Form::open(array('url' => 'beneficiarios/' . $beneficiario->id_beneficiario)) }}
@@ -66,5 +67,6 @@
 @section("js")
     <script>
         @include('admin.script')
+        @include('beneficiarios.script')
     </script>
 @stop
