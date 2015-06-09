@@ -49,17 +49,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>2015 - 2016</td>
-                        <td>Dependencia 1</td>
-                        <td>1323</td>
-                        <td>Juan Pérez</td>
-                        <td>Organización 1</td>
-                        <td>1234567890123456</td>
-                        <td>12345678901234</td>
-                        <td>Activo</td>
-                        <td>2015-12-01</td>
-                    </tr>
+                    @foreach($beneficiarios_programas as $beneficiario_programa)
+                        <tr>
+                            <td>{{$beneficiario_programa->programa->}}</td>
+                            <td>Dependencia 1</td>
+                            <td>1323</td>
+                            <td>Juan Pérez</td>
+                            <td>Organización 1</td>
+                            <td>1234567890123456</td>
+                            <td>12345678901234</td>
+                            <td>Activo</td>
+                            <td>2015-12-01</td>
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>

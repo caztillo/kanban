@@ -9,7 +9,8 @@ class InscripcionesController extends \BaseController {
      */
     public function getIndex()
     {
-        return View::make('inscripciones.index');
+        $beneficiarios_programas = BeneficiarioPrograma::all();
+        return View::make('inscripciones.index', compact('beneficiarios_programas'));
     }
 
     public function getSearch()
@@ -59,7 +60,7 @@ class InscripcionesController extends \BaseController {
         $data['inscripcion'] = date('Y-m-d H:i:s');
         BeneficiarioPrograma::create($data);
 
-        return Redirect::route('inscripciones.index')->with('message-type', 'success')
+        return Redirect::action('InscripcionesController@getIndex')->with('message-type', 'success')
             ->with('message', 'La información se ha guardado correctamente');
     }
 
