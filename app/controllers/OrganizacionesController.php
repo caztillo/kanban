@@ -9,7 +9,8 @@ class OrganizacionesController extends \BaseController {
 	 */
 	public function index()
 	{
-		$organizaciones = Organizacion::orderBy('id_organizacion', 'desc')->get();
+
+		$organizaciones = Organizacion::orderBy('id_organizacion', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
 		return View::make('organizaciones.index', compact('organizaciones'));
 	}
 
@@ -41,8 +42,7 @@ class OrganizacionesController extends \BaseController {
             'telefono' => 'required|required|regex:/^[0-9]{10,20}$/',
             'correo' => 'required|email',
             'estado' => 'required|in:Activo,Vetado',
-            'RFC' => array('required','regex:/^[a-zA-Z]{3,4}(\d{6})((\D|\d){3})?$/'),
-           
+            'RFC' => array('required','regex:/^[a-zA-Z]{3,4}(\d{6})((\D|\d){3})?$/')
         ];
 
         $messages = [
@@ -55,7 +55,7 @@ class OrganizacionesController extends \BaseController {
             'telefono.regex' => 'El formato ingresado no es válido',
             'email' => 'El correo debe estar formado de la siguiente manera: direccion@dominio.com',
             'in' => 'Este campo es obligatorio.',
-             'RFC.regex' => 'Ingresa un RFC válido.',
+             'RFC.regex' => 'Ingresa un RFC válido.'
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);
@@ -120,7 +120,7 @@ class OrganizacionesController extends \BaseController {
             'telefono' => 'required|required|regex:/^[0-9]{10,20}$/',
             'correo' => 'required|email',
             'estado' => 'required|in:Activo,Vetado',
-            'RFC' => array('required','regex:/^[a-zA-Z]{3,4}(\d{6})((\D|\d){3})?$/'),
+            'RFC' => array('required','regex:/^[a-zA-Z]{3,4}(\d{6})((\D|\d){3})?$/')
            
         ];
 
@@ -134,7 +134,7 @@ class OrganizacionesController extends \BaseController {
             'telefono.regex' => 'El formato ingresado no es válido',
             'email' => 'El correo debe estar formado de la siguiente manera: direccion@dominio.com',
             'in' => 'Este campo es obligatorio.',
-             'RFC.regex' => 'Ingresa un RFC válido.',
+             'RFC.regex' => 'Ingresa un RFC válido.'
         ];
 
 
@@ -172,7 +172,6 @@ class OrganizacionesController extends \BaseController {
      */
     public function search()
     {
-
         $id_organizacion = Input::get('id_organizacion');
         $nombre = Input::get('nombre');
         $razon_social = Input::get('razon_social');
@@ -186,7 +185,7 @@ class OrganizacionesController extends \BaseController {
         $creacion = Input::get('creacion');
 
         if(!empty($id_organizacion) )
-            $organizaciones = Organizacion::where('id_organizacion','=',$id_organizacion)->orderBy('id_organizacion', 'desc')->get();
+            $organizaciones = Organizacion::where('id_organizacion','=',$id_organizacion)->orderBy('id_organizacion', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
         else
         {
             $query = Organizacion::select();
@@ -240,8 +239,7 @@ class OrganizacionesController extends \BaseController {
                  $query = $query->whereRaw("DATE(creacion) = '".$creacion."'");
             }
 
-            $organizaciones = $query->orderBy('id_organizacion', 'desc')->get();
-
+            $organizaciones = $query->orderBy('id_organizacion', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
         }
 
         if($organizaciones->isEmpty())

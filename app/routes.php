@@ -32,6 +32,10 @@ Route::get('/beneficiarios/search', array('uses' => 'BeneficiariosController@sea
 Route::get('/programas/search', array('uses' => 'ProgramasController@search'));
 Route::get('/beneficiarios_organizaciones/search', array('uses' => 'BeneficiariosOrganizacionesController@search'));
 
+View::composer(Paginator::getViewName(), function($view) {
+    $queryString = array_except(Input::query(), Paginator::getPageName());
+    $view->paginator->appends($queryString);
+});
 
 Route::get('/login', array('uses' => 'AdminController@login'));
 Route::group(['before' => 'auth'], function()
