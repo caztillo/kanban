@@ -55,7 +55,7 @@
                             <td>{{$beneficiario_programa->programa->dependencia->nombre}}</td>
                             <td>{{$beneficiario_programa->programa->clave}}</td>
                             <td>{{$beneficiario_programa->beneficiario->nombre}}</td>
-                            <td>Organización 1</td>
+                            <td></td>
                             <td>1234567890123456</td>
                             <td>12345678901234</td>
                             <td>Activo</td>
