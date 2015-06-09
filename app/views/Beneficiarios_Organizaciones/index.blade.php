@@ -22,7 +22,7 @@
                 <table class="table">
                     <thead>
                     <tr class="filters">
-                        <th style="width:1%"><input type="text" name="id_beneficiarios_organizacion" class="form-control filtrar" placeholder="#" disabled></th>
+                        <th style="width:1%"><input type="text" name="id_beneficiario_organizacion" class="form-control filtrar" placeholder="#" disabled></th>
                         <th style="width:10%"><input type="text" name="organizacion" class="form-control filtrar" placeholder="Organizacion" disabled></th>
                         <th style="width:10%"><input type="text" name="beneficiario" class="form-control filtrar" placeholder="Beneficiario" disabled></th>
                         <th style="width:10%"><input type="text" name="estado" class="form-control filtrar" placeholder="Estatus" disabled></th>
