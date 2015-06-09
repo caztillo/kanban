@@ -90,6 +90,11 @@
                     </tbody>
                 </table>
             </div>
+            <nav>
+                <ul class="pager">
+                    {{ $beneficiarios_programas->links() }}
+                </ul>
+            </nav>
         </div>
     </div>
 

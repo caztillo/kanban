@@ -9,13 +9,13 @@ class InscripcionesController extends \BaseController {
      */
     public function getIndex()
     {
-        $beneficiarios_programas = BeneficiarioPrograma::all();
+        $beneficiarios_programas = BeneficiarioPrograma::orderBy('id_beneficiario_programa', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
         return View::make('inscripciones.index_beneficiario_programa', compact('beneficiarios_programas'));
     }
 
     public function getIndexOrganizacion()
     {
-        $organizaciones_programas = OrganizacionPrograma::all();
+        $organizaciones_programas = OrganizacionPrograma::orderBy('id_organizacion_programa', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
         return View::make('inscripciones.index_organizacion_programa', compact('organizaciones_programas'));
     }
     public function getBuscar()
@@ -200,7 +200,7 @@ class InscripcionesController extends \BaseController {
             $query = $query->whereRaw("DATE(inscripcion) = '".$inscripcion."'");
         }
 
-        $inscripciones = (($tipo_busqueda == 1) ? $query->orderBy('id_beneficiario_programa', 'desc')->get() : $query->orderBy('id_organizacion_programa', 'desc')->get());
+        $inscripciones = (($tipo_busqueda == 1) ? $query->orderBy('id_beneficiario_programa', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina")) : $query->orderBy('id_organizacion_programa', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina")));
 
 
 

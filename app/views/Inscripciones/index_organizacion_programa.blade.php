@@ -79,6 +79,11 @@
                     </tbody>
                 </table>
             </div>
+            <nav>
+                <ul class="pager">
+                    {{ $organizaciones_programas->links() }}
+                </ul>
+            </nav>
         </div>
     </div>
 
