@@ -37,13 +37,13 @@
                     @foreach($programas as $programa)
                         <tr>
                             <td>{{$programa->id_programa}}</td>
-                            <td>{{$programa->ano_fiscal->descripcion}}</td>
+                            <td>{{$programa->ano->descripcion}}</td>
                             <td>{{$programa->dependencia->nombre}}</td>
                             <td>{{$programa->clave}}</td>
                             <td>{{$programa->estado}}</td>
                             <td>{{date("Y-m-d",strtotime($programa->creacion))}}</td>
 
-                            <td> <a class="btn btn-success btn-xs" href="{{url('programaes/'.$programa->id_programa . '/edit')}}" role="button"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                            <td> <a class="btn btn-success btn-xs" href="{{url('programas/'.$programa->id_programa . '/edit')}}" role="button"><span class="glyphicon glyphicon-pencil"></span></a></td>
                             <td>
                                 {{ Form::open(array('url' => 'programas/' . $programa->id_programa)) }}
                                 {{ Form::hidden('_method', 'DELETE') }}
