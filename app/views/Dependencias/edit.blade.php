@@ -8,7 +8,6 @@
             @endif
             {{ Form::model($dependencia, array('route' => array('dependencias.update', $dependencia->id_dependencia), 'method' => 'PUT', 'class' => 'form-horizontal')) }}
             <fieldset>
-
                 <!-- Form Name -->
                 <legend>Editar</legend>
 

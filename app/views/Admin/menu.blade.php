@@ -44,6 +44,9 @@
                             <a href="{{url('inscripciones')}}"><i class="fa fa-pencil"></i> Inscripciones</a>
                         </li>
                         <li>
+                            <a href="{{url('beneficiarios_organizaciones')}}"><i class="fa fa-pencil"></i> Inscripción de Beneficiario a Organización</a>
+                        </li>
+                        <li>
                             <a href="{{url('beneficiarios')}}"><i class="fa fa-group"></i> Beneficiarios</a>
                         </li>
                         <li>
