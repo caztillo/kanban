@@ -24,12 +24,12 @@
                 <table class="table">
                     <thead>
                         <tr class="filters">
-                            <th style="width:1%"><input type="text" name="id_beneficiario" class="form-control filtrar" placeholder="#" disabled></th>
+                            <th style="width:2%"><input type="text" name="id_beneficiario" class="form-control filtrar" placeholder="#" disabled></th>
                             <th style="width:10%"><input type="text" name="nombre" class="form-control filtrar" placeholder="Nombre" disabled></th>
-                            <th style="width:10%"><input type="text" name="correo" class="form-control filtrar" placeholder="Correo" disabled></th>
+                            <th style="width:8%"><input type="text" name="correo" class="form-control filtrar" placeholder="Correo" disabled></th>
                             <th style="width:10%"><input type="text" name="RFC" class="form-control filtrar" placeholder="RFC" disabled></th>
-                            <th style="width:10%"><input type="text" name="CURP" class="form-control filtrar" placeholder="CURP" disabled></th>
-                            <th style="width:10%"><input type="text" name="estado" class="form-control filtrar" placeholder="Estatus" disabled></th>
+                            <th style="width:8%"><input type="text" name="CURP" class="form-control filtrar" placeholder="CURP" disabled></th>
+                            <th style="width:6%"><input type="text" name="estado" class="form-control filtrar" placeholder="Estatus" disabled></th>
                             <th style="width:5%"><input type="text" name="creacion" class="form-control" placeholder="Creación" disabled></th>
                             <th style="width:1%"></th>
                             <th style="width:1%"></th>
