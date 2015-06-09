@@ -51,10 +51,10 @@
                     <tbody>
                     @foreach($beneficiarios_programas as $beneficiario_programa)
                         <tr>
-                            <td>{{$beneficiario_programa->programa->}}</td>
-                            <td>Dependencia 1</td>
-                            <td>1323</td>
-                            <td>Juan Pérez</td>
+                            <td>{{$beneficiario_programa->programa->ano->descripcion}}</td>
+                            <td>{{$beneficiario_programa->programa->dependencia->nombre}}</td>
+                            <td>{{$beneficiario_programa->programa->clave}}</td>
+                            <td>{{$beneficiario_programa->beneficiario->nombre}}</td>
                             <td>Organización 1</td>
                             <td>1234567890123456</td>
                             <td>12345678901234</td>
