@@ -9,7 +9,7 @@
             @if(Session::has('message'))
                 <div class="alert alert-{{ Session::get('message-type') }} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>{{ Session::get('message')}}</div>
             @endif
-            {{ Form::open(array('action'=>'InscripcionesController@getSearch', 'method' => 'GET')) }}
+            {{ Form::open(array('action'=>'InscripcionesController@getBuscar', 'method' => 'GET')) }}
 
             <div class="panel panel-default filterable">
                 <div class="panel-heading">
@@ -29,7 +29,12 @@
 
                         {{ Form::button('<span class="glyphicon glyphicon-search"></span> Buscar', array('type' => 'submit', 'class' => 'btn btn-info btn-sm', "style" => "display:none;"))}}
 
-                        <a class="btn btn-primary btn-sm" href="{{url('inscripciones/agregar-beneficiario-programa')}}" role="button"><span class="glyphicon glyphicon-plus"></span>Nuevo Beneficiario a Programa</a>
+                        <a class="btn btn-primary btn-sm" href="{{url('inscripciones/agregar-inscripcion/1')}}" role="button"><span class="glyphicon glyphicon-plus"></span>Inscribir Nuevo Beneficiario</a>
+                        <a class="btn btn-info btn-sm" href="{{url('inscripciones/agregar-inscripcion/2')}}" role="button"><span class="glyphicon glyphicon-plus"></span>Inscribir Nueva Organización</a>
+
+
+
+
                     </div>
                 </div>
                 <table class="table">
@@ -42,9 +47,10 @@
                         <th style=""><input type="text" name="organizacion" class="form-control" placeholder="Organización" disabled></th>
                         <th style=""><input type="text" name="rfc" class="form-control" placeholder="RFC" disabled></th>
                         <th style=""><input type="text" name="curp" class="form-control" placeholder="CURP" disabled></th>
-                        <th style=""><input type="text" name="estatus" class="form-control" placeholder="Estatus" disabled></th>
-                        <th style=""><input type="text" name="inscripcion" class="form-control" placeholder="Fecha Inscripción" disabled></th>
-
+                        <th style=""><input type="text" name="finalidad" class="form-control" placeholder="Finalidad" disabled></th>
+                        <th style=""><input type="text" name="inscripcion" class="form-control" placeholder="Inscripción" disabled></th>
+                        <th style="width:1%"></th>
+                        <th style="width:1%"></th>
                         {{ Form::close() }}
                     </tr>
                     </thead>
@@ -55,11 +61,30 @@
                             <td>{{$beneficiario_programa->programa->dependencia->nombre}}</td>
                             <td>{{$beneficiario_programa->programa->clave}}</td>
                             <td>{{$beneficiario_programa->beneficiario->nombre}}</td>
-                            <td></td>
-                            <td>1234567890123456</td>
-                            <td>12345678901234</td>
-                            <td>Activo</td>
-                            <td>2015-12-01</td>
+
+                                @foreach($beneficiario_programa->beneficiario->beneficiario_organizacion as $beneficiario_organizacion)
+                                <td>
+                                    {{$beneficiario_organizacion->organizacion->nombre}}
+                                </td>
+                                @endforeach
+
+                            <td>{{$beneficiario_programa->beneficiario->RFC}}</td>
+                            <td>{{$beneficiario_programa->beneficiario->CURP}}</td>
+                            <td>{{$beneficiario_programa->finalidad}}</td>
+                            <td>{{date("Y-m-d",strtotime($beneficiario_programa->inscripcion))}}</td>
+                            <td>
+                                {{ Form::open(array('method' => "GET",'action' => array('InscripcionesController@getEditarInscripcion',$beneficiario_programa->id_beneficiario_programa))) }}
+                                {{ Form::hidden('tipo_programa', 1) }}
+                                {{ Form::button('<span class="glyphicon glyphicon-pencil"></span>', array('type' => 'submit', 'class' => 'btn btn-success btn-xs'))}}
+                                {{ Form::close() }}
+                            </td>
+                            <td>
+                                {{ Form::open(array('action' => array('InscripcionesController@postBorrarInscripcion', $beneficiario_programa->id_beneficiario_programa))) }}
+                                {{ Form::hidden('tipo_programa', 1) }}
+                                {{ Form::hidden('_method', 'POST') }}
+                                {{ Form::button('<span class="glyphicon glyphicon-remove"></span>', array('type' => 'submit', 'class' => 'btn btn-danger btn-xs'))}}
+                                {{ Form::close() }}
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>
