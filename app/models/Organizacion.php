@@ -5,7 +5,7 @@ class Organizacion extends \Eloquent {
     public $timestamps = false;
     public $primaryKey = 'id_organizacion';
     protected $guarded = ['id_organizacion'];
-    protected $fillable = ['nombre','razon_social','direccion','codigo_postal', 'contacto', 'telefono','correo','estado','creacion'];
+    protected $fillable = ['nombre','razon_social','direccion','codigo_postal', 'contacto', 'telefono','correo','estado','creacion','RFC'];
 
 	public function beneficiario_organizaciones()
     {

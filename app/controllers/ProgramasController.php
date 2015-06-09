@@ -26,8 +26,6 @@ class ProgramasController extends \BaseController {
 
         $dependencias = Dependencia::orderBy('nombre', 'asc')->where('estado', '=', 'Activo')->lists('nombre','id_dependencia');
 
-
-
         return View::make('programas.create', compact('anos_fiscales','dependencias'));
     }
 
@@ -40,25 +38,25 @@ class ProgramasController extends \BaseController {
     {
         Input::merge(array_map('trim', Input::all()));
 
-        $rules = [
+       $rules = [
             'id_dependencia' => 'required|exists:dependencia,id_dependencia',
             'id_ano' => 'required|exists:ano,id_ano',
             'clave' => 'required|alpha_num|between:1,255',
             'descripcion' => 'required|alpha_num_space|between:1,255',
-            'convocatoria' => 'required|alpha_num_space|between:1,1000',
-            'estado' => 'required|in:Activo,Inactivo',
-
+            'convocatoria' => 'max:1000',
+            'estado' => 'required|in:Activo,Inactivo'
         ];
 
         $messages = [
             'required' => 'Este campo es obligatorio.',
             'between' => 'Este campo es obligatorio.',
+            'convocatoria.max' => 'La URL puede tener hasta 1000 caracteres de longitud.',
             'alpha_num' => 'Utilice sólo caracteres del alfabeto y numeros',
             'alpha_num_space' => 'Utilice sólo caracteres del alfabeto, números y espacios.',
             'id_dependencia.exists' => 'Seleccione una dependencia',
             'id_ano.exists' => 'Selecciona un año fiscal',
-            'estado.in' => 'Seleccione una opción',
-            
+            'estado.in' => 'Seleccione una opción'
+        
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);
@@ -108,20 +106,20 @@ class ProgramasController extends \BaseController {
             'id_ano' => 'required|exists:ano,id_ano',
             'clave' => 'required|alpha_num|between:1,255',
             'descripcion' => 'required|alpha_num_space|between:1,255',
-            'convocatoria' => 'required|alpha_num_space|between:1,1000',
-            'estado' => 'required|in:Activo,Inactivo',
-
+            'convocatoria' => 'max:1000',
+            'estado' => 'required|in:Activo,Inactivo'
         ];
 
         $messages = [
             'required' => 'Este campo es obligatorio.',
             'between' => 'Este campo es obligatorio.',
+            'convocatoria.max' => 'La URL puede tener hasta 1000 caracteres de longitud.',
             'alpha_num' => 'Utilice sólo caracteres del alfabeto y numeros',
             'alpha_num_space' => 'Utilice sólo caracteres del alfabeto, números y espacios.',
             'id_dependencia.exists' => 'Seleccione una dependencia',
             'id_ano.exists' => 'Selecciona un año fiscal',
-            'estado.in' => 'Seleccione una opción',
-            
+            'estado.in' => 'Seleccione una opción'
+        
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);

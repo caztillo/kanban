@@ -158,13 +158,17 @@ class BeneficiariosOrganizacionesController extends \BaseController {
         $estado = Input::get('estado');
         $inscripcion = Input::get('inscripcion');
 
+
         if(!empty($id_beneficiario_organizacion) )
+        {  
             $beneficiarios_organizaciones = BeneficiarioOrganizacion::where('id_beneficiario_organizacion','=',$id_beneficiario_organizacion)->orderBy('id_beneficiario_organizacion', 'desc')->get();
+           
+        }
         else
         {
             $query = BeneficiarioOrganizacion::select();
             if(!empty($nombre))
-            {
+            {  
                 $query = $query->where('nombre', 'LIKE', "%{$nombre}%");
             }
 

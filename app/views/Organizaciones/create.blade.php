@@ -20,6 +20,15 @@
                     </div>
 
                     <!-- Text input-->
+                    <div class="form-group  has-feedback {{ ($error = $errors->first('RFC')) ? 'has-error' : '' }}">
+                        <label class="col-md-4 control-label" for="RFC">RFC</label>
+                        <div class="col-md-6">
+                            {{ Form::text('RFC', null, ['class' => 'form-control', 'placeholder' => 'Ingresar RFC', 'maxlength' => 13] )}}
+                            <span class="help-block">{{ ($error = $errors->first('RFC')) ? $error : '' }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
                     <div class="form-group  has-feedback {{ ($error = $errors->first('razon_social')) ? 'has-error' : '' }}">
                         <label class="col-md-4 control-label" for="razon_social">Razón Social</label>
                         <div class="col-md-6">

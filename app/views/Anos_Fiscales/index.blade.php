@@ -50,7 +50,6 @@
                                 {{ Form::open(array('url' => 'anos_fiscales/' . $ano_fiscal->id_ano)) }}
                                 {{ Form::hidden('_method', 'DELETE') }}
                                 {{ Form::button('<span class="glyphicon glyphicon-remove"></span>', array('type' => 'submit', 'class' => 'btn btn-danger btn-xs'))}}
-
                                 {{ Form::close() }}
 
                             </td>
@@ -60,6 +59,11 @@
                     </tbody>
                 </table>
             </div>
+            <nav>
+              <ul class="pager">
+               {{ $anos_fiscales->links() }}
+              </ul>
+            </nav>
         </div>
     </div>
 
