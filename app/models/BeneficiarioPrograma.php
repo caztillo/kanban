@@ -13,6 +13,7 @@ class BeneficiarioPrograma extends \Eloquent {
         return $this->belongsTo('Beneficiario', 'id_beneficiario', 'id_beneficiario');
     }
 
+
     public function programa()
     {
         //return $this->belongsTo('Class', 'local_key', 'parent_key');
