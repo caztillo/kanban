@@ -8,8 +8,8 @@ class Programa extends \Eloquent {
     protected $fillable = ['id_ano','id_dependencia','clave', 'descripcion','convocatoria','estado','creacion'];
 
 
-
-    public function ano_fiscal()
+    // El nombre de la funcion, debe coincidir con el nombre de la tabla
+    public function ano()
     {
         return $this->belongsTo('AnoFiscal', 'id_ano', 'id_ano');
     }
