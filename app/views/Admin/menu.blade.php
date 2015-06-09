@@ -25,10 +25,10 @@
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> Perfil de Usuario</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Cerrar Sesión</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -53,7 +53,7 @@
                             <a href="{{url('organizaciones')}}"><i class="fa fa-suitcase"></i> Organizaciones</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-list"></i> Programas</a>
+                            <a href="{{url('programas')}}"><i class="fa fa-list"></i> Programas</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-cogs"></i> Catálogos<span class="fa arrow"></span></a>

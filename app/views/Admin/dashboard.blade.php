@@ -5,7 +5,7 @@
     <!-- Morris Charts CSS -->
     {{ HTML::style("bower_components/morrisjs/morris.css") }}
 @stop
-@section("contenido")
+@section("contenido_derecho")
     @parent
     <div class="row">
         <div class="col-lg-12">
