@@ -33,10 +33,10 @@ class OrganizacionesController extends \BaseController {
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
-            'nombre' => 'required|alpha_num_space|between:1,255',
+            'nombre' => 'required|between:1,255',
             'razon_social' => 'required|between:1,255',
             'codigo_postal' => 'required|digits:5',
-            'direccion' => 'required|alpha_num_space|between:1,255',
+            'direccion' => 'required|between:1,255',
             'contacto' => 'required|alpha_space|between:1,255',
             'telefono' => 'required|required|regex:/^[0-9]{10,20}$/',
             'correo' => 'required|email',
@@ -109,10 +109,10 @@ class OrganizacionesController extends \BaseController {
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
-            'nombre' => 'required|alpha_num_space|between:1,255',
+            'nombre' => 'required|between:1,255',
             'razon_social' => 'required|between:1,255',
             'codigo_postal' => 'required|digits:5',
-            'direccion' => 'required|alpha_num_space|between:1,255',
+            'direccion' => 'required|between:1,255',
             'contacto' => 'required|alpha_space|between:1,255',
             'telefono' => 'required|required|regex:/^[0-9]{10,20}$/',
             'correo' => 'required|email',
@@ -158,7 +158,7 @@ class OrganizacionesController extends \BaseController {
 		->with('message', 'El elemento se eliminó correctamente.');
 	}
 
-	    /**
+	/**
      * Display a listing of the resource.
      * GET /organizaciones/search
      *

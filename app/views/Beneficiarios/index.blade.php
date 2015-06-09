@@ -18,7 +18,7 @@
 
                         {{ Form::button('<span class="glyphicon glyphicon-search"></span> Buscar', array('type' => 'submit', 'class' => 'btn btn-info btn-sm', "style" => "display:none;"))}}
 
-                        <a class="btn btn-primary btn-sm" href="{{url('beneficiarios/create')}}" role="button"><span class="glyphicon glyphicon-plus"></span>Nuevo</a>
+                        <a class="btn btn-primary btn-sm" href="{{url('beneficiarios/create')}}" role="button"> <span class="glyphicon glyphicon-plus"></span> Nuevo</a>
                     </div>
                 </div>
                 <table class="table">
@@ -26,11 +26,10 @@
                         <tr class="filters">
                             <th style="width:2%"><input type="text" name="id_beneficiario" class="form-control filtrar" placeholder="#" disabled></th>
                             <th style="width:10%"><input type="text" name="nombre" class="form-control filtrar" placeholder="Nombre" disabled></th>
-                            <th style="width:8%"><input type="text" name="correo" class="form-control filtrar" placeholder="Correo" disabled></th>
-                            <th style="width:10%"><input type="text" name="RFC" class="form-control filtrar" placeholder="RFC" disabled></th>
+                            <th style="width:9%"><input type="text" name="RFC" class="form-control filtrar" placeholder="RFC" disabled></th>
                             <th style="width:8%"><input type="text" name="CURP" class="form-control filtrar" placeholder="CURP" disabled></th>
-                            <th style="width:6%"><input type="text" name="estado" class="form-control filtrar" placeholder="Estatus" disabled></th>
-                            <th style="width:5%"><input type="text" name="creacion" class="form-control" placeholder="Creación" disabled></th>
+                            <th style="width:5%"><input type="text" name="estado" class="form-control filtrar" placeholder="Estatus" disabled></th>
+                            <th style="width:6%"><input type="text" name="creacion" class="form-control" placeholder="Creación" disabled></th>
                             <th style="width:1%"></th>
                             <th style="width:1%"></th>
                             {{Form::close()}}
@@ -41,7 +40,6 @@
                         <tr>
                             <td>{{$beneficiario->id_beneficiario}}</td>
                             <td>{{$beneficiario->nombre}}</td>
-                            <td>{{$beneficiario->correo}}</td>
                             <td>{{$beneficiario->RFC}}</td>
                             <td>{{$beneficiario->CURP}}</td>
                             <td>{{$beneficiario->estado}}</td>
