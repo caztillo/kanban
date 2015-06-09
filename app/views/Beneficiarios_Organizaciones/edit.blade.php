@@ -6,16 +6,16 @@
             @if(Session::has('message'))
                 <div class="alert alert-{{ Session::get('message-type') }} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>{{ Session::get('message')}}</div>
             @endif
-            {{  Form::open(array('url' => 'beneficiarios_organizaciones', 'class' => 'form-horizontal'))  }}
+             {{ Form::model($beneficiario_organizacion, array('route' => array('beneficiarios_organizaciones.update', $beneficiario_organizacion->id_beneficiario_organizacion), 'method' => 'PUT', 'class' => 'form-horizontal')) }}
                 <fieldset>
                     <!-- Form Name -->
-                    <legend>Nuevo</legend>
+                    <legend>Editar</legend>
 
                      <!-- Text input-->
                     <div class="form-group  has-feedback {{ ($error = $errors->first('id_organizacion')) ? 'has-error' : '' }}">
                         <label class="col-md-4 control-label" for="organizacion">Organización</label>
                         <div class="col-md-6">
-                            {{ Form::select('id_organizacion', ['' => 'Seleccionar Organización'] + $organizaciones, '', ['class' => 'form-control']) }}
+                            {{ Form::select('id_organizacion', ['' => 'Seleccionar Organización'] + $organizaciones,$beneficiario_organizacion->id_organizacion, ['class' => 'form-control']) }}
                             <span class="help-block">{{ ($error = $errors->first('id_organizacion')) ? $error : '' }}</span>
                         </div>
                     </div>
@@ -24,17 +24,19 @@
                     <div class="form-group  has-feedback {{ ($error = $errors->first('id_beneficiario')) ? 'has-error' : '' }}">
                         <label class="col-md-4 control-label" for="beneficiario">Beneficiario</label>
                         <div class="col-md-6">
-                            {{ Form::select('id_beneficiario', ['' => 'Seleccionar Beneficiario'] + $beneficiarios, '', ['class' => 'form-control']) }}
+                            {{ Form::select('id_beneficiario', ['' => 'Seleccionar Beneficiario'] + $beneficiarios,$beneficiario_organizacion->id_beneficiario, ['class' => 'form-control']) }}
                             <span class="help-block">{{ ($error = $errors->first('id_beneficiario')) ? $error : '' }}</span>
                         </div>
                     </div>
+
+
             
                     <!-- Text input-->
                     <div class="form-group  has-feedback {{ ($error = $errors->first('comentarios')) ? 'has-error' : '' }}">
                         <label class="col-md-4 control-label" for="comentarios">Comentarios</label>
                         <div class="col-md-6">
-                            {{ Form::textarea('comentarios', null, ['class' => 'form-control', 'placeholder' => 'Ingresar comentarios', 'maxlength' => 10000] )}}
-                            <span class="help-block">{{ ($error = $errors->first('direccion')) ? $error : '' }}</span>
+                            {{ Form::textarea('comentarios', $beneficiario_organizacion->comentarios, ['class' => 'form-control', 'placeholder' => 'Ingresar comentarios', 'maxlength' => 10000] )}}
+                            <span class="help-block">{{ ($error = $errors->first('comentarios')) ? $error : '' }}</span>
                         </div>
                     </div>
 

@@ -9,7 +9,7 @@
            {{ Form::model($organizacion, array('route' => array('organizaciones.update', $organizacion->id_organizacion), 'method' => 'PUT', 'class' => 'form-horizontal')) }}
                 <fieldset>
                     <!-- Form Name -->
-                    <legend>Editar</legend>
+                    <legend> Editar</legend>
                     <!-- Text input-->
                     <div class="form-group  has-feedback {{ ($error = $errors->first('nombre')) ? 'has-error' : '' }}">
                         <label class="col-md-4 control-label" for="nombre">Nombre</label>

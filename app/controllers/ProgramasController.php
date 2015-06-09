@@ -9,7 +9,8 @@ class ProgramasController extends \BaseController {
      */
     public function index()
     {
-        $programas = Direccion::orderBy('id_direccion', 'desc')->get(); 
+        $programas = Programa::orderBy('id_programa', 'desc')->get(); 
+
 
         return View::make('programas.index', compact('programas'));
     }
@@ -23,8 +24,11 @@ class ProgramasController extends \BaseController {
     {
         $anos_fiscales = AnoFiscal::orderBy('descripcion', 'asc')->where('estado', '=', 'Activo')->lists('descripcion','id_ano');
 
+        $dependencias = Dependencia::orderBy('nombre', 'asc')->where('estado', '=', 'Activo')->lists('nombre','id_dependencia');
 
-        return View::make('programas.create', compact('anos_fiscales'));
+
+
+        return View::make('programas.create', compact('anos_fiscales','dependencias'));
     }
 
     /**
@@ -37,19 +41,24 @@ class ProgramasController extends \BaseController {
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
-            'nombre' => 'required|alpha_num_space|between:1,255',
-            'clave' => 'required|alpha_num_space|between:1,255',
+            'id_dependencia' => 'required|exists:dependencia,id_dependencia',
+            'id_ano' => 'required|exists:ano,id_ano',
+            'clave' => 'required|alpha_num|between:1,255',
+            'descripcion' => 'required|alpha_num_space|between:1,255',
+            'convocatoria' => 'required|alpha_num_space|between:1,1000',
             'estado' => 'required|in:Activo,Inactivo',
-            'id_dependencia' => 'required|exists:dependencia,id_dependencia'
 
         ];
 
         $messages = [
             'required' => 'Este campo es obligatorio.',
             'between' => 'Este campo es obligatorio.',
+            'alpha_num' => 'Utilice sólo caracteres del alfabeto y numeros',
             'alpha_num_space' => 'Utilice sólo caracteres del alfabeto, números y espacios.',
+            'id_dependencia.exists' => 'Seleccione una dependencia',
+            'id_ano.exists' => 'Selecciona un año fiscal',
             'estado.in' => 'Seleccione una opción',
-            'id_dependencia.exists' => 'Seleccione una dependencia'
+            
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);
@@ -61,7 +70,7 @@ class ProgramasController extends \BaseController {
         }
         $data = Input::all();
         $data['creacion'] = date('Y-m-d H:i:s');
-        Direccion::create($data);
+        Programa::create($data);
 
         return Redirect::route('programas.index')->with('message-type', 'success')
             ->with('message', 'La información se ha guardado correctamente');
@@ -76,9 +85,10 @@ class ProgramasController extends \BaseController {
      */
     public function edit($id)
     {
-        $direccion = Direccion::find($id);
+        $programa = Programa::find($id);
+        $anos_fiscales = AnoFiscal::orderBy('descripcion', 'asc')->where('estado', '=', 'Activo')->lists('descripcion','id_ano');
         $dependencias = Dependencia::orderBy('nombre', 'asc')->lists('nombre','id_dependencia');
-        return View::make('programas.edit', compact('direccion', 'dependencias'));
+        return View::make('programas.edit', compact('programa', 'dependencias','anos_fiscales'));
     }
 
     /**
@@ -89,24 +99,29 @@ class ProgramasController extends \BaseController {
      */
     public function update($id)
     {
-        $direccion = Direccion::findOrFail($id);
+        $programa = Programa::findOrFail($id);
 
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
-            'nombre' => 'required|alpha_num_space|between:1,255',
-            'clave' => 'required|alpha_num_space|between:1,255',
+            'id_dependencia' => 'required|exists:dependencia,id_dependencia',
+            'id_ano' => 'required|exists:ano,id_ano',
+            'clave' => 'required|alpha_num|between:1,255',
+            'descripcion' => 'required|alpha_num_space|between:1,255',
+            'convocatoria' => 'required|alpha_num_space|between:1,1000',
             'estado' => 'required|in:Activo,Inactivo',
-            'id_dependencia' => 'required|exists:dependencia,id_dependencia'
 
         ];
 
         $messages = [
             'required' => 'Este campo es obligatorio.',
             'between' => 'Este campo es obligatorio.',
+            'alpha_num' => 'Utilice sólo caracteres del alfabeto y numeros',
             'alpha_num_space' => 'Utilice sólo caracteres del alfabeto, números y espacios.',
+            'id_dependencia.exists' => 'Seleccione una dependencia',
+            'id_ano.exists' => 'Selecciona un año fiscal',
             'estado.in' => 'Seleccione una opción',
-            'id_dependencia.exists' => 'Seleccione una dependencia'
+            
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);
@@ -116,7 +131,7 @@ class ProgramasController extends \BaseController {
             return Redirect::back()->with('message-type', 'danger')->with('message', 'Algunos datos no han sido propiamente ingresados, favor de revisarlos.')->withErrors($validator)->withInput();
         }
 
-        $direccion->update($data);
+        $programa->update($data);
 
         return Redirect::route('programas.index')->with('message-type', 'success')
             ->with('message', 'La información se actualizó correctamente.');
@@ -130,7 +145,7 @@ class ProgramasController extends \BaseController {
      */
     public function destroy($id)
     {
-        Direccion::destroy($id);
+        Programa::destroy($id);
 
         return Redirect::route('programas.index')->with('message-type', 'success')
             ->with('message', 'El elemento se eliminó correctamente.');
@@ -145,18 +160,18 @@ class ProgramasController extends \BaseController {
     public function search()
     {
 
-        $id_direccion = Input::get('id_direccion');
+        $id_programa = Input::get('id_programa');
         $nombre = Input::get('nombre');
         $dependencia = Input::get('dependencia');
         $clave = Input::get('clave');
         $estado = Input::get('estado');
         $creacion = Input::get('creacion');
 
-        if(!empty($id_direccion) )
-            $programas = Direccion::where('id_direccion','=',$id_direccion)->orderBy('id_direccion', 'desc')->get();
+        if(!empty($id_programa) )
+            $programas = Programa::where('id_programa','=',$id_programa)->orderBy('id_programa', 'desc')->get();
         else
         {
-            $query = Direccion::select();
+            $query = Programa::select();
             if(!empty($nombre))
             {
                 $query = $query->where('nombre', 'LIKE', "%{$nombre}%");
@@ -167,7 +182,7 @@ class ProgramasController extends \BaseController {
                 $query = $query->join('dependencia', function($join) use ($dependencia)
                 {
                    
-                    $join->on('direccion.id_dependencia', '=', 'dependencia.id_dependencia')
+                    $join->on('programa.id_dependencia', '=', 'dependencia.id_dependencia')
                         ->where('dependencia.nombre', 'LIKE', "%{$dependencia}%");
                 });
             }
@@ -188,7 +203,7 @@ class ProgramasController extends \BaseController {
             }
 
 
-            $programas = $query->orderBy('id_direccion', 'desc')->get();
+            $programas = $query->orderBy('id_programa', 'desc')->get();
 
 
         }

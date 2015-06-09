@@ -11,7 +11,7 @@
                 <fieldset>
 
                     <!-- Form Name -->
-                    <legend>Nuevo</legend>
+                    <legend>Editar</legend>
 
                     <!-- Text input-->
                     <div class="form-group  has-feedback {{ ($error = $errors->first('nombre')) ? 'has-error' : '' }}">

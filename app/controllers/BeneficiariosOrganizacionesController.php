@@ -84,6 +84,7 @@ class BeneficiariosOrganizacionesController extends \BaseController {
 
         $organizaciones = Organizacion::orderBy('id_organizacion', 'desc')->where('estado', '=', 'Activo')->lists('nombre', 'id_organizacion');
 
+
         return View::make('beneficiarios_organizaciones.edit', compact('beneficiario_organizacion', 'beneficiarios', 'organizaciones'));
     }
 
