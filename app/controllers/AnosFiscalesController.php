@@ -34,7 +34,7 @@ class AnosFiscalesController extends \BaseController {
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
-            'descripcion' => 'required|alpha_num_space|between:1,255',
+            'descripcion' => 'required|between:1,255',
             'fecha_inicio' => 'required|date|date_format:"Y-m-d"',
             'fecha_termino' => 'required|date|date_format:"Y-m-d"',
             'estado' => 'required|in:Activo,Inactivo',
@@ -93,7 +93,7 @@ class AnosFiscalesController extends \BaseController {
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
-            'descripcion' => 'required|alpha_num_space|between:1,255',
+            'descripcion' => 'required|between:1,255',
             'fecha_inicio' => 'required|date|date_format:"Y-m-d"',
             'fecha_termino' => 'required|date|date_format:"Y-m-d"',
             'estado' => 'required|in:Activo,Inactivo',
