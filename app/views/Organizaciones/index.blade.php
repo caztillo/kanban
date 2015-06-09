@@ -24,9 +24,8 @@
                         <tr class="filters">
                             <th style="width:2%"><input type="text" name="id_organizacion" class="form-control filtrar" placeholder="#" disabled></th>
                             <th style="width:10%"><input type="text" name="nombre" class="form-control filtrar" placeholder="Nombre" disabled></th>
+                            <th style="width:9%"><input type="text" name="RFC" class="form-control filtrar" placeholder="RFC" disabled></th>
                             <th style="width:10%"><input type="text" name="razon_social" class="form-control filtrar" placeholder="Razón Social" disabled></th>
-                            <th style="width:10%"><input type="text" name="contacto" class="form-control filtrar" placeholder="Contacto" disabled></th>
-                            <th style="width:10%"><input type="text" name="correo" class="form-control filtrar" placeholder="Correo" disabled></th>
                             <th style="width:10%"><input type="text" name="estado" class="form-control filtrar" placeholder="Estatus" disabled></th>
                             <th style="width:10%"><input type="text" name="creacion" class="form-control" placeholder="Creación" disabled></th>
                             <th style="width:1%"></th>
@@ -39,9 +38,8 @@
                         <tr>
                             <td>{{$organizacion->id_organizacion}}</td>
                             <td>{{$organizacion->nombre}}</td>
+                             <td>{{$organizacion->RFC}}</td>
                             <td>{{$organizacion->razon_social}}</td>
-                            <td>{{$organizacion->contacto}}</td>
-                            <td>{{$organizacion->correo}}</td>
                             <td>{{$organizacion->estado}}</td>
                             <td>{{$organizacion->creacion}}</td>
                         

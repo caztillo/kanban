@@ -7,7 +7,6 @@ class Programa extends \Eloquent {
     protected $guarded = ['id_programa'];
     protected $fillable = ['id_ano','id_dependencia','clave', 'descripcion','convocatoria','estado','creacion'];
 
-
     // El nombre de la funcion, debe coincidir con el nombre de la tabla
     public function ano()
     {

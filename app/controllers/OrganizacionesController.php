@@ -40,7 +40,9 @@ class OrganizacionesController extends \BaseController {
             'contacto' => 'required|alpha_space|between:1,255',
             'telefono' => 'required|required|regex:/^[0-9]{10,20}$/',
             'correo' => 'required|email',
-            'estado' => 'required|in:Activo,Vetado'
+            'estado' => 'required|in:Activo,Vetado',
+            'RFC' => array('required','regex:/^[a-zA-Z]{3,4}(\d{6})((\D|\d){3})?$/'),
+           
         ];
 
         $messages = [
@@ -52,7 +54,8 @@ class OrganizacionesController extends \BaseController {
             'between' => 'Este campo es obligatorio.',
             'telefono.regex' => 'El formato ingresado no es válido',
             'email' => 'El correo debe estar formado de la siguiente manera: direccion@dominio.com',
-            'in' => 'Este campo es obligatorio.'
+            'in' => 'Este campo es obligatorio.',
+             'RFC.regex' => 'Ingresa un RFC válido.',
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);
@@ -108,7 +111,7 @@ class OrganizacionesController extends \BaseController {
 
         Input::merge(array_map('trim', Input::all()));
 
-        $rules = [
+         $rules = [
             'nombre' => 'required|between:1,255',
             'razon_social' => 'required|between:1,255',
             'codigo_postal' => 'required|digits:5',
@@ -116,7 +119,9 @@ class OrganizacionesController extends \BaseController {
             'contacto' => 'required|alpha_space|between:1,255',
             'telefono' => 'required|required|regex:/^[0-9]{10,20}$/',
             'correo' => 'required|email',
-            'estado' => 'required|in:Activo,Vetado'
+            'estado' => 'required|in:Activo,Vetado',
+            'RFC' => array('required','regex:/^[a-zA-Z]{3,4}(\d{6})((\D|\d){3})?$/'),
+           
         ];
 
         $messages = [
@@ -128,7 +133,8 @@ class OrganizacionesController extends \BaseController {
             'between' => 'Este campo es obligatorio.',
             'telefono.regex' => 'El formato ingresado no es válido',
             'email' => 'El correo debe estar formado de la siguiente manera: direccion@dominio.com',
-            'in' => 'Este campo es obligatorio.'
+            'in' => 'Este campo es obligatorio.',
+             'RFC.regex' => 'Ingresa un RFC válido.',
         ];
 
 
@@ -175,6 +181,7 @@ class OrganizacionesController extends \BaseController {
         $contacto = Input::get('contacto');
         $telefono = Input::get('telefono');
         $correo = Input::get('correo');
+        $RFC = Input::get('RFC');
         $estado = Input::get('estado');
         $creacion = Input::get('creacion');
 
@@ -206,6 +213,11 @@ class OrganizacionesController extends \BaseController {
             if(!empty($contacto))
             {
                 $query = $query->where('contacto', 'LIKE', "%{$contacto}%");
+            }
+
+            if(!empty($RFC))
+            {
+                $query = $query->where('RFC', 'LIKE', "%{$RFC}%");
             }
 
             if(!empty($telefono))
