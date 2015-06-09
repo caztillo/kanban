@@ -9,9 +9,8 @@ class AnosFiscalesController extends \BaseController {
 	 */
 	public function index()
 	{
-		$anos_fiscales = AnoFiscal::orderBy('id_ano', 'desc')->get();
+        $anos_fiscales = AnoFiscal::orderBy('id_ano', 'desc')->simplePaginate(5);
 		return View::make('anos_fiscales.index', compact('anos_fiscales'));
-
 	}
 
 	/**

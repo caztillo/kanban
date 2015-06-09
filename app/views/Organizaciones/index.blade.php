@@ -56,6 +56,13 @@
                     </tbody>
                 </table>
             </div>
+
+            <nav>
+              <ul class="pager">
+               {{ $organizaciones->links() }}
+              </ul>
+            </nav>
+            
         </div>
     </div>
 

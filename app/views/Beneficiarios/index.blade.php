@@ -58,6 +58,12 @@
                     </tbody>
                 </table>
             </div>
+            <nav>
+              <ul class="pager">
+               {{ $beneficiarios->links() }}
+              </ul>
+            </nav>
+            
         </div>
     </div>
 

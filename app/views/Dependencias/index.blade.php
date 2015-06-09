@@ -56,6 +56,11 @@
                     </tbody>
                 </table>
             </div>
+             <nav>
+              <ul class="pager">
+               {{ $dependencias->links() }}
+              </ul>
+            </nav>
         </div>
     </div>
 

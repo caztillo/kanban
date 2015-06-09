@@ -9,7 +9,7 @@ class DependenciasController extends \BaseController {
 	 */
 	public function index()
 	{
-		$dependencias = Dependencia::orderBy('id_dependencia','desc')->get();
+        $dependencias = Dependencia::orderBy('id_dependencia', 'desc')->simplePaginate(5);
 		return View::make('dependencias.index', compact('dependencias'));
 	}
 

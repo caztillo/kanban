@@ -9,7 +9,8 @@ class BeneficiariosController extends \BaseController {
 	 */
 	public function index()
 	{
-		$beneficiarios = Beneficiario::all();
+		//$beneficiarios = Beneficiario::all();
+        $beneficiarios = Beneficiario::orderBy('creacion', 'desc')->simplePaginate(1);
 		return View::make('beneficiarios.index', compact('beneficiarios'));
 	}
 
