@@ -9,7 +9,7 @@
             {{  Form::open(array('url' => 'organizaciones', 'class' => 'form-horizontal'))  }}
                 <fieldset>
                     <!-- Form Name -->
-                    <legend>Nuevo</legend>
+                    <legend><i class="fa fa-plus"></i> Nuevo</legend>
                     <!-- Text input-->
                     <div class="form-group  has-feedback {{ ($error = $errors->first('nombre')) ? 'has-error' : '' }}">
                         <label class="col-md-4 control-label" for="nombre">Nombre</label>
