@@ -41,7 +41,7 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="#"><i class="fa fa-pencil"></i> Inscripciones</a>
+                            <a href="{{url('inscripciones')}}"><i class="fa fa-pencil"></i> Inscripciones</a>
                         </li>
                         <li>
                             <a href="{{url('beneficiarios_organizaciones')}}"><i class="fa fa-pencil"></i> Inscripción de Beneficiario a Organización</a>

@@ -17,13 +17,19 @@ Route::resource('anos_fiscales', 'AnosFiscalesController',array('except' => arra
 Route::resource('organizaciones', 'OrganizacionesController',array('except' => array('show')));
 Route::resource('direcciones', 'DireccionesController',array('except' => array('show')));
 Route::resource('beneficiarios', 'BeneficiariosController',array('except' => array('show')));
+Route::resource('programas', 'ProgramasController',array('except' => array('show')));
+
 Route::resource('beneficiarios_organizaciones', 'BeneficiariosOrganizacionesController',array('except' => array('show')));
+
+
+Route::controller('inscripciones', 'InscripcionesController');
 
 Route::get('/anos_fiscales/search', array('uses' => 'AnosFiscalesController@search'));
 Route::get('/dependencias/search', array('uses' => 'DependenciasController@search'));
 Route::get('/organizaciones/search', array('uses' => 'OrganizacionesController@search'));
 Route::get('/direcciones/search', array('uses' => 'DireccionesController@search'));
 Route::get('/beneficiarios/search', array('uses' => 'BeneficiariosController@search'));
+Route::get('/programas/search', array('uses' => 'ProgramasController@search'));
 Route::get('/beneficiarios_organizaciones/search', array('uses' => 'BeneficiariosOrganizacionesController@search'));
 
 
@@ -60,18 +66,15 @@ Route::group(['before' => 'auth'], function()
 
 Route::get('/test', function()
 {
-
+    $dependencia = 'Depd';
      $query = Direccion::select();
 
-    $query = $query->join('dependencia', function($join)
+    $query = $query->join('dependencia', function($join) use ($dependencia)
     {
         $dependencia = 'Depd';
         $join->on('direccion.id_dependencia', '=', 'dependencia.id_dependencia')
             ->where('dependencia.nombre', 'LIKE', "%{$dependencia}%");
     });
-
-
-
     return $query->get();
 });
 
