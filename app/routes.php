@@ -96,4 +96,11 @@ Route::get('/test', function()
     return $query->get(); */
 });
 
-
+App::error(function(Exception $exception, $code)
+{
+    Log::error($exception,array('url'=>Request::url()));
+    if (app()->environment() != 'local')
+    {
+    return Response::view('Error.404', array('pageTitle'=>'Oops, something went wrong'), 500);
+    }
+});

@@ -2,7 +2,7 @@
 @section("contenido_derecho")
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Beneficiarios</h1>
+            <h3 class="page-header colorbrand">Beneficiarios</h3>
             @if(Session::has('message'))
                 <div class="alert alert-{{ Session::get('message-type') }} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>{{ Session::get('message')}}</div>
             @endif
