@@ -44,8 +44,8 @@
                             Cumplida
                         </label>
                         <label>
-                            {{ Form::radio("finalidad","Incumplida",(($organizacion_programa->finalidad == "Incumplida") ? true : false))}}
-                            Incumplida
+                            {{ Form::radio("finalidad","En Proceso",(($organizacion_programa->finalidad == "En proceso") ? true : false))}}
+                            En Proceso
                         </label>
                         <span class="help-block">{{ ($error = $errors->first('finalidad')) ? $error : '' }}</span>
                     </div>

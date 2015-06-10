@@ -275,7 +275,7 @@ class InscripcionesController extends \BaseController {
                 'id_beneficiario' => 'required|exists:beneficiario,id_beneficiario',
                 'id_programa' => 'required|exists:programa,id_programa',
                 'id_direccion' => 'required|exists:direccion,id_direccion',
-                'finalidad' => 'required:in:Cumplida,Incumplida',
+                'finalidad' => 'required:in:Cumplida,En Proceso',
                 'comentarios' => 'max:99999'
             ];
         }
@@ -285,7 +285,7 @@ class InscripcionesController extends \BaseController {
                'id_organizacion' => 'required|exists:organizacion,id_organizacion',
                'id_programa' => 'required|exists:programa,id_programa',
                'id_direccion' => 'required|exists:direccion,id_direccion',
-               'finalidad' => 'required:in:Cumplida,Incumplida',
+               'finalidad' => 'required:in:Cumplida,En Proceso',
                'comentarios' => 'max:99999'
            ];
        }
@@ -375,7 +375,7 @@ class InscripcionesController extends \BaseController {
                 'id_beneficiario' => 'required|exists:beneficiario,id_beneficiario',
                 'id_programa' => 'required|exists:programa,id_programa',
                 'id_direccion' => 'required|exists:direccion,id_direccion',
-                'finalidad' => 'required:in:Cumplida,Incumplida',
+                'finalidad' => 'required:in:Cumplida,En Proceso',
                 'comentarios' => 'max:99999'
             ];
         }
@@ -386,7 +386,7 @@ class InscripcionesController extends \BaseController {
                 'id_organizacion' => 'required|exists:organizacion,id_organizacion',
                 'id_programa' => 'required|exists:programa,id_programa',
                 'id_direccion' => 'required|exists:direccion,id_direccion',
-                'finalidad' => 'required:in:Cumplida,Incumplida',
+                'finalidad' => 'required:in:Cumplida,En Proceso',
                 'comentarios' => 'max:99999'
             ];
         }
