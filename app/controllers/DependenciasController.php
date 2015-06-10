@@ -2,6 +2,11 @@
 
 class DependenciasController extends \BaseController {
 
+    public function __construct()
+    {
+        $this->beforeFilter('hasAccess:dependencias.view');
+    }
+
 	/**
 	 * Display a listing of dependencias
 	 *
@@ -20,6 +25,7 @@ class DependenciasController extends \BaseController {
 	 */
 	public function create()
 	{
+        $this->beforeFilter('hasAccess:dependencias.create');
 		return View::make('dependencias.create');
 	}
 
@@ -30,6 +36,7 @@ class DependenciasController extends \BaseController {
 	 */
 	public function store()
 	{
+        $this->beforeFilter('hasAccess:dependencias.create');
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
@@ -71,6 +78,7 @@ class DependenciasController extends \BaseController {
 	 */
 	public function edit($id)
 	{
+        $this->beforeFilter('hasAccess:dependencias.update');
 		$dependencia = Dependencia::find($id);
 
 		return View::make('dependencias.edit', compact('dependencia'));
@@ -84,6 +92,7 @@ class DependenciasController extends \BaseController {
 	 */
 	public function update($id)
 	{
+        $this->beforeFilter('hasAccess:dependencias.update');
 		$dependencia = Dependencia::findOrFail($id);
 
         Input::merge(array_map('trim', Input::all()));
@@ -124,6 +133,7 @@ class DependenciasController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
+        $this->beforeFilter('hasAccess:dependencias.delete');
 		Dependencia::destroy($id);
 		return Redirect::route('dependencias.index')->with('message-type', 'success')
 		->with('message', 'El elemento se eliminó correctamente.');
