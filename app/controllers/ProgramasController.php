@@ -42,7 +42,7 @@ class ProgramasController extends \BaseController {
             'id_dependencia' => 'required|exists:dependencia,id_dependencia',
             'id_ano' => 'required|exists:ano,id_ano',
             'clave' => 'required|alpha_num|between:1,255',
-            'descripcion' => 'required|alpha_num_space|between:1,255',
+            'descripcion' => 'required|between:1,255',
             'convocatoria' => 'max:1000',
             'estado' => 'required|in:Activo,Inactivo'
         ];
@@ -105,7 +105,7 @@ class ProgramasController extends \BaseController {
             'id_dependencia' => 'required|exists:dependencia,id_dependencia',
             'id_ano' => 'required|exists:ano,id_ano',
             'clave' => 'required|alpha_num|between:1,255',
-            'descripcion' => 'required|alpha_num_space|between:1,255',
+            'descripcion' => 'required|between:1,255',
             'convocatoria' => 'max:1000',
             'estado' => 'required|in:Activo,Inactivo'
         ];
