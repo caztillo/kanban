@@ -9,7 +9,7 @@ class DependenciasController extends \BaseController {
 	 */
 	public function index()
 	{
-        $dependencias = Dependencia::orderBy('id_dependencia', 'desc')->simplePaginate(5);
+        $dependencias = Dependencia::orderBy('id_dependencia', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
 		return View::make('dependencias.index', compact('dependencias'));
 	}
 
@@ -157,7 +157,7 @@ class DependenciasController extends \BaseController {
 
             if(!empty($clave))
             {
-                $query = $query->where('clave', '=', $clave);
+                $query = $query->where('clave', 'LIKE', "%{$clave}%");
             }
 
             if(!empty($direccion))

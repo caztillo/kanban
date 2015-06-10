@@ -2,29 +2,21 @@
 @section("contenido_derecho")
     <div class="row">
         <div class="col-lg-12">
-            <h3 class="page-header colorbrand">Usuarios</h3>
+            <h1 class="page-header">Usuarios</h1>
             @if(Session::has('message'))
                 <div class="alert alert-{{ Session::get('message-type') }} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>{{ Session::get('message')}}</div>
             @endif
-            @if($errors->any())
-                <div class="errors">
-                    <ul>
-                        @foreach($errors->all() as $error)
-                            <li>{{-- $error --}}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-            {{  Form::open(array('url' => 'usuarios', 'class' => 'form-horizontal'))  }}
+
+            {{ Form::model($usuario, array('route' => array('usuarios.update', $usuario->id), 'method' => 'PUT', 'class' => 'form-horizontal')) }}
             <fieldset>
                 <!-- Form Name -->
-                <legend>Nuevo</legend>
+                <legend>Editar</legend>
 
                 <!-- Text input-->
                 <div class="form-group  has-feedback {{ ($error = $errors->first('first_name')) ? 'has-error' : '' }}">
                     <label class="col-md-4 control-label" for="first_name">Nombre</label>
                     <div class="col-md-6">
-                        {{ Form::text('first_name', null, ['class' => 'form-control', 'placeholder' => 'Ingresar nombre', 'maxlength' => 255] )}}
+                        {{ Form::text('first_name', $usuario->first_name, ['class' => 'form-control', 'placeholder' => 'Ingresar nombre', 'maxlength' => 255] )}}
                         <span class="help-block">{{ ($error = $errors->first('first_name')) ? $error : '' }}</span>
                     </div>
                 </div>
@@ -32,7 +24,7 @@
                 <div class="form-group  has-feedback {{ ($error = $errors->first('last_name')) ? 'has-error' : '' }}">
                     <label class="col-md-4 control-label" for="last_name">Apellido</label>
                     <div class="col-md-6">
-                        {{ Form::text('last_name', null, ['class' => 'form-control', 'placeholder' => 'Ingresar apellido', 'maxlength' => 255] )}}
+                        {{ Form::text('last_name', $usuario->last_name, ['class' => 'form-control', 'placeholder' => 'Ingresar apellido', 'maxlength' => 255] )}}
                         <span class="help-block">{{ ($error = $errors->first('last_name')) ? $error : '' }}</span>
                     </div>
                 </div>
@@ -55,7 +47,7 @@
                     </div>
                 </div>
 
-               <!-- Text input-->
+                <!-- Text input-->
                 <div class="form-group  has-feedback {{ ($error = $errors->first('email')) ? 'has-error' : '' }}">
                     <label class="col-md-4 control-label" for="email">Correo</label>
                     <div class="col-md-6">
@@ -64,7 +56,7 @@
                     </div>
                 </div>
 
-                 <!-- Text input-->
+                <!-- Text input-->
                 <div class="form-group  has-feedback {{ ($error = $errors->first('password')) ? 'has-error' : '' }}">
                     <label class="col-md-4 control-label" for="password">Contraseña</label>
                     <div class="col-md-6">
@@ -73,7 +65,7 @@
                     </div>
                 </div>
 
-                 <!-- Text input-->
+                <!-- Text input-->
                 <div class="form-group  has-feedback {{ ($error = $errors->first('password_confirmation')) ? 'has-error' : '' }}">
                     <label class="col-md-4 control-label" for="password_confirmation">Confirmar Contraseña</label>
                     <div class="col-md-6">
