@@ -97,7 +97,7 @@ Route::filter('inGroup', function($route, $request, $value)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest())
+    if ( ! Sentry::check())
 	{
 		if (Request::ajax())
 		{
