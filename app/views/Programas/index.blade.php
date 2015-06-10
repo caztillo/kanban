@@ -56,6 +56,11 @@
                     </tbody>
                 </table>
             </div>
+            <nav>
+              <ul class="pager">
+               {{ $programas->links() }}
+              </ul>
+            </nav>
         </div>
     </div>
 

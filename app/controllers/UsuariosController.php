@@ -1,30 +1,30 @@
 <?php
 
-class DependenciasController extends \BaseController {
+class UsuariosController extends \BaseController {
 
 	/**
-	 * Display a listing of dependencias
+	 * Display a listing of users
 	 *
 	 * @return Response
 	 */
 	public function index()
 	{
-        $dependencias = Dependencia::orderBy('id_dependencia', 'desc')->simplePaginate(5);
-		return View::make('dependencias.index', compact('dependencias'));
+        $usuarios = User::orderBy('id', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
+		return View::make('usuarios.index', compact('usuarios'));
 	}
 
 	/**
-	 * Show the form for creating a new dependencia
+	 * Show the form for creating a new user
 	 *
 	 * @return Response
 	 */
 	public function create()
 	{
-		return View::make('dependencias.create');
+		return View::make('usuarios.create');
 	}
 
 	/**
-	 * Store a newly created dependencia in storage.
+	 * Store a newly created user in storage.
 	 *
 	 * @return Response
 	 */
@@ -34,9 +34,10 @@ class DependenciasController extends \BaseController {
 
         $rules = [
             'nombre' => 'required|alpha_num_space|between:1,255',
-            'clave' => 'required|alpha_num_space|between:1,255',
-            'direccion' => 'required|alpha_num_space|between:1,255',
-            'estado' => 'required|in:Activo,Inactivo',
+            'num_empleado' => 'required|between:1,255',
+            'correo' => 'required|email',
+            'contrasena' => 'required|between:5,255',
+            'estado' => 'required|in:Activo,Inactivo'
         ];
 
         $messages = [
@@ -45,6 +46,7 @@ class DependenciasController extends \BaseController {
             'estado.integer' => 'Este campo es obligatorio.',
             'between' => 'Este campo es obligatorio.',
             'in' => 'Este campo es obligatorio.',
+            'email' => 'El correo debe estar formado de la siguiente manera: direccion@dominio.com'
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);
@@ -56,24 +58,24 @@ class DependenciasController extends \BaseController {
 
         $data = Input::all();
         $data['creacion'] = date('Y-m-d H:i:s');
-        Dependencia::create($data);
+        User::create($data);
 
-		return Redirect::route('dependencias.index')->with('message-type', 'success')
+		return Redirect::route('usuarios.index')->with('message-type', 'success')
             ->with('message', 'La información se ha guardado correctamente');
 	}
 
 
 	/**
-	 * Show the form for editing the specified dependencia.
+	 * Show the form for editing the specified user.
 	 *
 	 * @param  int  $id
 	 * @return Response
 	 */
 	public function edit($id)
 	{
-		$dependencia = Dependencia::find($id);
+		$user = User::find($id);
 
-		return View::make('dependencias.edit', compact('dependencia'));
+		return View::make('usuarios.edit', compact('user'));
 	}
 
 	/**
@@ -84,15 +86,16 @@ class DependenciasController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$dependencia = Dependencia::findOrFail($id);
+		$usuario = User::findOrFail($id);
 
         Input::merge(array_map('trim', Input::all()));
 
-        $rules = [
+         $rules = [
             'nombre' => 'required|alpha_num_space|between:1,255',
-            'clave' => 'required|alpha_num_space|between:1,255',
-            'direccion' => 'required|alpha_num_space|between:1,255',
-            'estado' => 'required|in:Activo,Inactivo',
+            'num_empleado' => 'required|between:1,255',
+            'correo' => 'required|email',
+            'contrasena' => 'required|between:5,255',
+            'estado' => 'required|in:Activo,Inactivo'
         ];
 
         $messages = [
@@ -101,6 +104,7 @@ class DependenciasController extends \BaseController {
             'estado.integer' => 'Este campo es obligatorio.',
             'between' => 'Este campo es obligatorio.',
             'in' => 'Este campo es obligatorio.',
+            'email' => 'El correo debe estar formado de la siguiente manera: direccion@dominio.com'
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);
@@ -110,59 +114,58 @@ class DependenciasController extends \BaseController {
 			return Redirect::back()->with('message-type', 'danger')->with('message', 'Algunos datos no han sido propiamente ingresados, favor de revisarlos.')->withErrors($validator)->withInput();
 		}
 
-        $dependencia->update($data);
+        $usuario->update($data);
 
-		return Redirect::route('dependencias.index')->with('message-type', 'success')
+		return Redirect::route('usuarios.index')->with('message-type', 'success')
             ->with('message', 'La información se actualizó correctamente.');
 	}
 
 	/**
-	 * Remove the specified dependencia from storage.
+	 * Remove the specified user from storage.
 	 *
 	 * @param  int  $id
 	 * @return Response
 	 */
 	public function destroy($id)
 	{
-		Dependencia::destroy($id);
-		return Redirect::route('dependencias.index')->with('message-type', 'success')
+		User::destroy($id);
+		return Redirect::route('usuarios.index')->with('message-type', 'success')
 		->with('message', 'El elemento se eliminó correctamente.');
 	}
 
     /**
      * Display a listing of the resource.
-     * GET /dependencias/search
+     * GET /users/search
      *
      * @return Response
      */
     public function search()
     {
-
-        $id_dependencia = Input::get('id_dependencia');
+        $id_user = Input::get('id');
         $nombre = Input::get('nombre');
-        $clave = Input::get('clave');
-        $direccion = Input::get('direccion');
+        $num_empleado = Input::get('num_empleado');
+        $correo = Input::get('correo');
         $estado = Input::get('estado');
         $creacion = Input::get('creacion');
 
-        if(!empty($id_dependencia) )
-            $dependencias = Dependencia::where('id_dependencia','=',$id_dependencia)->simplePaginate(Config::get("constantes.elementos_pagina"));
+        if(!empty($id_user) )
+            $users = User::where('id','=',$id_user)->simplePaginate(Config::get("constantes.elementos_pagina"));
         else
         {
-            $query = Dependencia::select();
+            $query = User::select();
             if(!empty($nombre))
             {
                 $query = $query->where('nombre', 'LIKE', "%{$nombre}%");
             }
 
-            if(!empty($clave))
+            if(!empty($num_empleado))
             {
-                $query = $query->where('clave', '=', $clave);
+                $query = $query->where('num_empleado', '=', $num_empleado);
             }
 
-            if(!empty($direccion))
+            if(!empty($correo))
             {
-                $query = $query->where('direccion', 'LIKE', "%{$direccion}%");
+                $query = $query->where('correo', 'LIKE', "%{$correo}%");
             }
 
             if(!empty($estado))
@@ -175,21 +178,19 @@ class DependenciasController extends \BaseController {
                 $query = $query->whereRaw("DATE(creacion) = '".$creacion."'");
             }
 
-
-            $dependencias = $query->orderBy('id_dependencia','desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
-
+            $users = $query->orderBy('id','desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
 
         }
 
-        if($dependencias->isEmpty())
+        if($users->isEmpty())
         {
-            return Redirect::route('dependencias.index')
+            return Redirect::route('usuarios.index')
                 ->with('message-type', 'warning')
                 ->with('message', 'El criterio de búsqueda no regresó ningún resultado.');
         }
         else
         {
-            return View::make('dependencias.index', compact('dependencias'));
+            return View::make('usuarios.index', compact('users'));
         }
 
     }

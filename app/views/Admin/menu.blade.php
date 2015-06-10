@@ -41,10 +41,10 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="{{url('inscripciones')}}"><i class="fa fa-pencil"></i> Inscripciones</a>
+                            <a href="{{url('inscripciones')}}"><i class="fa fa-pencil"></i> Inscribir a Programas</a>
                         </li>
                         <li>
-                            <a href="{{url('beneficiarios_organizaciones')}}"><i class="fa fa-pencil"></i> Inscripción de Beneficiario a Organización</a>
+                            <a href="{{url('beneficiarios_organizaciones')}}"><i class="fa fa-pencil"></i> Inscripción a Organizaciones</a>
                         </li>
                         <li>
                             <a href="{{url('beneficiarios')}}"><i class="fa fa-group"></i> Beneficiarios</a>

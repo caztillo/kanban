@@ -9,7 +9,7 @@ class DireccionesController extends \BaseController {
      */
     public function index()
     {
-        $direcciones = Direccion::orderBy('id_direccion', 'desc')->get();
+        $direcciones = Direccion::orderBy('id_direccion', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
         return View::make('direcciones.index', compact('direcciones'));
     }
 
@@ -151,7 +151,7 @@ class DireccionesController extends \BaseController {
         $creacion = Input::get('creacion');
 
         if(!empty($id_direccion) )
-            $direcciones = Direccion::where('id_direccion','=',$id_direccion)->orderBy('id_direccion', 'desc')->get();
+            $direcciones = Direccion::where('id_direccion','=',$id_direccion)->orderBy('id_direccion', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
         else
         {
             $query = Direccion::select();
@@ -186,7 +186,7 @@ class DireccionesController extends \BaseController {
             }
 
 
-            $direcciones = $query->orderBy('id_direccion', 'desc')->get();
+            $direcciones = $query->orderBy('id_direccion', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
 
 
         }
