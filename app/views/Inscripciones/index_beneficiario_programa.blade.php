@@ -5,7 +5,7 @@
 @section("contenido_derecho")
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Inscripciones</h1>
+            <h3 class="page-header colorbrand">Inscripción a Programas</h3>
             @if(Session::has('message'))
                 <div class="alert alert-{{ Session::get('message-type') }} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>{{ Session::get('message')}}</div>
             @endif
@@ -42,7 +42,7 @@
                     <tr class="filters">
                         <th style=""><input type="text" name="ano_fiscal" class="form-control" placeholder="Año Fiscal" disabled></th>
                         <th style=""><input type="text" name="dependencia" class="form-control" placeholder="Dependencia" disabled></th>
-                        <th style=""><input type="text" name="clave_programa" class="form-control" placeholder="CVE. Prog." disabled></th>
+                        <th style=""><input type="text" name="clave_programa" class="form-control" placeholder="Programa" disabled></th>
                         <th style=""><input type="text" name="beneficiario" class="form-control" placeholder="Beneficiario" disabled></th>
                         <th style=""><input type="text" name="organizacion" class="form-control" placeholder="Organización" disabled></th>
                         <th style=""><input type="text" name="rfc" class="form-control" placeholder="RFC" disabled></th>
@@ -57,14 +57,19 @@
                     <tbody>
                     @foreach($beneficiarios_programas as $beneficiario_programa)
                         <tr>
-                            <td>{{$beneficiario_programa->programa->ano->descripcion}}</td>
-                            <td>{{$beneficiario_programa->programa->dependencia->nombre}}</td>
-                            <td>{{$beneficiario_programa->programa->clave}}</td>
-                            <td>{{$beneficiario_programa->beneficiario->nombre}}</td>
+                            <td><a title="Dé clic para ver más información del año" href="{{url('anos_fiscales/'. $beneficiario_programa->programa->ano->id_ano.'/edit')}}">{{$beneficiario_programa->programa->ano->descripcion}}</a></td>
+                           
+                            <td>
+                                <a title="Dé clic para ver más información de la dependencia" href="{{url('dependencias/'. $beneficiario_programa->programa->dependencia->id_dependencia.'/edit')}}">{{$beneficiario_programa->programa->dependencia->nombre}}</a>
+                            </td>
+                            
+                            <td><a title="Dé clic para ver más información del programa" href="{{url('programas/'. $beneficiario_programa->programa->id_programa.'/edit')}}">{{$beneficiario_programa->programa->clave}}</a></td>
+                            
+                            <td><a  title="Dé clic para ver más información del beneficiario" href="{{url('beneficiarios/'. $beneficiario_programa->beneficiario->id_beneficiario.'/edit')}}">{{$beneficiario_programa->beneficiario->nombre}}</a></td>
 
                             @forelse($beneficiario_programa->beneficiario->beneficiario_organizacion as $beneficiario_organizacion)
                                 <td>
-                                    {{$beneficiario_organizacion->organizacion->nombre}}
+                                    <a title="Dé clic para ver más información de la organización" href="{{url('organizaciones/'. $beneficiario_organizacion->organizacion->id_organizacion.'/edit')}}">{{$beneficiario_organizacion->organizacion->nombre}}</a>
                                 </td>
                             @empty
                                 <td>Sin Organización</td>

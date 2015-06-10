@@ -5,7 +5,7 @@
 @section("contenido_derecho")
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Inscripciones</h1>
+            <h3 class="page-header colorbrand">Inscripción a Programas</h3>
             @if(Session::has('message'))
                 <div class="alert alert-{{ Session::get('message-type') }} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>{{ Session::get('message')}}</div>
             @endif
@@ -54,10 +54,17 @@
                     <tbody>
                     @foreach($organizaciones_programas as $organizacion_programa)
                         <tr>
-                            <td>{{$organizacion_programa->programa->ano->descripcion}}</td>
-                            <td>{{$organizacion_programa->programa->dependencia->nombre}}</td>
-                            <td>{{$organizacion_programa->programa->clave}}</td>
-                            <td>{{$organizacion_programa->organizacion->nombre}}</td>
+                            <td>
+                                <a title="Dé clic para ver más información del año" href="{{url('anos_fiscales/'. $organizacion_programa->programa->ano->id_ano.'/edit')}}">{{$organizacion_programa->programa->ano->descripcion}}</a>
+                            </td>
+                            <td><a title="Dé clic para ver más información de la dependencia" href="{{url('dependencias/'. $organizacion_programa->programa->dependencia->id_dependencia.'/edit')}}">{{$organizacion_programa->programa->dependencia->nombre}}</a>
+                            </td>
+                            <td>
+                                <a title="Dé clic para ver más información el programa" href="{{url('programas/'. $organizacion_programa->programa->id_programa.'/edit')}}">{{$organizacion_programa->programa->clave}}</a>
+                            </td>
+                            <td>
+                                <a title="Dé clic para ver más información de la organización" href="{{url('organizaciones/'. $organizacion_programa->organizacion->id_organizacion.'/edit')}}">{{$organizacion_programa->organizacion->nombre}}</a>
+                            </td>
                             <td>{{$organizacion_programa->organizacion->RFC}}</td>
                             <td>{{$organizacion_programa->finalidad}}</td>
                             <td>{{date("Y-m-d",strtotime($organizacion_programa->inscripcion))}}</td>

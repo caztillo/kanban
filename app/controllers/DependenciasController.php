@@ -9,7 +9,7 @@ class DependenciasController extends \BaseController {
 	 */
 	public function index()
 	{
-        $dependencias = Dependencia::orderBy('id_dependencia', 'desc')->simplePaginate(5);
+        $dependencias = Dependencia::orderBy('id_dependencia', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
 		return View::make('dependencias.index', compact('dependencias'));
 	}
 
@@ -35,7 +35,7 @@ class DependenciasController extends \BaseController {
         $rules = [
             'nombre' => 'required|alpha_num_space|between:1,255',
             'clave' => 'required|alpha_num_space|between:1,255',
-            'direccion' => 'required|alpha_num_space|between:1,255',
+            'direccion' => 'required|between:1,255',
             'estado' => 'required|in:Activo,Inactivo',
         ];
 
@@ -91,7 +91,7 @@ class DependenciasController extends \BaseController {
         $rules = [
             'nombre' => 'required|alpha_num_space|between:1,255',
             'clave' => 'required|alpha_num_space|between:1,255',
-            'direccion' => 'required|alpha_num_space|between:1,255',
+            'direccion' => 'required|between:1,255',
             'estado' => 'required|in:Activo,Inactivo',
         ];
 
@@ -157,7 +157,7 @@ class DependenciasController extends \BaseController {
 
             if(!empty($clave))
             {
-                $query = $query->where('clave', '=', $clave);
+                $query = $query->where('clave', 'LIKE', "%{$clave}%");
             }
 
             if(!empty($direccion))

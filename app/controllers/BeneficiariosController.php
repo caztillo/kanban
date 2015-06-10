@@ -171,6 +171,7 @@ class BeneficiariosController extends \BaseController {
     {
 
         $id_beneficiario = Input::get('id_beneficiario');
+        $nombre = Input::get('nombre');
         $correo = Input::get('correo');
         $RFC = Input::get('RFC');
         $CURP = Input::get('CURP');
