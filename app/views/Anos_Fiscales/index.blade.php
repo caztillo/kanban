@@ -39,7 +39,7 @@
                     @foreach($anos_fiscales as $ano_fiscal)
                         <tr>
                             <td>{{$ano_fiscal->id_ano}}</td>
-                            <td>{{$ano_fiscal->descripcion}}</td>
+                            <td style="text-align: left;">{{$ano_fiscal->descripcion}}</td>
                             <td>{{$ano_fiscal->fecha_inicio}}</td>
                             <td>{{$ano_fiscal->fecha_termino}}</td>
                             <td>{{$ano_fiscal->estado}}</td>

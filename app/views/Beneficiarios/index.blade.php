@@ -39,7 +39,7 @@
                     @foreach($beneficiarios as $beneficiario)
                         <tr>
                             <td>{{$beneficiario->id_beneficiario}}</td>
-                            <td>{{$beneficiario->nombre}}</td>
+                            <td style="text-align: left;">{{$beneficiario->nombre}}</td>
                             <td>{{$beneficiario->RFC}}</td>
                             <td>{{$beneficiario->CURP}}</td>
                             <td>{{$beneficiario->estado}}</td>

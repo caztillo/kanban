@@ -109,7 +109,7 @@ class BeneficiariosController extends \BaseController {
 
          $rules = [
             'nombre' => 'required|alpha_space|between:2,255',
-            'direccion' => 'required|alpha_num_space|between:1,255',
+            'direccion' => 'required|between:1,255',
             'codigo_postal' => 'required|digits:5',
             'telefono' => array('required','regex:/^[0-9]{10,20}$/'),
             'correo' => 'required|email',
