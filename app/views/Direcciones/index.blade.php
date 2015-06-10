@@ -16,7 +16,10 @@
                     <div class="pull-right">
                         <button class="btn btn-default btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filtrar</button>
                         {{ Form::button('<span class="glyphicon glyphicon-search"></span> Buscar', array('type' => 'submit', 'class' => 'btn btn-info btn-sm', "style" => "display:none;"))}}
-                        <a class="btn btn-primary btn-sm" href="{{url('direcciones/create')}}" role="button"><span class="glyphicon glyphicon-plus"></span>Nuevo</a>
+                        @if(Sentry::getUser()->hasAccess('direcciones.create'))
+                            <a class="btn btn-primary btn-sm" href="{{url('direcciones/create')}}" role="button"><span class="glyphicon glyphicon-plus"></span>Nuevo</a>
+                        @endif
+
                     </div>
                 </div>
                 <table class="table">
@@ -43,12 +46,20 @@
                             <td>{{$direccion->estado}}</td>
                             <td>{{date("Y-m-d",strtotime($direccion->creacion))}}</td>
 
-                            <td> <a class="btn btn-success btn-xs" href="{{url('direcciones/'.$direccion->id_direccion . '/edit')}}" role="button"><span class="glyphicon glyphicon-pencil"></span></a></td>
                             <td>
-                                {{ Form::open(array('url' => 'direcciones/' . $direccion->id_direccion)) }}
-                                {{ Form::hidden('_method', 'DELETE') }}
-                                {{ Form::button('<span class="glyphicon glyphicon-remove"></span>', array('type' => 'submit', 'class' => 'btn btn-danger btn-xs'))}}
-                                {{ Form::close() }}
+                                @if(Sentry::getUser()->hasAccess('direcciones.update'))
+                                    <a class="btn btn-success btn-xs" href="{{url('direcciones/'.$direccion->id_direccion . '/edit')}}" role="button"><span class="glyphicon glyphicon-pencil"></span></a>
+                                @endif
+
+                            </td>
+                            <td>
+                                @if(Sentry::getUser()->hasAccess('direcciones.delete'))
+                                    {{ Form::open(array('url' => 'direcciones/' . $direccion->id_direccion)) }}
+                                    {{ Form::hidden('_method', 'DELETE') }}
+                                    {{ Form::button('<span class="glyphicon glyphicon-remove"></span>', array('type' => 'submit', 'class' => 'btn btn-danger btn-xs'))}}
+                                    {{ Form::close() }}
+                                @endif
+
                             </td>
 
                         </tr>

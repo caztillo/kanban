@@ -28,9 +28,11 @@
                         <button class="btn btn-default btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filtrar</button>
 
                         {{ Form::button('<span class="glyphicon glyphicon-search"></span> Buscar', array('type' => 'submit', 'class' => 'btn btn-info btn-sm', "style" => "display:none;"))}}
+                        @if(Sentry::getUser()->hasAccess('inscripciones.create'))
+                            <a class="btn btn-primary btn-sm" href="{{url('inscripciones/agregar-inscripcion/1')}}" role="button"><span class="glyphicon glyphicon-plus"></span> Inscribir Beneficiario</a>
+                            <a class="btn btn-info btn-sm" href="{{url('inscripciones/agregar-inscripcion/2')}}" role="button"><span class="glyphicon glyphicon-plus"></span> Inscribir Organización</a>
+                        @endif
 
-                        <a class="btn btn-primary btn-sm" href="{{url('inscripciones/agregar-inscripcion/1')}}" role="button"><span class="glyphicon glyphicon-plus"></span> Inscribir Beneficiario</a>
-                        <a class="btn btn-info btn-sm" href="{{url('inscripciones/agregar-inscripcion/2')}}" role="button"><span class="glyphicon glyphicon-plus"></span> Inscribir Organización</a>
 
 
 
@@ -69,17 +71,23 @@
                             <td>{{$organizacion_programa->finalidad}}</td>
                             <td>{{date("Y-m-d",strtotime($organizacion_programa->inscripcion))}}</td>
                             <td>
-                                {{ Form::open(array('method' => "GET",'action' => array('InscripcionesController@getEditarInscripcion',$organizacion_programa->id_organizacion_programa))) }}
-                                {{ Form::hidden('tipo_programa', 2) }}
-                                {{ Form::button('<span class="glyphicon glyphicon-pencil"></span>', array('type' => 'submit', 'class' => 'btn btn-success btn-xs'))}}
-                                {{ Form::close() }}
+                                @if(Sentry::getUser()->hasAccess('inscripciones.update'))
+                                    {{ Form::open(array('method' => "GET",'action' => array('InscripcionesController@getEditarInscripcion',$organizacion_programa->id_organizacion_programa))) }}
+                                    {{ Form::hidden('tipo_programa', 2) }}
+                                    {{ Form::button('<span class="glyphicon glyphicon-pencil"></span>', array('type' => 'submit', 'class' => 'btn btn-success btn-xs'))}}
+                                    {{ Form::close() }}
+                                @endif
+
                             </td>
                             <td>
-                                {{ Form::open(array('action' => array('InscripcionesController@postBorrarInscripcion', $organizacion_programa->id_organizacion_programa))) }}
-                                {{ Form::hidden('tipo_programa', 2) }}
-                                {{ Form::hidden('_method', 'POST') }}
-                                {{ Form::button('<span class="glyphicon glyphicon-remove"></span>', array('type' => 'submit', 'class' => 'btn btn-danger btn-xs'))}}
-                                {{ Form::close() }}
+                                @if(Sentry::getUser()->hasAccess('inscripciones.delete'))
+                                    {{ Form::open(array('action' => array('InscripcionesController@postBorrarInscripcion', $organizacion_programa->id_organizacion_programa))) }}
+                                    {{ Form::hidden('tipo_programa', 2) }}
+                                    {{ Form::hidden('_method', 'POST') }}
+                                    {{ Form::button('<span class="glyphicon glyphicon-remove"></span>', array('type' => 'submit', 'class' => 'btn btn-danger btn-xs'))}}
+                                    {{ Form::close() }}
+                                @endif
+
                             </td>
                         </tr>
                     @endforeach
