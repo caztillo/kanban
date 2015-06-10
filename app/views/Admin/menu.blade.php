@@ -68,10 +68,7 @@
                                     <a href="{{url('direcciones')}}">Direcciones</a>
                                 </li>
                                 <li>
-                                    <a href="#">Roles</a>
-                                </li>
-                                <li>
-                                    <a href="#">Usuarios</a>
+                                    <a href="{{url('usuarios')}}">Usuarios</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->

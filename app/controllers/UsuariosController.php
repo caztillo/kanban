@@ -9,7 +9,11 @@ class UsuariosController extends \BaseController {
 	 */
 	public function index()
 	{
-        $usuarios = User::orderBy('id', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
+        //$usuarios = User::orderBy('id', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
+
+        $usuarios = Sentry::getUserProvider()->createModel()->join('users_groups', 'users.id', '=', 'users_groups.user_id')->orderBy('id', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
+
+
 		return View::make('usuarios.index', compact('usuarios'));
 	}
 
@@ -20,7 +24,15 @@ class UsuariosController extends \BaseController {
 	 */
 	public function create()
 	{
-		return View::make('usuarios.create');
+        $grupos_sentry = Sentry::findAllGroups();
+
+        $grupos = array();
+        foreach ($grupos_sentry as $grupo)
+        {
+           $grupos[$grupo->id] = $grupo->name;
+        }
+
+        return View::make('usuarios.create', compact('grupos'));
 	}
 
 	/**
@@ -33,20 +45,29 @@ class UsuariosController extends \BaseController {
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
-            'nombre' => 'required|alpha_num_space|between:1,255',
-            'num_empleado' => 'required|between:1,255',
-            'correo' => 'required|email',
-            'contrasena' => 'required|between:5,255',
-            'estado' => 'required|in:Activo,Inactivo'
+            'first_name' => 'required|alpha_num_space|between:1,255',
+            'last_name' => 'required|alpha_num_space|between:1,255',
+            'num_empleado' => 'required|between:1,255|unique:users',
+            'id_grupo' => 'required|exists:groups,id',
+            'email' => 'required|email|unique:users',
+            'password' => ['required', 'confirmed', 'regex:/^(?=.*\d).{6,}$/'],
+            'password_confirmation' => 'required|min:6',
+            'estado' => 'required|boolean'
         ];
 
         $messages = [
             'required' => 'Este campo es obligatorio.',
+            'num_empleado.unique' => 'El número de empleado ya está en uso. Utilice otro.',
+            'email.unique' => 'El correo ya está en uso. Utilice otro.',
+            'email' => 'El formato del correo electrónico es inválido.',
+            'regex' => 'Utilice al menos un número en su contraseña.',
+            'confirmed' => 'La contraseña de confirmación no es correcta.',
+            'password_confirmation.min'    => 'La contraseña de confirmación debe de ser por lo menos :min caracteres de longitud.',
+            'confirmed' => 'La contraseña de confirmación no es correcta.',
+            'exists' => 'Seleccione un rol',
             'alpha_num_space' => 'Utilice sólo caracteres del alfabeto, números y espacios.',
-            'estado.integer' => 'Este campo es obligatorio.',
             'between' => 'Este campo es obligatorio.',
-            'in' => 'Este campo es obligatorio.',
-            'email' => 'El correo debe estar formado de la siguiente manera: direccion@dominio.com'
+            'boolean' => 'Este campo es obligatorio.',
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);
@@ -56,9 +77,57 @@ class UsuariosController extends \BaseController {
             return Redirect::back()->with('message-type', 'danger')->with('message', 'Algunos datos no han sido propiamente ingresados, favor de revisarlos.')->withErrors($validator)->withInput();
 		}
 
-        $data = Input::all();
-        $data['creacion'] = date('Y-m-d H:i:s');
-        User::create($data);
+        $id_grupo = Input::get('id_grupo');
+        $estado = Input::get('estado');
+
+        $date = new \DateTime;
+        try
+        {
+            $user = Sentry::createUser(
+                [
+                    'num_empleado' => Input::get('num_empleado'),
+                    'email' => Input::get('email'),
+                    'password' => Input::get('password'),
+                    'first_name' => Input::get('first_name'),
+                    'last_name' => Input::get('last_name'),
+                    'activated' => $estado,
+                    'activated_at' => $date,
+                    'created_at' => $date,
+                    'updated_at' => $date,
+
+                ]
+            );
+
+            // Find the group using the group id
+            $adminGroup = Sentry::findGroupById($id_grupo);
+
+            // Assign the group to the user
+            $user->addGroup($adminGroup);
+        }
+        catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
+        {
+            //echo 'Login field is required.';
+            return Redirect::back()->with('message-type', 'danger')->with('message', 'El campo Login es requerido.')->withErrors($validator)->withInput();
+        }
+        catch (Cartalyst\Sentry\Users\PasswordRequiredException $e)
+        {
+            //echo 'Password field is required.';
+
+            return Redirect::back()->with('message-type', 'danger')->with('message', 'El campo Password es requerido.')->withErrors($validator)->withInput();
+        }
+        catch (Cartalyst\Sentry\Users\UserExistsException $e)
+        {
+            //echo 'User with this login already exists.';
+
+            return Redirect::back()->with('message-type', 'danger')->with('message', 'El Usuario con este login ya existe.')->withErrors($validator)->withInput();
+        }
+        catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e)
+        {
+            //echo 'Group was not found.';
+
+            return Redirect::back()->with('message-type', 'danger')->with('message', 'El Rol no existe.')->withErrors($validator)->withInput();
+        }
+
 
 		return Redirect::route('usuarios.index')->with('message-type', 'success')
             ->with('message', 'La información se ha guardado correctamente');
@@ -73,9 +142,20 @@ class UsuariosController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$user = User::find($id);
+        try
+        {
+            $usuario = Sentry::findUserById($id);
+            $grupos = $usuario->getGroups();
+            dd($grupos);
 
-		return View::make('usuarios.edit', compact('user'));
+            return View::make('usuarios.edit', compact('usuario'));
+        }
+        catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+        {
+            return Redirect::back()->with('message-type', 'danger')->with('message', 'El usuario no existe.');
+        }
+
+
 	}
 
 	/**
@@ -90,21 +170,30 @@ class UsuariosController extends \BaseController {
 
         Input::merge(array_map('trim', Input::all()));
 
-         $rules = [
-            'nombre' => 'required|alpha_num_space|between:1,255',
-            'num_empleado' => 'required|between:1,255',
-            'correo' => 'required|email',
-            'contrasena' => 'required|between:5,255',
-            'estado' => 'required|in:Activo,Inactivo'
+        $rules = [
+            'first_name' => 'required|alpha_num_space|between:1,255',
+            'last_name' => 'required|alpha_num_space|between:1,255',
+            'num_empleado' => 'required|between:1,255|unique:users',
+            'id_grupo' => 'required|exists:groups,id',
+            'email' => 'required|email|unique:users',
+            'password' => ['required', 'confirmed', 'regex:/^(?=.*\d).{6,}$/'],
+            'password_confirmation' => 'required|min:6',
+            'estado' => 'required|boolean'
         ];
 
         $messages = [
             'required' => 'Este campo es obligatorio.',
+            'num_empleado.unique' => 'El número de empleado ya está en uso. Utilice otro.',
+            'email.unique' => 'El correo ya está en uso. Utilice otro.',
+            'email' => 'El formato del correo electrónico es inválido.',
+            'regex' => 'Utilice al menos un número en su contraseña.',
+            'confirmed' => 'La contraseña de confirmación no es correcta.',
+            'password_confirmation.min'    => 'La contraseña de confirmación debe de ser por lo menos :min caracteres de longitud.',
+            'confirmed' => 'La contraseña de confirmación no es correcta.',
+            'exists' => 'Seleccione un rol',
             'alpha_num_space' => 'Utilice sólo caracteres del alfabeto, números y espacios.',
-            'estado.integer' => 'Este campo es obligatorio.',
             'between' => 'Este campo es obligatorio.',
-            'in' => 'Este campo es obligatorio.',
-            'email' => 'El correo debe estar formado de la siguiente manera: direccion@dominio.com'
+            'boolean' => 'Este campo es obligatorio.',
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);
