@@ -2,6 +2,11 @@
 
 class InscripcionesController extends \BaseController {
 
+    public function __construct()
+    {
+        $this->beforeFilter('hasAccess:inscripciones.view');
+    }
+
     /**
      * Display a listing of inscripciones
      *
@@ -240,6 +245,9 @@ class InscripcionesController extends \BaseController {
     }
     public function getAgregarInscripcion($tipo_programa)
     {
+
+        $this->beforeFilter('hasAccess:inscripciones.create');
+
         if($tipo_programa == 1)
         {
             $beneficiarios = Beneficiario::orderBy('nombre', 'asc')->where('estado', '=', 'Activo')->lists('nombre','id_beneficiario');
@@ -265,6 +273,8 @@ class InscripcionesController extends \BaseController {
     }
     public function postAgregarInscripcion()
     {
+        $this->beforeFilter('hasAccess:inscripciones.create');
+
         Input::merge(array_map('trim', Input::all()));
         $tipo_programa = Input::get('tipo_programa');
 
@@ -335,6 +345,8 @@ class InscripcionesController extends \BaseController {
     }
     public function getEditarInscripcion($id)
     {
+        $this->beforeFilter('hasAccess:inscripciones.update');
+
         $tipo_programa = Input::get('tipo_programa');
 
         if($tipo_programa == 1)
@@ -367,6 +379,8 @@ class InscripcionesController extends \BaseController {
     }
     public function postActualizarInscripcion($id)
     {
+        $this->beforeFilter('hasAccess:inscripciones.update');
+
         $tipo_programa = Input::get('tipo_programa');
         if($tipo_programa == 1)
         {
@@ -434,6 +448,7 @@ class InscripcionesController extends \BaseController {
     }
     public function postBorrarInscripcion($id)
     {
+        $this->beforeFilter('hasAccess:inscripciones.delete');
 
         $tipo_programa = Input::get('tipo_programa');
 

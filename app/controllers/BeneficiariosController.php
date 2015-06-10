@@ -2,6 +2,11 @@
 
 class BeneficiariosController extends \BaseController {
 
+    public function __construct()
+    {
+        $this->beforeFilter('hasAccess:beneficiarios.view');
+    }
+
 	/**
 	 * Display a listing of beneficiarios
 	 *
@@ -21,6 +26,7 @@ class BeneficiariosController extends \BaseController {
 	 */
 	public function create()
 	{
+        $this->beforeFilter('hasAccess:beneficiarios.create');
 		$paises = $this->paises(); 
 
 		return View::make('beneficiarios.create', compact('paises'));
@@ -33,6 +39,7 @@ class BeneficiariosController extends \BaseController {
 	 */
 	public function store()
 	{
+        $this->beforeFilter('hasAccess:beneficiarios.create');
         Input::merge(array_map('trim', Input::all()));
         $paises = base64_encode(serialize($this->paises()));
 
@@ -89,6 +96,7 @@ class BeneficiariosController extends \BaseController {
 	 */
 	public function edit($id)
 	{
+        $this->beforeFilter('hasAccess:beneficiarios.update');
 		$beneficiario = Beneficiario::find($id);
 		$paises = $this->paises();
 		return View::make('beneficiarios.edit', compact('beneficiario','paises'));
@@ -102,6 +110,7 @@ class BeneficiariosController extends \BaseController {
 	 */
 	public function update($id)
 	{
+        $this->beforeFilter('hasAccess:beneficiarios.update');
 		$beneficiario = Beneficiario::findOrFail($id);
 		$paises = base64_encode(serialize($this->paises()));
 
@@ -157,6 +166,7 @@ class BeneficiariosController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
+        $this->beforeFilter('hasAccess:beneficiarios.delete');
 		Beneficiario::destroy($id);
 		return Redirect::route('beneficiarios.index')->with('message-type', 'success')
 		->with('message', 'El elemento se eliminó correctamente.');

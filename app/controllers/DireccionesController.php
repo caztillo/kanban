@@ -2,6 +2,11 @@
 
 class DireccionesController extends \BaseController {
 
+    public function __construct()
+    {
+        $this->beforeFilter('hasAccess:direcciones.view');
+    }
+
     /**
      * Display a listing of direcciones
      *
@@ -20,6 +25,7 @@ class DireccionesController extends \BaseController {
      */
     public function create()
     {
+        $this->beforeFilter('hasAccess:direcciones.create');
         $dependencias = Dependencia::orderBy('nombre', 'asc')->where('estado', '=', 'Activo')->lists('nombre','id_dependencia');
 
         return View::make('direcciones.create', compact('dependencias'));
@@ -32,6 +38,7 @@ class DireccionesController extends \BaseController {
      */
     public function store()
     {
+        $this->beforeFilter('hasAccess:direcciones.create');
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
@@ -74,6 +81,8 @@ class DireccionesController extends \BaseController {
      */
     public function edit($id)
     {
+        $this->beforeFilter('hasAccess:direcciones.update');
+
         $direccion = Direccion::find($id);
         $dependencias = Dependencia::orderBy('nombre', 'asc')->lists('nombre','id_dependencia');
         return View::make('direcciones.edit', compact('direccion', 'dependencias'));
@@ -87,6 +96,8 @@ class DireccionesController extends \BaseController {
      */
     public function update($id)
     {
+        $this->beforeFilter('hasAccess:direcciones.update');
+
         $direccion = Direccion::findOrFail($id);
 
         Input::merge(array_map('trim', Input::all()));
@@ -128,6 +139,7 @@ class DireccionesController extends \BaseController {
      */
     public function destroy($id)
     {
+        $this->beforeFilter('hasAccess:direcciones.delete');
         Direccion::destroy($id);
 
         return Redirect::route('direcciones.index')->with('message-type', 'success')

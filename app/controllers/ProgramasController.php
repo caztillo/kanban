@@ -2,6 +2,11 @@
 
 class ProgramasController extends \BaseController {
 
+    public function __construct()
+    {
+        $this->beforeFilter('hasAccess:programas.view');
+    }
+
     /**
      * Display a listing of programas
      *
@@ -22,6 +27,8 @@ class ProgramasController extends \BaseController {
      */
     public function create()
     {
+        $this->beforeFilter('hasAccess:programas.create');
+
         $anos_fiscales = AnoFiscal::orderBy('descripcion', 'asc')->where('estado', '=', 'Activo')->lists('descripcion','id_ano');
 
         $dependencias = Dependencia::orderBy('nombre', 'asc')->where('estado', '=', 'Activo')->lists('nombre','id_dependencia');
@@ -36,6 +43,8 @@ class ProgramasController extends \BaseController {
      */
     public function store()
     {
+        $this->beforeFilter('hasAccess:programas.create');
+
         Input::merge(array_map('trim', Input::all()));
 
        $rules = [
@@ -83,6 +92,8 @@ class ProgramasController extends \BaseController {
      */
     public function edit($id)
     {
+        $this->beforeFilter('hasAccess:programas.update');
+
         $programa = Programa::find($id);
         $anos_fiscales = AnoFiscal::orderBy('descripcion', 'asc')->where('estado', '=', 'Activo')->lists('descripcion','id_ano');
         $dependencias = Dependencia::orderBy('nombre', 'asc')->lists('nombre','id_dependencia');
@@ -97,6 +108,8 @@ class ProgramasController extends \BaseController {
      */
     public function update($id)
     {
+        $this->beforeFilter('hasAccess:programas.update');
+
         $programa = Programa::findOrFail($id);
 
         Input::merge(array_map('trim', Input::all()));
@@ -143,6 +156,8 @@ class ProgramasController extends \BaseController {
      */
     public function destroy($id)
     {
+        $this->beforeFilter('hasAccess:programas.delete');
+
         Programa::destroy($id);
 
         return Redirect::route('programas.index')->with('message-type', 'success')

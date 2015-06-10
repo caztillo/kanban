@@ -2,6 +2,11 @@
 
 class AnosFiscalesController extends \BaseController {
 
+    public function __construct()
+    {
+        $this->beforeFilter('hasAccess:anos_fiscales.view');
+    }
+
 	/**
 	 * Display a listing of anosfiscales
 	 *
@@ -20,6 +25,7 @@ class AnosFiscalesController extends \BaseController {
 	 */
 	public function create()
 	{
+        $this->beforeFilter('hasAccess:anos_fiscales.create');
 		return View::make('anos_fiscales.create');
 	}
 
@@ -30,6 +36,7 @@ class AnosFiscalesController extends \BaseController {
 	 */
 	public function store()
 	{
+        $this->beforeFilter('hasAccess:anos_fiscales.create');
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
@@ -73,6 +80,7 @@ class AnosFiscalesController extends \BaseController {
 	 */
 	public function edit($id)
 	{
+        $this->beforeFilter('hasAccess:anos_fiscales.update');
         $ano_fiscal = AnoFiscal::find($id);
 
 		return View::make('anos_fiscales.edit', compact('ano_fiscal'));
@@ -86,6 +94,7 @@ class AnosFiscalesController extends \BaseController {
 	 */
 	public function update($id)
 	{
+        $this->beforeFilter('hasAccess:anos_fiscales.update');
 		$ano_fiscal = AnoFiscal::findOrFail($id);
 
         Input::merge(array_map('trim', Input::all()));
@@ -128,6 +137,7 @@ class AnosFiscalesController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
+        $this->beforeFilter('hasAccess:anos_fiscales.delete');
 		AnoFiscal::destroy($id);
 
 		return Redirect::route('anos_fiscales.index')->with('message-type', 'success')

@@ -2,6 +2,11 @@
 
 class BeneficiariosOrganizacionesController extends \BaseController {
 
+    public function __construct()
+    {
+        $this->beforeFilter('hasAccess:beneficiarios_organizaciones.view');
+    }
+
     /**
      * Display a listing of beneficiarios_organizaciones
      *
@@ -21,6 +26,7 @@ class BeneficiariosOrganizacionesController extends \BaseController {
      */
     public function create()
     {
+        $this->beforeFilter('hasAccess:beneficiarios_organizaciones.create');
         $beneficiarios = Beneficiario::orderBy('id_beneficiario', 'desc')->where('estado', '=', 'Activo')->lists('nombre','id_beneficiario');
 
         $organizaciones = Organizacion::orderBy('id_organizacion', 'desc')->where('estado', '=', 'Activo')->lists('nombre', 'id_organizacion');
@@ -35,6 +41,7 @@ class BeneficiariosOrganizacionesController extends \BaseController {
      */
     public function store()
     {
+        $this->beforeFilter('hasAccess:beneficiarios_organizaciones.create');
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
@@ -78,6 +85,7 @@ class BeneficiariosOrganizacionesController extends \BaseController {
      */
     public function edit($id)
     {
+        $this->beforeFilter('hasAccess:beneficiarios_organizaciones.update');
         $beneficiario_organizacion = BeneficiarioOrganizacion::find($id);
             
         $beneficiarios = Beneficiario::orderBy('id_beneficiario', 'desc')->where('estado', '=', 'Activo')->lists('nombre','id_beneficiario');
@@ -95,6 +103,7 @@ class BeneficiariosOrganizacionesController extends \BaseController {
      */
     public function update($id)
     {
+        $this->beforeFilter('hasAccess:beneficiarios_organizaciones.update');
         $beneficiario_organizacion = BeneficiarioOrganizacion::findOrFail($id);
 
         Input::merge(array_map('trim', Input::all()));
@@ -137,6 +146,7 @@ class BeneficiariosOrganizacionesController extends \BaseController {
      */
     public function destroy($id)
     {
+        $this->beforeFilter('hasAccess:beneficiarios_organizaciones.delete');
         BeneficiarioOrganizacion::destroy($id);
 
         return Redirect::route('beneficiarios_organizaciones.index')->with('message-type', 'success')

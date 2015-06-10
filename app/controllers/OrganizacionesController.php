@@ -2,6 +2,11 @@
 
 class OrganizacionesController extends \BaseController {
 
+    public function __construct()
+    {
+        $this->beforeFilter('hasAccess:organizaciones.view');
+    }
+
 	/**
 	 * Display a listing of organizaciones
 	 *
@@ -20,6 +25,7 @@ class OrganizacionesController extends \BaseController {
 	 */
 	public function create()
 	{
+        $this->beforeFilter('hasAccess:organizaciones.create');
 		return View::make('organizaciones.create');
 	}
 
@@ -30,6 +36,9 @@ class OrganizacionesController extends \BaseController {
 	 */
 	public function store()
 	{
+
+        $this->beforeFilter('hasAccess:organizaciones.create');
+
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
@@ -93,6 +102,8 @@ class OrganizacionesController extends \BaseController {
 	 */
 	public function edit($id)
 	{
+        $this->beforeFilter('hasAccess:organizaciones.update');
+
 		$organizacion = Organizacion::find($id);
 
 		return View::make('organizaciones.edit', compact('organizacion'));
@@ -106,6 +117,8 @@ class OrganizacionesController extends \BaseController {
 	 */
 	public function update($id)
 	{
+        $this->beforeFilter('hasAccess:organizaciones.update');
+
 		$organizacion = Organizacion::findOrFail($id);
 
         Input::merge(array_map('trim', Input::all()));
@@ -158,6 +171,8 @@ class OrganizacionesController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
+        $this->beforeFilter('hasAccess:organizaciones.delete');
+
 		Organizacion::destroy($id);
 		return Redirect::route('organizaciones.index')->with('message-type', 'success')
 		->with('message', 'El elemento se eliminó correctamente.');
