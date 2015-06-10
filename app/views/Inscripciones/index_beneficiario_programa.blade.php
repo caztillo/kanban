@@ -28,13 +28,10 @@
                         <button class="btn btn-default btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filtrar</button>
 
                         {{ Form::button('<span class="glyphicon glyphicon-search"></span> Buscar', array('type' => 'submit', 'class' => 'btn btn-info btn-sm', "style" => "display:none;"))}}
-
-                        <a class="btn btn-primary btn-sm" href="{{url('inscripciones/agregar-inscripcion/1')}}" role="button"><span class="glyphicon glyphicon-plus"></span> Inscribir Beneficiario</a>
-                        <a class="btn btn-info btn-sm" href="{{url('inscripciones/agregar-inscripcion/2')}}" role="button"><span class="glyphicon glyphicon-plus"></span> Inscribir Organización</a>
-
-
-
-
+                        @if(Sentry::getUser()->hasAccess('inscripciones.create'))
+                            <a class="btn btn-primary btn-sm" href="{{url('inscripciones/agregar-inscripcion/1')}}" role="button"><span class="glyphicon glyphicon-plus"></span> Inscribir Beneficiario</a>
+                            <a class="btn btn-info btn-sm" href="{{url('inscripciones/agregar-inscripcion/2')}}" role="button"><span class="glyphicon glyphicon-plus"></span> Inscribir Organización</a>
+                        @endif
                     </div>
                 </div>
                 <table class="table">
@@ -80,17 +77,23 @@
                             <td>{{$beneficiario_programa->finalidad}}</td>
                             <td>{{date("Y-m-d",strtotime($beneficiario_programa->inscripcion))}}</td>
                             <td>
-                                {{ Form::open(array('method' => "GET",'action' => array('InscripcionesController@getEditarInscripcion',$beneficiario_programa->id_beneficiario_programa))) }}
-                                {{ Form::hidden('tipo_programa', 1) }}
-                                {{ Form::button('<span class="glyphicon glyphicon-pencil"></span>', array('type' => 'submit', 'class' => 'btn btn-success btn-xs'))}}
-                                {{ Form::close() }}
+                                @if(Sentry::getUser()->hasAccess('inscripciones.update'))
+                                    {{ Form::open(array('method' => "GET",'action' => array('InscripcionesController@getEditarInscripcion',$beneficiario_programa->id_beneficiario_programa))) }}
+                                    {{ Form::hidden('tipo_programa', 1) }}
+                                    {{ Form::button('<span class="glyphicon glyphicon-pencil"></span>', array('type' => 'submit', 'class' => 'btn btn-success btn-xs'))}}
+                                    {{ Form::close() }}
+                                @endif
+
                             </td>
                             <td>
-                                {{ Form::open(array('action' => array('InscripcionesController@postBorrarInscripcion', $beneficiario_programa->id_beneficiario_programa))) }}
-                                {{ Form::hidden('tipo_programa', 1) }}
-                                {{ Form::hidden('_method', 'POST') }}
-                                {{ Form::button('<span class="glyphicon glyphicon-remove"></span>', array('type' => 'submit', 'class' => 'btn btn-danger btn-xs'))}}
-                                {{ Form::close() }}
+                                @if(Sentry::getUser()->hasAccess('inscripciones.delete'))
+                                    {{ Form::open(array('action' => array('InscripcionesController@postBorrarInscripcion', $beneficiario_programa->id_beneficiario_programa))) }}
+                                    {{ Form::hidden('tipo_programa', 1) }}
+                                    {{ Form::hidden('_method', 'POST') }}
+                                    {{ Form::button('<span class="glyphicon glyphicon-remove"></span>', array('type' => 'submit', 'class' => 'btn btn-danger btn-xs'))}}
+                                    {{ Form::close() }}
+                                @endif
+
                             </td>
                         </tr>
                     @endforeach

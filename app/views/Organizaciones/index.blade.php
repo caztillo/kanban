@@ -16,7 +16,10 @@
                     <div class="pull-right">
                         <button class="btn btn-default btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filtrar</button>
                         {{ Form::button('<span class="glyphicon glyphicon-search"></span> Buscar', array('type' => 'submit', 'class' => 'btn btn-info btn-sm', "style" => "display:none;"))}}
-                        <a class="btn btn-primary btn-sm" href="{{url('organizaciones/create')}}" role="button"><span class="glyphicon glyphicon-plus"></span>Nuevo</a>
+                        @if(Sentry::getUser()->hasAccess('organizaciones.create'))
+                            <a class="btn btn-primary btn-sm" href="{{url('organizaciones/create')}}" role="button"><span class="glyphicon glyphicon-plus"></span>Nuevo</a>
+                        @endif
+
                     </div>
                 </div>
                 <table class="table">
@@ -43,12 +46,20 @@
                             <td>{{$organizacion->estado}}</td>
                             <td>{{$organizacion->creacion}}</td>
                         
-                            <td> <a class="btn btn-success btn-xs" href="{{url('organizaciones/'.$organizacion->id_organizacion . '/edit')}}" role="button"><span class="glyphicon glyphicon-pencil"></span></a></td>
                             <td>
-                                {{ Form::open(array('url' => 'organizaciones/' . $organizacion->id_organizacion)) }}
-                                {{ Form::hidden('_method', 'DELETE') }}
-                                {{ Form::button('<span class="glyphicon glyphicon-remove"></span>', array('type' => 'submit', 'class' => 'btn btn-danger btn-xs'))}}
-                                {{ Form::close() }}
+                                @if(Sentry::getUser()->hasAccess('organizaciones.update'))
+                                    <a class="btn btn-success btn-xs" href="{{url('organizaciones/'.$organizacion->id_organizacion . '/edit')}}" role="button"><span class="glyphicon glyphicon-pencil"></span></a>
+                                @endif
+
+                            </td>
+                            <td>
+                                @if(Sentry::getUser()->hasAccess('organizaciones.delete'))
+                                    {{ Form::open(array('url' => 'organizaciones/' . $organizacion->id_organizacion)) }}
+                                    {{ Form::hidden('_method', 'DELETE') }}
+                                    {{ Form::button('<span class="glyphicon glyphicon-remove"></span>', array('type' => 'submit', 'class' => 'btn btn-danger btn-xs'))}}
+                                    {{ Form::close() }}
+                                @endif
+
                             </td>
 
                         </tr>

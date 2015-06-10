@@ -16,7 +16,10 @@
                     <div class="pull-right">
                         <button class="btn btn-default btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filtrar</button>
                         {{ Form::button('<span class="glyphicon glyphicon-search"></span> Buscar', array('type' => 'submit', 'class' => 'btn btn-info btn-sm', "style" => "display:none;"))}}
-                        <a class="btn btn-primary btn-sm" href="{{url('programas/create')}}" role="button"><span class="glyphicon glyphicon-plus"></span>Nuevo</a>
+                        @if(Sentry::getUser()->hasAccess('programas.create'))
+                            <a class="btn btn-primary btn-sm" href="{{url('programas/create')}}" role="button"><span class="glyphicon glyphicon-plus"></span>Nuevo</a>
+                        @endif
+
                     </div>
                 </div>
                 <table class="table">
@@ -43,12 +46,20 @@
                             <td>{{$programa->estado}}</td>
                             <td>{{date("Y-m-d",strtotime($programa->creacion))}}</td>
 
-                            <td> <a class="btn btn-success btn-xs" href="{{url('programas/'.$programa->id_programa . '/edit')}}" role="button"><span class="glyphicon glyphicon-pencil"></span></a></td>
                             <td>
-                                {{ Form::open(array('url' => 'programas/' . $programa->id_programa)) }}
-                                {{ Form::hidden('_method', 'DELETE') }}
-                                {{ Form::button('<span class="glyphicon glyphicon-remove"></span>', array('type' => 'submit', 'class' => 'btn btn-danger btn-xs'))}}
-                                {{ Form::close() }}
+                                @if(Sentry::getUser()->hasAccess('programas.update'))
+                                    <a class="btn btn-success btn-xs" href="{{url('programas/'.$programa->id_programa . '/edit')}}" role="button"><span class="glyphicon glyphicon-pencil"></span></a>
+                                @endif
+
+                            </td>
+                            <td>
+                                @if(Sentry::getUser()->hasAccess('programas.delete'))
+                                    {{ Form::open(array('url' => 'programas/' . $programa->id_programa)) }}
+                                    {{ Form::hidden('_method', 'DELETE') }}
+                                    {{ Form::button('<span class="glyphicon glyphicon-remove"></span>', array('type' => 'submit', 'class' => 'btn btn-danger btn-xs'))}}
+                                    {{ Form::close() }}
+                                @endif
+
                             </td>
 
                         </tr>

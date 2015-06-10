@@ -14,7 +14,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="">Sistema de Control de Beneficiarios</a>
+                <a class="navbar-brand" href="{{url("/")}}">Sistema de Control de Beneficiarios</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -69,36 +69,57 @@
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-                        <li>
-                            <a href="{{url('inscripciones')}}"><i class="fa fa-home"></i> Inscripción a Programas</a>
-                        </li>
-                        <li>
-                            <a href="{{url('beneficiarios_organizaciones')}}"><i class="fa fa-pencil"></i> Inscripción a Organizaciones</a>
-                        </li>
-                        <li>
-                            <a href="{{url('beneficiarios')}}"><i class="fa fa-group"></i> Beneficiarios</a>
-                        </li>
-                        <li>
-                            <a href="{{url('organizaciones')}}"><i class="fa fa-suitcase"></i> Organizaciones</a>
-                        </li>
-                        <li>
-                            <a href="{{url('programas')}}"><i class="fa fa-list"></i> Programas</a>
-                        </li>
+                        @if(Sentry::getUser()->hasAccess('inscripciones.view'))
+                            <li>
+                                <a href="{{url('inscripciones')}}"><i class="fa fa-home"></i> Inscripción a Programas</a>
+                            </li>
+                        @endif
+                        @if(Sentry::getUser()->hasAccess('beneficiarios_organizaciones.view'))
+                                <li>
+                                    <a href="{{url('beneficiarios_organizaciones')}}"><i class="fa fa-pencil"></i> Inscripción a Organizaciones</a>
+                                </li>
+                        @endif
+                        @if(Sentry::getUser()->hasAccess('beneficiarios.view'))
+                                <li>
+                                    <a href="{{url('beneficiarios')}}"><i class="fa fa-group"></i> Beneficiarios</a>
+                                </li>
+                        @endif
+                        @if(Sentry::getUser()->hasAccess('organizaciones.view'))
+                                <li>
+                                    <a href="{{url('organizaciones')}}"><i class="fa fa-suitcase"></i> Organizaciones</a>
+                                </li>
+                        @endif
+                        @if(Sentry::getUser()->hasAccess('programas.view'))
+                                <li>
+                                    <a href="{{url('programas')}}"><i class="fa fa-list"></i> Programas</a>
+                                </li>
+                        @endif
+
                         <li>
                             <a href="#"><i class="fa fa-cogs"></i> Catálogos<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="{{url('anos_fiscales')}}">Años Fiscales</a>
-                                </li>
-                                <li>
-                                    <a href="{{url('dependencias')}}">Dependencias</a>
-                                </li>
-                                <li>
-                                    <a href="{{url('direcciones')}}">Direcciones</a>
-                                </li>
-                                <li>
-                                    <a href="{{url('usuarios')}}">Usuarios</a>
-                                </li>
+                                @if(Sentry::getUser()->hasAccess('anos_fiscales.view'))
+                                    <li>
+                                        <a href="{{url('anos_fiscales')}}">Años Fiscales</a>
+                                    </li>
+                                @endif
+                                @if(Sentry::getUser()->hasAccess('dependencias.view'))
+                                        <li>
+                                            <a href="{{url('dependencias')}}">Dependencias</a>
+                                        </li>
+                                @endif
+                                @if(Sentry::getUser()->hasAccess('direcciones.view'))
+                                        <li>
+                                            <a href="{{url('direcciones')}}">Direcciones</a>
+                                        </li>
+                                @endif
+
+                                @if(Sentry::getUser()->hasAccess('usuarios.view'))
+                                    <li>
+                                        <a href="{{url('usuarios')}}">Usuarios</a>
+                                    </li>
+                                @endif
+
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
