@@ -43,8 +43,8 @@
                             Cumplida
                         </label>
                         <label>
-                            {{ Form::radio("finalidad","Incumplida",$checked = false)}}
-                            Incumplida
+                            {{ Form::radio("finalidad","En Proceso",$checked = false)}}
+                            En Proceso
                         </label>
                         <span class="help-block">{{ ($error = $errors->first('finalidad')) ? $error : '' }}</span>
                     </div>

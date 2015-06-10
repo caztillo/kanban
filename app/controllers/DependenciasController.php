@@ -35,7 +35,7 @@ class DependenciasController extends \BaseController {
         $rules = [
             'nombre' => 'required|alpha_num_space|between:1,255',
             'clave' => 'required|alpha_num_space|between:1,255',
-            'direccion' => 'required|alpha_num_space|between:1,255',
+            'direccion' => 'required|between:1,255',
             'estado' => 'required|in:Activo,Inactivo',
         ];
 
@@ -91,7 +91,7 @@ class DependenciasController extends \BaseController {
         $rules = [
             'nombre' => 'required|alpha_num_space|between:1,255',
             'clave' => 'required|alpha_num_space|between:1,255',
-            'direccion' => 'required|alpha_num_space|between:1,255',
+            'direccion' => 'required|between:1,255',
             'estado' => 'required|in:Activo,Inactivo',
         ];
 
