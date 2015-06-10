@@ -85,6 +85,7 @@
 
         <div id="page-wrapper">
             <div class="container-fluid">
+                {{HTML::image('img/logo.jpg','logo',['style' => 'text-align: center;margin: 0 auto;display: block;width: 50%;'])}}
                 @yield("contenido_derecho")
             </div>
             <!-- /.container-fluid -->

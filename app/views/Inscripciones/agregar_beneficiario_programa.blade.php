@@ -6,10 +6,11 @@
             @if(Session::has('message'))
                 <div class="alert alert-{{ Session::get('message-type') }} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>{{ Session::get('message')}}</div>
             @endif
-            {{ Form::open(array('action'=>'InscripcionesController@postAgregarBeneficiarioPrograma', 'class' => 'form-horizontal')) }}
+            {{ Form::open(array('action'=>array('InscripcionesController@postAgregarInscripcion'), 'class' => 'form-horizontal')) }}
+            {{ Form::hidden('tipo_programa', 1) }}
             <fieldset>
                 <!-- Form Name -->
-                <legend>Agregar Beneficiario a un Programa</legend>
+                <legend>Inscribir Beneficiario</legend>
                 <div class="form-group  has-feedback {{ ($error = $errors->first('id_beneficiario')) ? 'has-error' : '' }}">
                     <label class="col-md-4 control-label" for="descripcion">Beneficiario</label>
                     <div class="col-md-6">
@@ -34,18 +35,18 @@
                     </div>
                 </div>
 
-                <div class="form-group has-feedback {{ ($error = $errors->first('finalidad_cumplida')) ? 'has-error' : '' }}">
-                    <label class="col-md-4 control-label" for="radios">Finalidad Cumplida</label>
+                <div class="form-group has-feedback {{ ($error = $errors->first('finalidad')) ? 'has-error' : '' }}">
+                    <label class="col-md-4 control-label" for="radios">Finalidad</label>
                     <div class="col-md-4">
                         <label>
-                            {{ Form::radio("finalidad_cumplida","Si",$checked = false)}}
-                            Si
+                            {{ Form::radio("finalidad","Cumplida",$checked = false)}}
+                            Cumplida
                         </label>
                         <label>
-                            {{ Form::radio("finalidad_cumplida","No",$checked = false)}}
-                            No
+                            {{ Form::radio("finalidad","Incumplida",$checked = false)}}
+                            Incumplida
                         </label>
-                        <span class="help-block">{{ ($error = $errors->first('finalidad_cumplida')) ? $error : '' }}</span>
+                        <span class="help-block">{{ ($error = $errors->first('finalidad')) ? $error : '' }}</span>
                     </div>
                 </div>
 

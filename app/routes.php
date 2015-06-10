@@ -11,16 +11,14 @@
 |
 */
 
-Route::get('/', array('as' => 'inicio', 'uses' => 'AdminController@index'));
+Route::get('/', array('as' => 'inicio', 'uses' => 'InscripcionesController@getIndex'));
 Route::resource('dependencias', 'DependenciasController',array('except' => array('show')));
 Route::resource('anos_fiscales', 'AnosFiscalesController',array('except' => array('show')));
 Route::resource('organizaciones', 'OrganizacionesController',array('except' => array('show')));
 Route::resource('direcciones', 'DireccionesController',array('except' => array('show')));
 Route::resource('beneficiarios', 'BeneficiariosController',array('except' => array('show')));
 Route::resource('programas', 'ProgramasController',array('except' => array('show')));
-
 Route::resource('beneficiarios_organizaciones', 'BeneficiariosOrganizacionesController',array('except' => array('show')));
-
 
 Route::controller('inscripciones', 'InscripcionesController');
 
@@ -70,7 +68,21 @@ Route::group(['before' => 'auth'], function()
 
 Route::get('/test', function()
 {
-    $dependencia = 'Depd';
+    $benefiarios_programas = BeneficiarioPrograma::all();
+
+    foreach ($benefiarios_programas as $benefiario_programa)
+    {
+        echo '<br>';
+        echo 'id_beneficiario_programa: '.$benefiario_programa->id_beneficiario_programa;
+        foreach($benefiario_programa->beneficiario->beneficiario_organizacion as $beneficiario_organizacion)
+        {
+
+            echo ' id_organizacion: '.$beneficiario_organizacion->organizacion->nombre;
+        }
+
+    }
+    //Restricción WHERE en Cláusula JOIN
+    /*$dependencia = 'Depd';
      $query = Direccion::select();
 
     $query = $query->join('dependencia', function($join) use ($dependencia)
@@ -79,7 +91,7 @@ Route::get('/test', function()
         $join->on('direccion.id_dependencia', '=', 'dependencia.id_dependencia')
             ->where('dependencia.nombre', 'LIKE', "%{$dependencia}%");
     });
-    return $query->get();
+    return $query->get(); */
 });
 
 
