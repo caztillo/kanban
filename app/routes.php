@@ -19,7 +19,7 @@ Route::resource('direcciones', 'DireccionesController',array('except' => array('
 Route::resource('beneficiarios', 'BeneficiariosController',array('except' => array('show')));
 Route::resource('programas', 'ProgramasController',array('except' => array('show')));
 Route::resource('beneficiarios_organizaciones', 'BeneficiariosOrganizacionesController',array('except' => array('show')));
-
+Route::resource('usuarios', 'UsuariosController',array('except' => array('show')));
 Route::controller('inscripciones', 'InscripcionesController');
 
 Route::get('/anos_fiscales/search', array('uses' => 'AnosFiscalesController@search'));
@@ -29,6 +29,8 @@ Route::get('/direcciones/search', array('uses' => 'DireccionesController@search'
 Route::get('/beneficiarios/search', array('uses' => 'BeneficiariosController@search'));
 Route::get('/programas/search', array('uses' => 'ProgramasController@search'));
 Route::get('/beneficiarios_organizaciones/search', array('uses' => 'BeneficiariosOrganizacionesController@search'));
+Route::get('/usuarios/search', array('uses' => 'UsuariosController@search'));
+
 
 View::composer(Paginator::getViewName(), function($view) {
     $queryString = array_except(Input::query(), Paginator::getPageName());
