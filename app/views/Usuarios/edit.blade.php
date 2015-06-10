@@ -30,28 +30,34 @@
                 </div>
 
                 <!-- Text input-->
-                <div class="form-group  has-feedback {{ ($error = $errors->first('id_grupo')) ? 'has-error' : '' }}">
-                    <label class="col-md-4 control-label" for="id_grupo">Rol</label>
-                    <div class="col-md-6">
-                        {{ Form::select('id_grupo', ['' => 'Seleccionar Rol'] + $grupos, '', ['class' => 'form-control']) }}
-                        <span class="help-block">{{ ($error = $errors->first('id_grupo')) ? $error : '' }}</span>
-                    </div>
-                </div>
+                @if($admin)
 
-                <!-- Text input-->
-                <div class="form-group  has-feedback {{ ($error = $errors->first('num_empleado')) ? 'has-error' : '' }}">
-                    <label class="col-md-4 control-label" for="num_empleado">Número de trabajador</label>
-                    <div class="col-md-6">
-                        {{ Form::text('num_empleado', null, ['class' => 'form-control', 'placeholder' => 'Ingresar número de empleado', 'maxlength' => 255] )}}
-                        <span class="help-block">{{ ($error = $errors->first('num_empleado')) ? $error : '' }}</span>
+                    <div class="form-group  has-feedback {{ ($error = $errors->first('id_grupo')) ? 'has-error' : '' }}">
+                        <label class="col-md-4 control-label" for="id_grupo">Rol</label>
+                        <div class="col-md-6">
+                            {{ Form::select('id_grupo', ['' => 'Seleccionar Rol'] + $grupos, $grupo_usuario, ['class' => 'form-control']) }}
+                            <span class="help-block">{{ ($error = $errors->first('id_grupo')) ? $error : '' }}</span>
+                        </div>
                     </div>
-                </div>
+
+                    <!-- Text input-->
+                    <div class="form-group  has-feedback {{ ($error = $errors->first('num_empleado')) ? 'has-error' : '' }}">
+                        <label class="col-md-4 control-label" for="num_empleado">Número de trabajador</label>
+                        <div class="col-md-6">
+                            {{ Form::text('num_empleado', $usuario->num_empleado, ['class' => 'form-control', 'placeholder' => 'Ingresar número de empleado', 'maxlength' => 255] )}}
+                            <span class="help-block">{{ ($error = $errors->first('num_empleado')) ? $error : '' }}</span>
+                        </div>
+                    </div>
+                @endif
+
+
+
 
                 <!-- Text input-->
                 <div class="form-group  has-feedback {{ ($error = $errors->first('email')) ? 'has-error' : '' }}">
                     <label class="col-md-4 control-label" for="email">Correo</label>
                     <div class="col-md-6">
-                        {{ Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'Ingresar email', 'maxlength' => 255] )}}
+                        {{ Form::text('email', $usuario->email, ['class' => 'form-control', 'placeholder' => 'Ingresar email', 'maxlength' => 255] )}}
                         <span class="help-block">{{ ($error = $errors->first('email')) ? $error : '' }}</span>
                     </div>
                 </div>
@@ -74,23 +80,26 @@
                     </div>
                 </div>
 
-                <div class="form-group has-feedback {{ ($error = $errors->first('estado')) ? 'has-error' : '' }}">
-                    <label class="col-md-4 control-label" for="estado">Estatus</label>
-                    <div class="col-md-4">
-                        <div class="radio-inline">
-                            <label for="estado">
-                                {{ Form::radio("estado",1,$checked = true)}}
-                                Activo
-                            </label>
+                @if($admin)
+                        <div class="form-group has-feedback {{ ($error = $errors->first('estado')) ? 'has-error' : '' }}">
+                            <label class="col-md-4 control-label" for="estado">Estatus</label>
+                            <div class="col-md-4">
+                                <div class="radio-inline">
+                                    <label for="estado">
+                                        {{ Form::radio("estado",1,(($usuario->activated == 1) ? true : false))}}
+                                        Activo
+                                    </label>
+                                </div>
+                                <div class="radio-inline">
+                                    <label>
+                                        {{ Form::radio("estado",0,(($usuario->activated == 0) ? true : false))}}
+                                        Inactivo
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="radio-inline">
-                            <label>
-                                {{ Form::radio("estado",0,$checked = false)}}
-                                Inactivo
-                            </label>
-                        </div>
-                    </div>
-                </div>
+                    @endif
+
 
                 <!-- Button (Double) -->
                 <div class="form-group">

@@ -22,13 +22,42 @@
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <?php
+                            $user = Sentry::getUser();
+                            $grupos = $user->getGroups();
+                            $grupo_usuario = 0;
+                            $grupo_nombre = "";
+                            foreach ($grupos as $grupo)
+                            {
+                                $grupo_usuario = $grupo->id;
+                                $grupo_nombre = $grupo->name;
+                            }
+
+                            $label = "label-";
+                            switch($grupo_nombre)
+                            {
+                                case "Administrador":
+                                    $label.= 'primary';
+                                    break;
+                                case "Encargado de Dirección":
+                                    $label.= 'info';
+                                    break;
+                                case "Encargado de Dependencia":
+                                    $label.= 'success';
+                                    break;
+                                default:
+                                    $label.= 'default';
+                                    break;
+                            }
+                        ?>
+                        {{$user->first_name }} <span class="label {{$label}}">{{$grupo_nombre}}</span>
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> Perfil de Usuario</a>
+                        <li><a href="{{url('usuarios/'.$user->id.'/edit')}}"><i class="fa fa-user fa-fw"></i> Perfil de Usuario</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Cerrar Sesión</a>
+                        <li><a href="{{url('logout')}}"><i class="fa fa-sign-out fa-fw"></i> Cerrar Sesión</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->

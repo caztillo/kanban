@@ -11,66 +11,48 @@
 |
 */
 
-Route::get('/', array('as' => 'inicio', 'uses' => 'InscripcionesController@getIndex'));
-Route::resource('dependencias', 'DependenciasController',array('except' => array('show')));
-Route::resource('anos_fiscales', 'AnosFiscalesController',array('except' => array('show')));
-Route::resource('organizaciones', 'OrganizacionesController',array('except' => array('show')));
-Route::resource('direcciones', 'DireccionesController',array('except' => array('show')));
-Route::resource('beneficiarios', 'BeneficiariosController',array('except' => array('show')));
-Route::resource('programas', 'ProgramasController',array('except' => array('show')));
-Route::resource('beneficiarios_organizaciones', 'BeneficiariosOrganizacionesController',array('except' => array('show')));
-Route::resource('usuarios', 'UsuariosController',array('except' => array('show')));
-Route::controller('inscripciones', 'InscripcionesController');
+Route::when('*', 'csrf', array('post', 'put', 'delete'));
 
-Route::get('/anos_fiscales/search', array('uses' => 'AnosFiscalesController@search'));
-Route::get('/dependencias/search', array('uses' => 'DependenciasController@search'));
-Route::get('/organizaciones/search', array('uses' => 'OrganizacionesController@search'));
-Route::get('/direcciones/search', array('uses' => 'DireccionesController@search'));
-Route::get('/beneficiarios/search', array('uses' => 'BeneficiariosController@search'));
-Route::get('/programas/search', array('uses' => 'ProgramasController@search'));
-Route::get('/beneficiarios_organizaciones/search', array('uses' => 'BeneficiariosOrganizacionesController@search'));
-Route::get('/usuarios/search', array('uses' => 'UsuariosController@search'));
+Route::get('/login', array('as' => 'login','uses' => 'AdminController@login'));
+Route::get('/logout', array('as' => 'logout','uses' => 'AdminController@logout'));
+Route::post('/login-validacion', array('uses' => 'AdminController@loginValidacion'));
+Route::get('/404', array('as' => '404','uses' => 'AdminController@error_404'));
+Route::get('/403', array('as' => '403','uses' => 'AdminController@error_403'));
 
+Route::group(['before' => 'auth'], function()
+{
+    Route::get('/', array('as' => 'inicio', 'uses' => 'InscripcionesController@getIndex'));
+    Route::resource('dependencias', 'DependenciasController',array('except' => array('show')));
+    Route::resource('anos_fiscales', 'AnosFiscalesController',array('except' => array('show')));
+    Route::resource('organizaciones', 'OrganizacionesController',array('except' => array('show')));
+    Route::resource('direcciones', 'DireccionesController',array('except' => array('show')));
+    Route::resource('beneficiarios', 'BeneficiariosController',array('except' => array('show')));
+    Route::resource('programas', 'ProgramasController',array('except' => array('show')));
+    Route::resource('beneficiarios_organizaciones', 'BeneficiariosOrganizacionesController',array('except' => array('show')));
+    Route::resource('usuarios', 'UsuariosController',array('except' => array('show')));
+    Route::controller('inscripciones', 'InscripcionesController');
+
+    Route::get('/anos_fiscales/search', array('uses' => 'AnosFiscalesController@search'));
+    Route::get('/dependencias/search', array('uses' => 'DependenciasController@search'));
+    Route::get('/organizaciones/search', array('uses' => 'OrganizacionesController@search'));
+    Route::get('/direcciones/search', array('uses' => 'DireccionesController@search'));
+    Route::get('/beneficiarios/search', array('uses' => 'BeneficiariosController@search'));
+    Route::get('/programas/search', array('uses' => 'ProgramasController@search'));
+    Route::get('/beneficiarios_organizaciones/search', array('uses' => 'BeneficiariosOrganizacionesController@search'));
+    Route::get('/usuarios/search', array('uses' => 'UsuariosController@search'));
+
+});
 
 View::composer(Paginator::getViewName(), function($view) {
     $queryString = array_except(Input::query(), Paginator::getPageName());
     $view->paginator->appends($queryString);
 });
 
-Route::get('/login', array('uses' => 'AdminController@login'));
-Route::group(['before' => 'auth'], function()
-{
-
-    /*Route::resource('/', 'IndexController', ['only' => ['index'] ]);
-
-    Route::get('eventos/lista', 'IndexController@eventosCalendario');
-
-    Route::get('perfil',  ['as' => 'perfil','uses'=>'UsersController@edit']);
-
-    Route::get('perfil/{id}/{alias?}',  ['uses'=>'UsersController@show']);
-
-    Route::resource('cursos','CursosController', ['only' => ['show','index'] ]);
-
-    Route::get('instructores/{id}/{alias?}',  ['uses'=>'InstructoresController@show']);
-
-    Route::resource('instructores','InstructoresController', ['only' => ['show','index'] ]);
-
-    Route::get('cursos/{id}/{alias?}',  ['uses'=>'CursosController@show']);
-
-    Route::resource('foros','ForosController', ['only' => ['show','index'] ]);
-
-    Route::get('foros/{id}/{alias?}',  ['uses'=>'ForosController@show']);
-
-    Route::resource('mps','MPsController', ['only' => ['show','index'] ]);
-
-    Route::get('mps/{id}',  ['uses'=>'MPsController@show']);
-
-    Route::resource('comentarios','ComentariosController', ['only' => ['create','store','destroy'] ]);*/
-});
-
 Route::get('/test', function()
 {
-    $benefiarios_programas = BeneficiarioPrograma::all();
+
+
+    /*$benefiarios_programas = BeneficiarioPrograma::all();
 
     foreach ($benefiarios_programas as $benefiario_programa)
     {
@@ -82,7 +64,7 @@ Route::get('/test', function()
             echo ' id_organizacion: '.$beneficiario_organizacion->organizacion->nombre;
         }
 
-    }
+    }*/
     //Restricción WHERE en Cláusula JOIN
     /*$dependencia = 'Depd';
      $query = Direccion::select();

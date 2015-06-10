@@ -33,9 +33,71 @@ App::after(function($request, $response)
 |
 */
 
+Route::filter('Sentry', function()
+{
+    if ( ! Sentry::check()) {
+        return Redirect::route('login');
+    }
+});
+
+/**
+ * hasAcces filter (permissions)
+ *
+ * Check if the user has permission (group/user)
+ */
+Route::filter('hasAccess', function($route, $request, $value)
+{
+    try
+    {
+        $user = Sentry::getUser();
+
+        if( ! $user->hasAccess($value))
+        {
+            return Redirect::route('403');
+        }
+    }
+    catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+    {
+        return Redirect::route('404');
+
+    }
+
+});
+
+/**
+ * InGroup filter
+ *
+ * Check if the user belongs to a group
+ */
+Route::filter('inGroup', function($route, $request, $value)
+{
+    try
+    {
+        $user = Sentry::getUser();
+
+        $group = Sentry::findGroupByName($value);
+
+        if( ! $user->inGroup($group))
+        {
+            return Redirect::route('403');
+        }
+    }
+    catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+    {
+        return Redirect::route('404');
+    }
+
+    catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e)
+    {
+        //return Redirect::route('login')->withErrors(array(Lang::get('group.notfound')));
+        return Redirect::route('404');
+    }
+});
+
+
 Route::filter('auth', function()
 {
-	if (Auth::guest())
+    if ( ! Sentry::check())
 	{
 		if (Request::ajax())
 		{
@@ -87,6 +149,8 @@ Route::filter('csrf', function()
 {
 	if (Session::token() != Input::get('_token'))
 	{
-		throw new Illuminate\Session\TokenMismatchException;
+		//throw new Illuminate\Session\TokenMismatchException;
+
+        return Redirect::route('403');
 	}
 });

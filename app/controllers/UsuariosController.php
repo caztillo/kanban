@@ -2,6 +2,10 @@
 
 class UsuariosController extends \BaseController {
 
+    public function __construct()
+    {
+        $this->beforeFilter('hasAccess:usuarios.view');
+    }
 	/**
 	 * Display a listing of users
 	 *
@@ -24,6 +28,8 @@ class UsuariosController extends \BaseController {
 	 */
 	public function create()
 	{
+        $this->beforeFilter('hasAccess:usuarios.create');
+
         $grupos_sentry = Sentry::findAllGroups();
 
         $grupos = array();
@@ -42,6 +48,8 @@ class UsuariosController extends \BaseController {
 	 */
 	public function store()
 	{
+        $this->beforeFilter('hasAccess:usuarios.create');
+
         Input::merge(array_map('trim', Input::all()));
 
         $rules = [
@@ -142,13 +150,38 @@ class UsuariosController extends \BaseController {
 	 */
 	public function edit($id)
 	{
+        $this->beforeFilter('hasAccess:usuarios.update');
         try
         {
             $usuario = Sentry::findUserById($id);
             $grupos = $usuario->getGroups();
-            dd($grupos);
+            foreach ($grupos as $grupo)
+            {
+                $grupo_usuario = $grupo->id;
+            }
 
-            return View::make('usuarios.edit', compact('usuario'));
+            $grupos_sentry = Sentry::findAllGroups();
+
+            $grupos = array();
+            foreach ($grupos_sentry as $grupo)
+            {
+                $grupos[$grupo->id] = $grupo->name;
+            }
+
+            //Checamos si el usuario logueado es admin
+
+            $user = Sentry::getUser();
+            $admin = false;
+            $grupos_usuario_logueado = $user->getGroups();
+            foreach ($grupos_usuario_logueado as $grupo)
+            {
+                if($grupo->name == "Administrador")
+                {
+                    $admin = true;
+                }
+            }
+
+            return View::make('usuarios.edit', compact('usuario','grupos', 'grupo_usuario','admin'));
         }
         catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
         {
@@ -166,20 +199,63 @@ class UsuariosController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$usuario = User::findOrFail($id);
+        $this->beforeFilter('hasAccess:usuarios.update');
 
+		$usuario = User::findOrFail($id);
+        $user = Sentry::getUser();
         Input::merge(array_map('trim', Input::all()));
+
+        $admin = false;
+        $grupos_usuario_logueado = $user->getGroups();
+        foreach ($grupos_usuario_logueado as $grupo)
+        {
+            if($grupo->name == "Administrador")
+            {
+                $admin = true;
+            }
+        }
 
         $rules = [
             'first_name' => 'required|alpha_num_space|between:1,255',
             'last_name' => 'required|alpha_num_space|between:1,255',
-            'num_empleado' => 'required|between:1,255|unique:users',
-            'id_grupo' => 'required|exists:groups,id',
-            'email' => 'required|email|unique:users',
-            'password' => ['required', 'confirmed', 'regex:/^(?=.*\d).{6,}$/'],
-            'password_confirmation' => 'required|min:6',
-            'estado' => 'required|boolean'
+
         ];
+
+        if($id == $user->id)
+        {
+            //$user es el usuario logueado con Snetry2
+            if($admin)
+            {
+                $rules['num_empleado'] = 'required|between:1,255|unique:users,id,'.$user->id;
+                $rules['id_grupo'] = 'required|exists:groups,id';
+                $rules['estado'] = 'required|boolean';
+            }
+
+            $rules['email'] = 'required|email|unique:users,id,'.$user->id;
+        }
+        else
+        {
+            //$usuario es el usuario encontrado con eloquent
+            if($admin)
+            {
+                $rules['num_empleado'] = 'required|between:1,255|unique:users,id,'.$usuario->id;
+                $rules['id_grupo'] = 'required|exists:groups,id';
+                $rules['estado'] = 'required|boolean';
+            }
+
+            $rules['email'] = 'required|email|unique:users,id,'.$usuario->id;
+
+        }
+
+        if(Input::has('password'))
+        {
+            $rules['password'] = ['required', 'confirmed', 'regex:/^(?=.*\d).{6,}$/'];
+            $rules['password_confirmation'] = 'required|min:6';
+        }
+
+
+
+
 
         $messages = [
             'required' => 'Este campo es obligatorio.',
@@ -203,7 +279,62 @@ class UsuariosController extends \BaseController {
 			return Redirect::back()->with('message-type', 'danger')->with('message', 'Algunos datos no han sido propiamente ingresados, favor de revisarlos.')->withErrors($validator)->withInput();
 		}
 
-        $usuario->update($data);
+        if($id == $user->id)
+        {
+            $user->first_name = Input::get('first_name');
+            $user->last_name = Input::get('last_name');
+            if($admin)
+            {
+                $user->activated = Input::get('estado');
+                $user->num_empleado = Input::get('num_empleado');
+            }
+
+
+            $user->email = Input::get('email');
+
+            if(Input::has('password'))
+            {
+                $user->password = Input::get('password');
+            }
+
+            if($admin)
+            {
+                DB::table('users_groups')->where('user_id', $user->id)->delete();
+
+                $newGroup= Sentry::getGroupProvider()->findById(Input::get('id_grupo'));
+                $user->addGroup($newGroup); // Add group 1 from user
+            }
+
+
+            $user->save();
+        }
+        else
+        {
+            $usuario->first_name = Input::get('first_name');
+            $usuario->last_name = Input::get('last_name');
+            if($admin)
+            {
+                $usuario->activated = Input::get('estado');
+                $usuario->num_empleado = Input::get('num_empleado');
+            }
+            $usuario->email = Input::get('email');
+
+            if(Input::has('password'))
+            {
+                $user->password = Input::get('password');
+            }
+
+            if($admin)
+            {
+                DB::table('users_groups')->where('user_id', $id)->delete();
+                $newGroup= Sentry::getGroupProvider()->findById(Input::get('id_grupo'));
+                $user = Sentry::findUserById($id);
+                $user->addGroup($newGroup); // Add group 1 from user
+                $user->save();
+            }
+            $usuario->save();
+        }
+
 
 		return Redirect::route('usuarios.index')->with('message-type', 'success')
             ->with('message', 'La información se actualizó correctamente.');
@@ -217,6 +348,7 @@ class UsuariosController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
+        $this->beforeFilter('hasAccess:usuarios.delete');
 		User::destroy($id);
 		return Redirect::route('usuarios.index')->with('message-type', 'success')
 		->with('message', 'El elemento se eliminó correctamente.');
@@ -230,21 +362,29 @@ class UsuariosController extends \BaseController {
      */
     public function search()
     {
-        $id_user = Input::get('id');
+        $id = Input::get('id');
+        $rol = Input::get('rol');
         $nombre = Input::get('nombre');
         $num_empleado = Input::get('num_empleado');
         $correo = Input::get('correo');
         $estado = Input::get('estado');
         $creacion = Input::get('creacion');
 
-        if(!empty($id_user) )
-            $users = User::where('id','=',$id_user)->simplePaginate(Config::get("constantes.elementos_pagina"));
+        if(!empty($id) )
+            $usuarios = Sentry::getUserProvider()->createModel()->join('users_groups', 'users.id', '=', 'users_groups.user_id')->join('groups', 'groups.id', '=', 'users_groups.group_id')->where('users.id',$id)->simplePaginate(Config::get("constantes.elementos_pagina"));
         else
         {
-            $query = User::select();
+            $query = Sentry::getUserProvider()->createModel()->join('users_groups', 'users.id', '=', 'users_groups.user_id')->join('groups', 'groups.id', '=', 'users_groups.group_id');
+
+            if(!empty($rol))
+            {
+                $query = $query->where('groups.name', 'LIKE', "%{$rol}%");
+            }
+
             if(!empty($nombre))
             {
-                $query = $query->where('nombre', 'LIKE', "%{$nombre}%");
+                $query = $query->where('first_name', 'LIKE', "%{$nombre}%")
+                ->orWhere('last_name', 'LIKE', "%{$nombre}%");
             }
 
             if(!empty($num_empleado))
@@ -254,24 +394,25 @@ class UsuariosController extends \BaseController {
 
             if(!empty($correo))
             {
-                $query = $query->where('correo', 'LIKE', "%{$correo}%");
+                $query = $query->where('email', 'LIKE', "%{$correo}%");
             }
 
             if(!empty($estado))
             {
-                $query = $query->where('estado', '=', $estado);
+                $estado = (strtolower($estado) == 'activo') ? 1 : 0;
+                $query = $query->where('activated', '=', $estado);
             }
 
             if(!empty($creacion))
             {
-                $query = $query->whereRaw("DATE(creacion) = '".$creacion."'");
+                $query = $query->whereRaw("date_format(users.created_at, '%Y-%m-%d') = '".$creacion."'");
             }
 
-            $users = $query->orderBy('id','desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
+            $usuarios = $query->orderBy('users.id','desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
 
         }
 
-        if($users->isEmpty())
+        if($usuarios->isEmpty())
         {
             return Redirect::route('usuarios.index')
                 ->with('message-type', 'warning')
@@ -279,7 +420,7 @@ class UsuariosController extends \BaseController {
         }
         else
         {
-            return View::make('usuarios.index', compact('users'));
+            return View::make('usuarios.index', compact('usuarios'));
         }
 
     }
