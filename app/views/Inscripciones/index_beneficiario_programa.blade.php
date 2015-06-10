@@ -62,11 +62,13 @@
                             <td>{{$beneficiario_programa->programa->clave}}</td>
                             <td>{{$beneficiario_programa->beneficiario->nombre}}</td>
 
-                                @foreach($beneficiario_programa->beneficiario->beneficiario_organizacion as $beneficiario_organizacion)
+                            @forelse($beneficiario_programa->beneficiario->beneficiario_organizacion as $beneficiario_organizacion)
                                 <td>
                                     {{$beneficiario_organizacion->organizacion->nombre}}
                                 </td>
-                                @endforeach
+                            @empty
+                                <td>Sin Organización</td>
+                            @endforelse
 
                             <td>{{$beneficiario_programa->beneficiario->RFC}}</td>
                             <td>{{$beneficiario_programa->beneficiario->CURP}}</td>
