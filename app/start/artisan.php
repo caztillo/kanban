@@ -11,3 +11,5 @@
 |
 */
 
+Artisan::add(new CreateGroupCommand);
+Artisan::add(new CreateUserCommand);
