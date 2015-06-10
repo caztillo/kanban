@@ -146,9 +146,14 @@ class UsuariosController extends \BaseController {
         {
             $usuario = Sentry::findUserById($id);
             $grupos = $usuario->getGroups();
-            dd($grupos);
+            foreach ($grupos as $grupo)
+            {
+                $grupo_usuario = $grupo->id;
+            }
 
-            return View::make('usuarios.edit', compact('usuario'));
+            
+
+            return View::make('usuarios.edit', compact('usuario', 'grupo_usuario'));
         }
         catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
         {

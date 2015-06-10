@@ -26,6 +26,18 @@ class AdminController extends \BaseController {
         return View::make("admin.login");
 	}
 
+    public function error_404()
+    {
+        //
+        return View::make("error.404");
+    }
+
+    public function error_403()
+    {
+        //
+        return View::make("error.403");
+    }
+
 	/**
 	 * Store a newly created resource in storage.
 	 * POST /admin

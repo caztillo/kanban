@@ -7,23 +7,23 @@
     <div class="container">
         <div class="row">
             {{HTML::image('img/logo.jpg','logo',['style' => 'text-align: center;margin: 0 auto;display: block;width: 50%;'])}}
-         
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="error-template">
-                        <h1>Error 404</h1>
-                        <h2>Página no encontrada</h2>
+                        <h1>Error 403</h1>
+                        <h2>Página no autorizada</h2>
                         <div class="error-details">
-                            La página que busca no esta disponible.
+                            No esta autorizado para ver la página.
                         </div>
                         <div class="error-actions">
                             <a href="{{url('/')}}" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span>
                                 Regresar al inicio </a><a href="#" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-envelope"></span> Contacto </a>
                         </div>
-                     </div>
+                    </div>
                 </div>
             </div>
-             
+
 
         </div>
     </div>

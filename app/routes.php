@@ -11,25 +11,27 @@
 |
 */
 
-Route::get('/', array('as' => 'inicio', 'uses' => 'InscripcionesController@getIndex'));
-Route::resource('dependencias', 'DependenciasController',array('except' => array('show')));
-Route::resource('anos_fiscales', 'AnosFiscalesController',array('except' => array('show')));
-Route::resource('organizaciones', 'OrganizacionesController',array('except' => array('show')));
-Route::resource('direcciones', 'DireccionesController',array('except' => array('show')));
-Route::resource('beneficiarios', 'BeneficiariosController',array('except' => array('show')));
-Route::resource('programas', 'ProgramasController',array('except' => array('show')));
-Route::resource('beneficiarios_organizaciones', 'BeneficiariosOrganizacionesController',array('except' => array('show')));
-Route::resource('usuarios', 'UsuariosController',array('except' => array('show')));
+Route::when('*', 'csrf', array('post', 'put', 'delete'));
+
+Route::get('/', array('before' => 'hasAccess:inscripciones.index', 'as' => 'inicio', 'uses' => 'InscripcionesController@getIndex'));
+Route::resource('dependencias', 'DependenciasController',array('before' => 'hasAccess:dependencias.index','except' => array('show')));
+Route::resource('anos_fiscales', 'AnosFiscalesController',array('before' => 'hasAccess:anos_fiscales.index','except' => array('show')));
+Route::resource('organizaciones', 'OrganizacionesController',array('before' => 'hasAccess:organizaciones.index','except' => array('show')));
+Route::resource('direcciones', 'DireccionesController',array('before' => 'hasAccess:direcciones.index','except' => array('show')));
+Route::resource('beneficiarios', 'BeneficiariosController',array('before' => 'hasAccess:beneficiarios.index','except' => array('show')));
+Route::resource('programas', 'ProgramasController',array('before' => 'hasAccess:programas.index','except' => array('show')));
+Route::resource('beneficiarios_organizaciones', 'BeneficiariosOrganizacionesController',array('before' => 'hasAccess:beneficiarios_organizaciones.index','except' => array('show')));
+Route::resource('usuarios', 'UsuariosController',array('before' => 'hasAccess:usuarios.index','except' => array('show')));
 Route::controller('inscripciones', 'InscripcionesController');
 
-Route::get('/anos_fiscales/search', array('uses' => 'AnosFiscalesController@search'));
-Route::get('/dependencias/search', array('uses' => 'DependenciasController@search'));
-Route::get('/organizaciones/search', array('uses' => 'OrganizacionesController@search'));
-Route::get('/direcciones/search', array('uses' => 'DireccionesController@search'));
-Route::get('/beneficiarios/search', array('uses' => 'BeneficiariosController@search'));
-Route::get('/programas/search', array('uses' => 'ProgramasController@search'));
-Route::get('/beneficiarios_organizaciones/search', array('uses' => 'BeneficiariosOrganizacionesController@search'));
-Route::get('/usuarios/search', array('uses' => 'UsuariosController@search'));
+Route::get('/anos_fiscales/search', array('before' => 'hasAccess:anos_fiscales.index','uses' => 'AnosFiscalesController@search'));
+Route::get('/dependencias/search', array('before' => 'hasAccess:dependencias.index','uses' => 'DependenciasController@search'));
+Route::get('/organizaciones/search', array('before' => 'hasAccess:organizaciones.index','uses' => 'OrganizacionesController@search'));
+Route::get('/direcciones/search', array('before' => 'hasAccess:direcciones.index','uses' => 'DireccionesController@search'));
+Route::get('/beneficiarios/search', array('before' => 'hasAccess:beneficiarios.index','uses' => 'BeneficiariosController@search'));
+Route::get('/programas/search', array('before' => 'hasAccess:programas.index','uses' => 'ProgramasController@search'));
+Route::get('/beneficiarios_organizaciones/search', array('before' => 'hasAccess:beneficiarios_organizaciones.index','uses' => 'BeneficiariosOrganizacionesController@search'));
+Route::get('/usuarios/search', array('before' => 'hasAccess:usuarios.index','uses' => 'UsuariosController@search'));
 
 
 View::composer(Paginator::getViewName(), function($view) {
@@ -37,7 +39,9 @@ View::composer(Paginator::getViewName(), function($view) {
     $view->paginator->appends($queryString);
 });
 
-Route::get('/login', array('uses' => 'AdminController@login'));
+Route::get('/login', array('as' => 'login','uses' => 'AdminController@login'));
+Route::get('/404', array('as' => '404','uses' => 'AdminController@error_404'));
+Route::get('/403', array('as' => '403','uses' => 'AdminController@error_403'));
 Route::group(['before' => 'auth'], function()
 {
 
@@ -96,11 +100,11 @@ Route::get('/test', function()
     return $query->get(); */
 });
 
-App::error(function(Exception $exception, $code)
+/*App::error(function(Exception $exception, $code)
 {
     Log::error($exception,array('url'=>Request::url()));
     if (app()->environment() != 'local')
     {
     return Response::view('Error.404', array('pageTitle'=>'Oops, something went wrong'), 500);
     }
-});
+});*/
