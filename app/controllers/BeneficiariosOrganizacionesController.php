@@ -9,7 +9,7 @@ class BeneficiariosOrganizacionesController extends \BaseController {
      */
     public function index()
     {
-        $beneficiarios_organizaciones = BeneficiarioOrganizacion::orderBy('id_beneficiario_organizacion', 'desc')->get();
+        $beneficiarios_organizaciones = BeneficiarioOrganizacion::orderBy('id_beneficiario_organizacion', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
     
         return View::make('beneficiarios_organizaciones.index', compact('beneficiarios_organizaciones'));
     }
@@ -83,7 +83,6 @@ class BeneficiariosOrganizacionesController extends \BaseController {
         $beneficiarios = Beneficiario::orderBy('id_beneficiario', 'desc')->where('estado', '=', 'Activo')->lists('nombre','id_beneficiario');
 
         $organizaciones = Organizacion::orderBy('id_organizacion', 'desc')->where('estado', '=', 'Activo')->lists('nombre', 'id_organizacion');
-
 
         return View::make('beneficiarios_organizaciones.edit', compact('beneficiario_organizacion', 'beneficiarios', 'organizaciones'));
     }
@@ -161,8 +160,7 @@ class BeneficiariosOrganizacionesController extends \BaseController {
 
         if(!empty($id_beneficiario_organizacion) )
         {  
-            $beneficiarios_organizaciones = BeneficiarioOrganizacion::where('id_beneficiario_organizacion','=',$id_beneficiario_organizacion)->orderBy('id_beneficiario_organizacion', 'desc')->get();
-           
+            $beneficiarios_organizaciones = BeneficiarioOrganizacion::where('id_beneficiario_organizacion','=',$id_beneficiario_organizacion)->orderBy('id_beneficiario_organizacion', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
         }
         else
         {
@@ -200,7 +198,7 @@ class BeneficiariosOrganizacionesController extends \BaseController {
                $query = $query->whereRaw("DATE(inscripcion) = '".$inscripcion."'");
             }
 
-            $beneficiarios_organizaciones = $query->orderBy('id_beneficiario_organizacion', 'desc')->get();
+            $beneficiarios_organizaciones = $query->orderBy('id_beneficiario_organizacion', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
 
         }
 

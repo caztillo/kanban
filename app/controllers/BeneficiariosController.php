@@ -10,7 +10,7 @@ class BeneficiariosController extends \BaseController {
 	public function index()
 	{
 		//$beneficiarios = Beneficiario::all();
-        $beneficiarios = Beneficiario::orderBy('creacion', 'desc')->simplePaginate(1);
+        $beneficiarios = Beneficiario::orderBy('creacion', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
 		return View::make('beneficiarios.index', compact('beneficiarios'));
 	}
 
@@ -178,7 +178,7 @@ class BeneficiariosController extends \BaseController {
         $creacion = Input::get('creacion');
 
         if(!empty($id_beneficiario) )
-            $beneficiarios = Beneficiario::where('id_beneficiario','=',$id_beneficiario)->orderBy('id_beneficiario', 'desc')->get();
+            $beneficiarios = Beneficiario::where('id_beneficiario','=',$id_beneficiario)->orderBy('id_beneficiario', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
         else
         {
             $query = Beneficiario::select();
@@ -214,7 +214,7 @@ class BeneficiariosController extends \BaseController {
             }
 
             
-            $beneficiarios = $query->orderBy('id_beneficiario', 'desc')->get();
+            $beneficiarios = $query->orderBy('id_beneficiario', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
 
 
         }

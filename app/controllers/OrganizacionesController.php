@@ -9,7 +9,6 @@ class OrganizacionesController extends \BaseController {
 	 */
 	public function index()
 	{
-
 		$organizaciones = Organizacion::orderBy('id_organizacion', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
 		return View::make('organizaciones.index', compact('organizaciones'));
 	}
@@ -55,7 +54,7 @@ class OrganizacionesController extends \BaseController {
             'telefono.regex' => 'El formato ingresado no es válido',
             'email' => 'El correo debe estar formado de la siguiente manera: direccion@dominio.com',
             'in' => 'Este campo es obligatorio.',
-             'RFC.regex' => 'Ingresa un RFC válido.'
+            'RFC.regex' => 'Ingresa un RFC válido.'
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);

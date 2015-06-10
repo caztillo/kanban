@@ -1,3 +1,3 @@
 <?php
 
-return array("elementos_pagina" => 1);
+return array("elementos_pagina" => 2);

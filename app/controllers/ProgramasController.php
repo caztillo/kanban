@@ -9,7 +9,7 @@ class ProgramasController extends \BaseController {
      */
     public function index()
     {
-        $programas = Programa::orderBy('id_programa', 'desc')->get(); 
+        $programas = Programa::orderBy('id_programa', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina")); 
 
 
         return View::make('programas.index', compact('programas'));
@@ -166,7 +166,7 @@ class ProgramasController extends \BaseController {
         $creacion = Input::get('creacion');
 
         if(!empty($id_programa) )
-            $programas = Programa::where('id_programa','=',$id_programa)->orderBy('id_programa', 'desc')->get();
+            $programas = Programa::where('id_programa','=',$id_programa)->orderBy('id_programa', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
         else
         {
             $query = Programa::select();
@@ -201,7 +201,7 @@ class ProgramasController extends \BaseController {
             }
 
 
-            $programas = $query->orderBy('id_programa', 'desc')->get();
+            $programas = $query->orderBy('id_programa', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
 
 
         }

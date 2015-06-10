@@ -9,7 +9,7 @@ class DependenciasController extends \BaseController {
 	 */
 	public function index()
 	{
-        $dependencias = Dependencia::orderBy('id_dependencia', 'desc')->simplePaginate(5);
+        $dependencias = Dependencia::orderBy('id_dependencia', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
 		return View::make('dependencias.index', compact('dependencias'));
 	}
 
@@ -36,7 +36,7 @@ class DependenciasController extends \BaseController {
             'nombre' => 'required|alpha_num_space|between:1,255',
             'clave' => 'required|alpha_num_space|between:1,255',
             'direccion' => 'required|alpha_num_space|between:1,255',
-            'estado' => 'required|in:Activo,Inactivo',
+            'estado' => 'required|in:Activo,Inactivo'
         ];
 
         $messages = [
@@ -44,7 +44,7 @@ class DependenciasController extends \BaseController {
             'alpha_num_space' => 'Utilice sólo caracteres del alfabeto, números y espacios.',
             'estado.integer' => 'Este campo es obligatorio.',
             'between' => 'Este campo es obligatorio.',
-            'in' => 'Este campo es obligatorio.',
+            'in' => 'Este campo es obligatorio.'
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);
@@ -92,7 +92,7 @@ class DependenciasController extends \BaseController {
             'nombre' => 'required|alpha_num_space|between:1,255',
             'clave' => 'required|alpha_num_space|between:1,255',
             'direccion' => 'required|alpha_num_space|between:1,255',
-            'estado' => 'required|in:Activo,Inactivo',
+            'estado' => 'required|in:Activo,Inactivo'
         ];
 
         $messages = [
@@ -100,7 +100,7 @@ class DependenciasController extends \BaseController {
             'alpha_num_space' => 'Utilice sólo caracteres del alfabeto, números y espacios.',
             'estado.integer' => 'Este campo es obligatorio.',
             'between' => 'Este campo es obligatorio.',
-            'in' => 'Este campo es obligatorio.',
+            'in' => 'Este campo es obligatorio.'
         ];
 
         $validator = Validator::make($data = Input::all(), $rules, $messages);
@@ -146,7 +146,7 @@ class DependenciasController extends \BaseController {
         $creacion = Input::get('creacion');
 
         if(!empty($id_dependencia) )
-            $dependencias = Dependencia::where('id_dependencia','=',$id_dependencia)->get();
+            $dependencias = Dependencia::where('id_dependencia','=',$id_dependencia)->simplePaginate(Config::get("constantes.elementos_pagina"));
         else
         {
             $query = Dependencia::select();
@@ -154,7 +154,6 @@ class DependenciasController extends \BaseController {
             {
                 $query = $query->where('nombre', 'LIKE', "%{$nombre}%");
             }
-
 
             if(!empty($clave))
             {
@@ -177,7 +176,7 @@ class DependenciasController extends \BaseController {
             }
 
 
-            $dependencias = $query->orderBy('id_dependencia','desc')->get();
+            $dependencias = $query->orderBy('id_dependencia','desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
 
 
         }

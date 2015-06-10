@@ -52,6 +52,11 @@
                     </tbody>
                 </table>
             </div>
+            <nav>
+              <ul class="pager">
+               {{ $beneficiarios_organizaciones->links() }}
+              </ul>
+            </nav>
         </div>
     </div>
 

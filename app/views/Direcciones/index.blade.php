@@ -56,6 +56,11 @@
                     </tbody>
                 </table>
             </div>
+            <nav>
+              <ul class="pager">
+               {{ $direcciones->links() }}
+              </ul>
+            </nav>
         </div>
     </div>
 
