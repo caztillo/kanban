@@ -54,26 +54,27 @@
                     <tbody>
                     @foreach($beneficiarios_programas as $beneficiario_programa)
                         <tr>
-                            <td><a title="Dé clic para ver más información del año" href="{{url('anos_fiscales/'. $beneficiario_programa->programa->ano->id_ano.'/edit')}}">{{$beneficiario_programa->programa->ano->descripcion}}</a></td>
-                           
+                            <td><a title="Dé clic para ver más información del año" href="{{url('anos_fiscales/'. $beneficiario_programa->id_ano.'/edit')}}">{{$beneficiario_programa->ano_fiscal}}</a></td>
+
                             <td>
-                                <a title="Dé clic para ver más información de la dependencia" href="{{url('dependencias/'. $beneficiario_programa->programa->dependencia->id_dependencia.'/edit')}}">{{$beneficiario_programa->programa->dependencia->nombre}}</a>
+                                <a title="Dé clic para ver más información de la dependencia" href="{{url('dependencias/'. $beneficiario_programa->id_dependencia.'/edit')}}">{{$beneficiario_programa->dependencia}}</a>
                             </td>
-                            
-                            <td><a title="Dé clic para ver más información del programa" href="{{url('programas/'. $beneficiario_programa->programa->id_programa.'/edit')}}">{{$beneficiario_programa->programa->clave}}</a></td>
-                            
-                            <td><a  title="Dé clic para ver más información del beneficiario" href="{{url('beneficiarios/'. $beneficiario_programa->beneficiario->id_beneficiario.'/edit')}}">{{$beneficiario_programa->beneficiario->nombre}}</a></td>
 
-                            @forelse($beneficiario_programa->beneficiario->beneficiario_organizacion as $beneficiario_organizacion)
+                            <td><a title="Dé clic para ver más información del programa" href="{{url('programas/'. $beneficiario_programa->id_programa.'/edit')}}">{{$beneficiario_programa->programa}}</a></td>
+
+                            <td><a  title="Dé clic para ver más información del beneficiario" href="{{url('beneficiarios/'. $beneficiario_programa->id_beneficiario.'/edit')}}">{{$beneficiario_programa->beneficiario}}</a></td>
+
+                            @if($beneficiario_programa->id_organizacion)
                                 <td>
-                                    <a title="Dé clic para ver más información de la organización" href="{{url('organizaciones/'. $beneficiario_organizacion->organizacion->id_organizacion.'/edit')}}">{{$beneficiario_organizacion->organizacion->nombre}}</a>
+                                    <a title="Dé clic para ver más información de la organización" href="{{url('organizaciones/'. $beneficiario_programa->id_organizacion.'/edit')}}">{{$beneficiario_programa->organizacion}}</a>
                                 </td>
-                            @empty
-                                <td>Sin Organización</td>
-                            @endforelse
+                            @else
+                                <td>{{$beneficiario_programa->organizacion}}</td>
+                            @endif
 
-                            <td>{{$beneficiario_programa->beneficiario->RFC}}</td>
-                            <td>{{$beneficiario_programa->beneficiario->CURP}}</td>
+
+                            <td>{{$beneficiario_programa->RFC}}</td>
+                            <td>{{$beneficiario_programa->CURP}}</td>
                             <td>{{$beneficiario_programa->finalidad}}</td>
                             <td>{{date("Y-m-d",strtotime($beneficiario_programa->inscripcion))}}</td>
                             <td>

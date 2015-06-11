@@ -14,7 +14,15 @@ class InscripcionesController extends \BaseController {
      */
     public function getIndex()
     {
-        $beneficiarios_programas = BeneficiarioPrograma::orderBy('id_beneficiario_programa', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));
+        /*$beneficiarios_programas = BeneficiarioPrograma::orderBy('id_beneficiario_programa', 'desc')->simplePaginate(Config::get("constantes.elementos_pagina"));*/
+        $beneficiarios_programas = DB::select(DB::raw('SELECT a.id_beneficiario_programa, c.descripcion AS ano_fiscal, c.id_ano, d.nombre AS dependencia, d.id_dependencia, b.clave AS programa, b.id_programa, e.nombre AS beneficiario, e.id_beneficiario, COALESCE(g.nombre,"Sin Organización") as organizacion, g.id_organizacion, e.RFC, e.CURP, a.finalidad, a.inscripcion FROM beneficiario_programa a JOIN beneficiario e ON a.id_beneficiario = e.id_beneficiario JOIN programa b ON a.id_programa = b.id_programa LEFT JOIN beneficiario_organizacion f ON a.id_beneficiario = f.id_beneficiario JOIN ano c ON b.id_ano = c.id_ano JOIN dependencia d ON b.id_dependencia = b.id_dependencia LEFT JOIN organizacion g ON f.id_organizacion = g.id_organizacion GROUP BY a.id_beneficiario_programa ORDER BY a.id_beneficiario_programa DESC'));
+
+
+        $pageNumber = (isset($_GET['page'])) ? $_GET['page'] : 1;
+
+        $slice = array_slice($beneficiarios_programas, Config::get("constantes.elementos_pagina") * ($pageNumber - 1), Config::get("constantes.elementos_pagina"));
+        $beneficiarios_programas = Paginator::make($slice, count($beneficiarios_programas), Config::get("constantes.elementos_pagina"));
+
         return View::make('inscripciones.index_beneficiario_programa', compact('beneficiarios_programas'));
     }
 
