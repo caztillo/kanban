@@ -209,7 +209,7 @@ class UsuariosController extends \BaseController {
         $grupos_usuario_logueado = $user->getGroups();
         foreach ($grupos_usuario_logueado as $grupo)
         {
-            if($grupo->name == "Administrador")
+            if($grupo->name == "Administrador" || $grupo->name == "Encargado de Dependencia")
             {
                 $admin = true;
             }
