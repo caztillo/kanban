@@ -1,5 +1,6 @@
+#Acerca de
 
-### Guía de Instalación
+# Guía de Instalación
 
 El siguiente tutorial tiene como objetivo instalar SCB en Linux, en concreto se explica 
 
@@ -26,14 +27,12 @@ dependencias necesarias, preguntará si desea  continuar, para ello se teclea la
 (Mayúscula). Esto lo realizará para la mayoría de los paquetes que va a instalar mediante 
 
 apt-get.
+
 Paso 2: Una vez que el proceso termine es necesario especificar la asociación que tendrá 
 
-el nombre del PC/Servidor con el nombre de dominio, esto se llama FQDN y lo hace de la 
+el nombre del PC/Servidor con el nombre de dominio, esto se llama FQDN y lo hace de la siguiente manera:
 
-siguiente manera:
-1.- Cree el archivo fqdn dentro de la configuración de apache con su editor de texto 
-
-(nano en este caso):
+1.- Cree el archivo fqdn dentro de la configuración de apache con su editor de texto  (nano en este caso):
 # nano /etc/apache2/conf.d/fqdn
 
 2.- Dentro de ese archivo escriba lo siguiente:
