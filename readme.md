@@ -1,6 +1,6 @@
 #Acerca de
 
-# Guía de Instalación
+#Guía de Instalación
 
 El siguiente tutorial tiene como objetivo instalar SCB en Linux, en concreto se explica 
 
@@ -18,7 +18,7 @@ la cual se encuentra en Aplicaciones + Accesorios + Terminal. Los comandos que e
 precedidos por un “#” deben ser ejecutados como súper usuario (usuario ROOT).
 
 Paso 1: Instalación del servidor web con Apache2:
-# apt-get install apache2-mpm-prefork
+###apt-get install apache2-mpm-prefork
 
 Este comando va a instalar desde Internet el servidor Apache, después de resolver las 
 
@@ -33,7 +33,7 @@ Paso 2: Una vez que el proceso termine es necesario especificar la asociación q
 el nombre del PC/Servidor con el nombre de dominio, esto se llama FQDN y lo hace de la siguiente manera:
 
 1.- Cree el archivo fqdn dentro de la configuración de apache con su editor de texto  (nano en este caso):
-# nano /etc/apache2/conf.d/fqdn
+###nano /etc/apache2/conf.d/fqdn
 
 2.- Dentro de ese archivo escriba lo siguiente:
 ServerName localhost
@@ -55,29 +55,27 @@ Paso 4: Se procede a instalar MySQL (durante la instalación el sistema  va a pe
 contraseña la cual es muy importante ya que será la contraseña del login administrador 
 
 del servidor de base de datos).
-# apt-get install mysql-server
+###apt-get install mysql-server
 
 Paso 5: Una vez que se tiene instalado el servidor de base de datos es necesario instalar 
 
 el lenguaje de programación (PHP versión 5) y el módulo para el servidor que se va a usar 
 
 (php5-mysql).
-# apt-get install php5 php5-mysql
+###apt-get install php5 php5-mysql
 
 Paso 6: Aunque Apache ya está instalado no ha reconocido todavía ninguno de los cambios 
 
 que se han hecho en él, y es por eso que se tiene que reiniciar el servicio de la 
 
 siguiente manera:
-# /etc/init.d/apache2 restart
+###/etc/init.d/apache2 restart
 
  
 Paso 7: Ahora que se ha verificado la correcta instalación de Apache toca verificar la 
 
-correcta instalación de PHP y eso lo hace mediante la creación de un archivo dentro de 
-
-/var/www:
-# nano /var/www/inicio.php
+correcta instalación de PHP y eso lo hace mediante la creación de un archivo dentro de /var/www:
+###nano /var/www/inicio.php
 
 Y dentro se agrega la siguiente línea:
 <? phpinfo(); ?>
@@ -89,7 +87,7 @@ http://127.0.0.1/inicio.php
 Paso 8: Copie la carpeta que contiene al sistema web SCB y la coloca dentro de /var/www 
 
 con nombre scb:
-# cp /directorio/origen/* /var/www/scb
+###cp /directorio/origen/* /var/www/scb
 
 
 Paso 9: Instalar la base de datos 
