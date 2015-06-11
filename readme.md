@@ -1,25 +1,101 @@
-## Laravel PHP Framework
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/downloads.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+### Guía de Instalación
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, and caching.
+El siguiente tutorial tiene como objetivo instalar SCB en Linux, en concreto se explica 
 
-Laravel aims to make the development process a pleasing one for the developer without sacrificing application functionality. Happy developers make the best code. To this end, we've attempted to combine the very best of what we have seen in other web frameworks, including frameworks implemented in other languages, such as Ruby on Rails, ASP.NET MVC, and Sinatra.
+cómo realizar la instalación en Ubuntu 12.04. El proceso de instalación no es complicado, 
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+pero es necesario instalar primero unos cuantos paquetes en el sistema operativo 
 
-## Official Documentation
+incluyendo: el servidor web Apache, el lenguaje PHP y la bases de datos MySQL que, como 
 
-Documentation for the entire framework can be found on the [Laravel website](http://laravel.com/docs).
+en todo CMS, son necesarias para guardar los contenidos que subamos a la red.
+Nota: Los comandos que se muestran deben ser ejecutados en la Terminal/Consola de Ubuntu 
 
-### Contributing To Laravel
+la cual se encuentra en Aplicaciones + Accesorios + Terminal. Los comandos que estén 
 
-**All issues and pull requests should be filed on the [laravel/framework](http://github.com/laravel/framework) repository.**
+precedidos por un “#” deben ser ejecutados como súper usuario (usuario ROOT).
+Paso 1: Instalación del servidor web con Apache2:
+# apt-get install apache2-mpm-prefork
 
-### License
+Este comando va a instalar desde Internet el servidor Apache, después de resolver las 
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+dependencias necesarias, preguntará si desea  continuar, para ello se teclea la letra “S” 
+
+(Mayúscula). Esto lo realizará para la mayoría de los paquetes que va a instalar mediante 
+
+apt-get.
+Paso 2: Una vez que el proceso termine es necesario especificar la asociación que tendrá 
+
+el nombre del PC/Servidor con el nombre de dominio, esto se llama FQDN y lo hace de la 
+
+siguiente manera:
+1.- Cree el archivo fqdn dentro de la configuración de apache con su editor de texto 
+
+(nano en este caso):
+# nano /etc/apache2/conf.d/fqdn
+
+2.- Dentro de ese archivo escriba lo siguiente:
+ServerName localhost
+
+Nota: Por “ServerName” no se refiere al nombre del servidor, si se personaliza esta 
+
+sentencia Apache causará error.
+
+Paso 3: Como se va a usar PHP es necesario especificar que el servidor use al archivo 
+
+index.php así que lo que se tiene que hacer es otra edición del archivo 
+
+/etc/apache2/sites-available/default agregando la siguiente línea:
+DirectoryIndex index.php index.html index.htm
+
+ 
+Paso 4: Se procede a instalar MySQL (durante la instalación el sistema  va a pedir una 
+
+contraseña la cual es muy importante ya que será la contraseña del login administrador 
+
+del servidor de base de datos).
+# apt-get install mysql-server
+
+Paso 5: Una vez que se tiene instalado el servidor de base de datos es necesario instalar 
+
+el lenguaje de programación (PHP versión 5) y el módulo para el servidor que se va a usar 
+
+(php5-mysql).
+# apt-get install php5 php5-mysql
+
+Paso 6: Aunque Apache ya está instalado no ha reconocido todavía ninguno de los cambios 
+
+que se han hecho en él, y es por eso que se tiene que reiniciar el servicio de la 
+
+siguiente manera:
+# /etc/init.d/apache2 restart
+
+ 
+Paso 7: Ahora que se ha verificado la correcta instalación de Apache toca verificar la 
+
+correcta instalación de PHP y eso lo hace mediante la creación de un archivo dentro de 
+
+/var/www:
+# nano /var/www/inicio.php
+
+Y dentro se agrega la siguiente línea:
+<? phpinfo(); ?>
+
+Una vez hecho esto, se verifica la instalación ingresando lo siguiente en el navegador: 
+
+http://127.0.0.1/inicio.php
+ 
+Paso 8: Copie la carpeta que contiene al sistema web SCB y la coloca dentro de /var/www 
+
+con nombre scb:
+# cp /directorio/origen/* /var/www/scb
+
+
+Paso 9: Instalar la base de datos 
+mysql -u SuUsuarioMySQL -p < /Ruta/Del/Archivo/scb_db.sql
+
+Nota: El sistema le va a pedir el password que definió en el paso 4.
+Y listo, se inicia sesión con el usuario admin y contraseña patito en 
+
+http://localhost/scb y podrá comenzar a utilizar el sistema.
