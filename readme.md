@@ -15,6 +15,7 @@ Nota: Los comandos que se muestran deben ser ejecutados en la Terminal/Consola d
 la cual se encuentra en Aplicaciones + Accesorios + Terminal. Los comandos que estén 
 
 precedidos por un “#” deben ser ejecutados como súper usuario (usuario ROOT).
+
 Paso 1: Instalación del servidor web con Apache2:
 # apt-get install apache2-mpm-prefork
 
