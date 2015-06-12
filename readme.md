@@ -1,4 +1,6 @@
 #Acerca de
+El presente proyecto se realizó para la Secretaría de Economía del Estado de Zacatecas con la finalidad de controlar la distribución de los recursos de los programas públicos de manera equitativa y conseguir de esta forma beneficiar a la mayor cantidad de personas posible.  
+En general, el sistema desarrollado administra mediante el uso de catálogos distintos años fiscales, usuarios con diferentes niveles de acceso, distintas dependencias y direcciones ligadas a ellas según sea necesario, beneficiarios y empresas que pueden recibir recursos de programas que son asignados a una dependencia y al año fiscal requerido, un módulo en el cual los beneficiarios pueden asignarse a una empresa y finalmente un módulo principal que controla las inscripciones de beneficiarios y empresas a los programas promovidos por las diferentes direcciones.
 
 #Guía de Instalación
 
